@@ -67,10 +67,10 @@ class ArbreB():
                 return False
     
     def get_encode(self):
-        """Retourne une liste de tuples"""
-        code = []
+        """Retourne un dictionnaire de conversion"""
+        code = {}
         for chr in self.get_characters():
-            code.append((chr,self.search(chr)))
+            code[chr] = self.search(chr)
         return code
 
 

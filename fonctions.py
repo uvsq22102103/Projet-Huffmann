@@ -1,4 +1,4 @@
-from classes import ArbreB, Sommet
+from classes import ArbreB
 
 
 def proportions(path:str):
@@ -41,3 +41,32 @@ def merger(liste_abr:list[ArbreB]):
     while len(liste_abr) > 1:
         liste_abr = _staged_merger(liste_abr)
     return liste_abr[0]
+
+
+def translate(texte:str|list[str], conversion:dict, reverse:bool=False):
+    """Traduit un texte selon la conversion, l'opération inverse est possible"""
+    output = []
+    if reverse:
+        for i in texte:
+            output.append(get_key_from_value(conversion,i))
+        output = "".join(output)
+    else:
+        for i in texte:
+            output.append(conversion[i])
+    return output
+
+
+def get_key_from_value(d:dict, val:str):
+    """Reviens à inverser key et value"""
+    keys = [k for k, v in d.items() if v == val]
+    if keys:
+        return keys[0]
+    else:
+        raise ValueError
+
+
+def get_texte(path:str):
+    """Prend le chemin d'un fichier et renvoi son contenu en str"""
+    with open(path) as f:
+        texte = "".join(f.readlines()).lower()
+    return texte
