@@ -1,0 +1,17 @@
+<<< 14 février : On commence le projet Huffman avec Cyriac >>>
+
+- Création de l'arborescence de fichiers qui servira au main.py
+- Création d'une fonction qui calcule les proportion de x charactères dans le texte
+    et qui sort une liste de tuples dans l'ordre croissant d'apparition des lettres.
+- Mise en place d'un GUI par Cyriac hors projet principal qui pourrait fournir les fonctionnalités
+    dont nous avons besoin.
+
+<<< 15 février : Réflexion sur les structures de données a utiliser >>>
+
+- J'ai réussi a developper l'algorithme qui construit un arbre en respectant la consigne,
+- Création d'une méthode .show() permettant d'afficher le contenu d'un arbre (trop fier),
+
+To do list :
+    - Méthode find dans la classe ArbreB pour donner un chemin binaire.
+    - ..?
+    - https://stackoverflow.com/questions/44798635/how-can-i-set-the-same-type-as-class-in-methods-parameter-following-pep484
