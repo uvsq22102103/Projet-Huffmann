@@ -1,5 +1,9 @@
-class Sommet():
+##############################################################################################
 
+class Sommet():
+    """Sommet/Noeud d'un ABR possédant comme attribut étiquette et value,
+    si (value == None) alors on peut en conclure que ce noeud est
+    père sinon il est feuille"""
     def __init__(self, etiquette: float, value: int=None):
         self.etiquette = etiquette
         self.value = value
@@ -7,17 +11,18 @@ class Sommet():
     def set_etiquette(self, new_etiquette):
         self.etiquette = new_etiquette
 
+
 ##############################################################################################
 
 class ArbreB():
-    
+    """Arbre binaire composé de Sommets/Noeuds"""
     def __init__(self, sommet:Sommet):
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
         if sommet.value != None:
             self.characters = [sommet.value]
 
     def fusion(self,abr):
-        """Fusionne deux arbres en un p uis crée une racine contenant un sommet
+        """Fusionne deux arbres en un puis crée une racine contenant un sommet
         ayant la somme des etiquettes des deux fils pour attribut"""
         fg = self.content.copy()
         fd = abr.content.copy()
@@ -28,6 +33,7 @@ class ArbreB():
         return self
     
     def get_characters(self):
+        """Renvoi une liste des charactères que contient cet arbre"""
         return self.characters
 
     def __add__(self,ArbreB):
