@@ -25,22 +25,11 @@ def proportions(path:str):
     return sorted(proportion.items(), key= lambda item: item[1])
 
 
-def _staged_merger(liste_abr:list[ArbreB]):
-    """Fusion par étages"""
-    output = []
-    while len(liste_abr) >= 2:
-        output.append(liste_abr.pop(0) + liste_abr.pop(0))
-    for i in liste_abr:
-        output.append(i)
-    return output
-
-
 def merger(liste_abr:list[ArbreB]):
-    """Prend une liste d'arbres en argument et fusionne le
-    tout en un seul et même arbre."""
+    """Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets"""
     while len(liste_abr) > 1:
-        liste_abr = _staged_merger(liste_abr)
-    return liste_abr[0]
+        liste_abr.sort(key=lambda x: x.content["r"].etiquette)
+        liste_abr.append(liste_abr.pop(0)+liste_abr.pop(0))
 
 
 def translate(texte:str|list[str], conversion:dict, reverse:bool=False):
