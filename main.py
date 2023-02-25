@@ -1,6 +1,6 @@
 ######################### Importations ##########################
 
-from fonctions import proportions, merger, translate, get_texte
+from fonctions import proportions, merger, translate, get_texte_from_file
 from classes import ArbreB, Sommet
 
 #################################################################
@@ -18,7 +18,8 @@ arborescence = liste_arbres[0]
 #arborescence.show()
 dico_conv = arborescence.get_encode()
 print(dico_conv)
-#texte = get_texte(file_to_encode)
+print(arborescence.get_characters())
+#texte = get_texte_from_file(file_to_encode)
 #print(texte)
 #test = translate(texte, dico_conv)
 #print(test)

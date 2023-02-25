@@ -54,7 +54,7 @@ def get_key_from_value(d:dict, val:str):
         raise ValueError
 
 
-def get_texte(path:str):
+def get_texte_from_file(path:str):
     """Prend le chemin d'un fichier et renvoi son contenu en str"""
     with open(path) as f:
         texte = "".join(f.readlines()).lower()
