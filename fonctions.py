@@ -6,7 +6,7 @@ def proportions(texte:str,keep_maj = False):
     occurences par Charactères (= chr) de son content.\n
     str => list(n*tuple(chr,occurences))"""
     
-    if keep_maj:
+    if not keep_maj:
         texte = texte.lower()
 
     proportion = {}
