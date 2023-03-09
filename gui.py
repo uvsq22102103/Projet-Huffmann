@@ -3,18 +3,15 @@ from tkinter import *
 import ttkbootstrap as ttkb
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-#from fonctionsGUI import *
 
 root = ttkb.Window(themename="superhero")
 HEIGHT = 900
 WIDTH = 1600
-root.geometry("1600x900")
+root.geometry(f"{WIDTH}x{HEIGHT}")
 
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    #entreeA.delete(0,"end")
-    #entreeA.insert(0, texte)
     canva1.create_text(300, 50, font= 'arial 15', text=texte)
     print(entreeT.get())
 
@@ -33,9 +30,6 @@ def Apropos():
 def temp_textT(e):
    entreeT.delete(0,"end")
 
-#def temp_textA(e):
-#   entreeA.delete(0,"end")
-
 
 #MENU##########
 ###############
@@ -53,6 +47,8 @@ root.config(menu=menubar)
 ###############
 labeledframe1 = ttkb.LabelFrame(root, text="Canva",height=1000, width=800, bootstyle="info"  )
 labeledframe1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+
+
 #LABEL#########
 ###############
 
@@ -66,13 +62,6 @@ entreeT.insert(0, valueT)
 entreeT.bind("<FocusIn>", temp_textT)
 entreeT.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
-#valueA = "Le résultat s'affichera ici !"
-#entreeA = ttkb.Entry(root, justify="left",width=100, font=("Arial 13"))
-#entreeA.insert(0, CONSTRUCTION ARBRE)
-#A lier avec les fonctions d'Aymerique
-#entreeA.insert(0, valueA)
-#entreeA.bind("<FocusIn>", temp_textA)
-
 
 #BOUTONS#######
 ###############
@@ -83,14 +72,13 @@ button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 #CANVAS########
 ###############
 canva1 = ttkb.Canvas(labeledframe1, height=HEIGHT//2, width=WIDTH//2, bg="grey", borderwidth=10, autostyle=FALSE)
-#canva1.focus_set()
 canva1.bind("<Enter>", cursor_change())
 canva1.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
 #PACK##########
 ###############
-#entreeA.pack(pady=20)
+
 
 
 
