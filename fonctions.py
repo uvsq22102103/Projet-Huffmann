@@ -1,13 +1,13 @@
 from classes import ArbreB
 
 
-def proportions(path:str):
-    """Prend le chemin d'un fichier quelconque et retourne les
+def proportions(texte:str,keep_maj = False):
+    """Prend un texte en argument et retourne les
     occurences par Charactères (= chr) de son content.\n
     str => list(n*tuple(chr,occurences))"""
     
-    with open(path,"r") as f:
-        texte = "".join(f.readlines()).lower()
+    if keep_maj:
+        texte = texte.lower()
 
     proportion = {}
 

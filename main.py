@@ -11,7 +11,10 @@ file_to_encode = "test_elie.txt" # fichier a encoder via l'ABR crée sur le trai
 
 ####################### Programme principal #####################
 
-characters_proportions = proportions(training_file)
+with open(training_file) as f:
+    texte = "".join(f.readlines())
+
+characters_proportions = proportions(texte)
 liste_arbres = [ArbreB(Sommet(e,v)) for v,e in characters_proportions]
 merger(liste_arbres)
 arborescence = liste_arbres[0]
