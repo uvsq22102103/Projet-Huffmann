@@ -19,7 +19,7 @@ def mainfonc(text):
     dico_conv = arborescence.get_encode()
     print(dico_conv)
     print(arborescence.get_characters())
-    return str(arborescence)
+    return arborescence.show()
 
 def get_text():
     canva1.delete("all")
