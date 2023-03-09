@@ -5,7 +5,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import *
 #from fonctionsGUI import *
 
-root = ttkb.Window(themename="solar")
+root = ttkb.Window(themename="superhero")
 HEIGHT = 900
 WIDTH = 1600
 root.geometry("1600x900")
@@ -51,8 +51,8 @@ root.config(menu=menubar)
 
 #FRAME#########
 ###############
-
-
+labeledframe1 = ttkb.LabelFrame(root, text="Canva",height=1000, width=800, bootstyle="info"  )
+labeledframe1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 #LABEL#########
 ###############
 
@@ -82,10 +82,10 @@ button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 #CANVAS########
 ###############
-canva1 = ttkb.Canvas(root, height=HEIGHT//2, width=WIDTH//2, background="white", borderwidth=10)
+canva1 = ttkb.Canvas(labeledframe1, height=HEIGHT//2, width=WIDTH//2, bg="grey", borderwidth=10, autostyle=FALSE)
 #canva1.focus_set()
 canva1.bind("<Enter>", cursor_change())
-canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
 #PACK##########
