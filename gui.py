@@ -3,16 +3,28 @@ from tkinter import *
 import ttkbootstrap as ttkb
 from tkinter.messagebox import *
 from tkinter.filedialog import *
+from fonctions import proportions, merger, translate, get_texte_from_file
+from classes import ArbreB, Sommet
 
 root = ttkb.Window(themename="superhero")
 HEIGHT = 900
 WIDTH = 1600
 root.geometry(f"{WIDTH}x{HEIGHT}")
 
+def mainfonc(text):
+    characters_proportions = proportions(text)
+    liste_arbres = [ArbreB(Sommet(e,v)) for v,e in characters_proportions]
+    merger(liste_arbres)
+    arborescence = liste_arbres[0]
+    dico_conv = arborescence.get_encode()
+    print(dico_conv)
+    print(arborescence.get_characters())
+    return str(arborescence)
+
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    canva1.create_text(300, 50, font= 'arial 15', text=texte)
+    canva1.create_text(300, 50, font= 'arial 15', text=mainfonc(texte))
     print(entreeT.get())
 
 
