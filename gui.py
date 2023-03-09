@@ -77,7 +77,7 @@ entreeT.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
 #BOUTONS#######
 ###############
-button = ttkb.Button(root, text="Récupérer le texte", command=get_text, width=40, bootstyle="primary")
+button = ttkb.Button(root, text="Traiter le texte", command=get_text, width=40, bootstyle="primary")
 button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 
