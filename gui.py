@@ -19,12 +19,12 @@ def mainfonc(text):
     dico_conv = arborescence.get_encode()
     print(dico_conv)
     print(arborescence.get_characters())
-    return arborescence.show()
+    return str(arborescence.get_characters())
 
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    canva1.create_text(300, 50, font= 'arial 15', text=mainfonc(texte))
+    canva1.create_text(200,10,anchor="n", font= 'arial 15', text=mainfonc(texte))
     print(entreeT.get())
 
 
@@ -58,7 +58,7 @@ root.config(menu=menubar)
 #FRAME#########
 ###############
 labeledframe1 = ttkb.LabelFrame(root, text="Canva",height=1000, width=800, bootstyle="info"  )
-labeledframe1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+labeledframe1.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
 
 #LABEL#########
