@@ -19,12 +19,12 @@ def mainfonc(text):
     dico_conv = arborescence.get_encode()
     print(dico_conv)
     print(arborescence.get_characters())
-    return str(arborescence.get_characters())
+    return str(dico_conv)
 
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    canva1.create_text(200,10,anchor="n", font= 'arial 15', text=mainfonc(texte))
+    canva1.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=mainfonc(texte), )
     print(entreeT.get())
 
 
