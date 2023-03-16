@@ -7,9 +7,11 @@ from fonctions import proportions, merger, translate, get_texte_from_file
 from classes import ArbreB, Sommet
 
 root = ttkb.Window(themename="superhero")
-HEIGHT = 900
-WIDTH = 1600
-root.geometry(f"{WIDTH}x{HEIGHT}")
+root.rowconfigure(0, weight=1)
+root.columnconfigure(0, weight=1)
+hauteur = 900
+largeur = 1600
+root.geometry(f"{largeur}x{hauteur}")
 
 def mainfonc(text):
     characters_proportions = proportions(text)
@@ -24,7 +26,7 @@ def mainfonc(text):
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    canva1.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=mainfonc(texte), )
+    canva1.create_text( int(canva1.cget("width"))//2 ,int(canva1.cget("height"))-10 , justify='center',anchor="n", font= 'arial 10', text=mainfonc(texte) )
     print(entreeT.get())
 
 
@@ -57,8 +59,8 @@ root.config(menu=menubar)
 
 #FRAME#########
 ###############
-labeledframe1 = ttkb.LabelFrame(root, text="Canva",height=1000, width=800, bootstyle="info"  )
-labeledframe1.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+labeledframe1 = ttkb.LabelFrame(root, width = largeur, height = hauteur, text="Canva", bootstyle="info"  )
+labeledframe1.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
 #LABEL#########
@@ -83,10 +85,10 @@ button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 #CANVAS########
 ###############
-canva1 = ttkb.Canvas(labeledframe1, height=HEIGHT//2, width=WIDTH//2, bg="grey", borderwidth=10, autostyle=FALSE)
+canva1 = ttkb.Canvas(labeledframe1, bg="grey", borderwidth=10, autostyle=FALSE)
 canva1.bind("<Enter>", cursor_change())
-canva1.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
-
+canva1.pack(padx=10, pady=10, expand=True, fill="both" )
+#canva1.grid(row=2, column=0, columnspan=2, padx=10,pady=10)
 
 #PACK##########
 ###############
