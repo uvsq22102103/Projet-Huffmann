@@ -1,15 +1,22 @@
-import tkinter as tk
-from tkinter import *
-import ttkbootstrap as ttkb
+###################
+# external import #
+from tkinter import Menu, FALSE
+import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-from fonctions import proportions, merger, translate, get_texte_from_file
+
+################
+# local import #
+from fonctions import *
 from classes import ArbreB, Sommet
 
-root = ttkb.Window(themename="superhero")
+#################
+# WINDOW'S SIZE #
 HEIGHT = 900
 WIDTH = 1600
-root.geometry(f"{WIDTH}x{HEIGHT}")
+
+#############
+# Fonctions #
 
 def mainfonc(text):
     characters_proportions = proportions(text)
@@ -20,6 +27,8 @@ def mainfonc(text):
     print(dico_conv)
     print(arborescence.get_characters())
     return str(dico_conv)
+
+# il faut que je t'explique des choses sur ce que font les fonctions ci-dessus #
 
 def get_text():
     canva1.delete("all")
@@ -41,6 +50,11 @@ def Apropos():
 
 def temp_textT(e):
    entreeT.delete(0,"end")
+
+#######################
+# Main of the program #
+root = ttkb.Window(themename="superhero")
+root.geometry(f"{WIDTH}x{HEIGHT}")
 
 
 #MENU##########

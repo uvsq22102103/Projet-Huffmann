@@ -1,6 +1,6 @@
 ######################### Importations ##########################
 
-from fonctions import proportions, merger, translate, get_texte_from_file
+from fonctions import *
 from classes import ArbreB, Sommet
 
 #################################################################
