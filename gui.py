@@ -1,17 +1,17 @@
 ###################
-# external import #
+# imports externes #
 from tkinter import Menu, FALSE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
 
 ################
-# local import #
+# imports locaux #
 from fonctions import *
 from classes import ArbreB, Sommet
 
 #################
-# WINDOW'S SIZE #
+# Taille de la fenêtre #
 HEIGHT = 900
 WIDTH = 1600
 
@@ -51,8 +51,8 @@ def Apropos():
 def temp_textT(e):
    entreeT.delete(0,"end")
 
-#######################
-# Main of the program #
+########
+# Main #
 root = ttkb.Window(themename="superhero")
 root.geometry(f"{WIDTH}x{HEIGHT}")
 
