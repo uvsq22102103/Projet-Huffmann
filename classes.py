@@ -1,3 +1,5 @@
+from math import log2
+from tkinter import Canvas
 ##############################################################################################
 
 class Sommet():
@@ -18,8 +20,16 @@ class ArbreB():
     """Arbre binaire composé de Sommets/Noeuds"""
     def __init__(self, sommet:Sommet):
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
-        if sommet.value != None:
-            self.characters = [sommet.value]
+        self.chr_freq = None
+
+    def build_from_freq(chr_freq:list[tuple]):
+        liste_arbres = [ArbreB(Sommet(e,v)) for v,e in chr_freq]
+        while len(liste_arbres) > 1: #Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets
+            liste_arbres.sort(key=lambda x: x.content["r"].etiquette)
+            liste_arbres.append(liste_arbres.pop(0)+liste_arbres.pop(0))
+        arborescence = liste_arbres[0]
+        arborescence.set_chr_freq(chr_freq)
+        return arborescence
 
     def fusion(self,abr):
         """Fusionne deux arbres en un puis crée une racine contenant un sommet
@@ -28,13 +38,8 @@ class ArbreB():
         fd = abr.content.copy()
         self.content = {"r" : Sommet(round(fg["r"].etiquette + fd["r"].etiquette,2)),
                         "fg" : fg, "fd" : fd}
-        self.characters = self.characters + abr.get_characters()
         del abr
         return self
-    
-    def get_characters(self):
-        """Renvoi une liste des charactères que contient cet arbre"""
-        return self.characters
 
     def __add__(self,ArbreB):
         return self.fusion(ArbreB)
@@ -49,6 +54,13 @@ class ArbreB():
             if not self["r"].value != None:
                 ArbreB.show(self["fd"],_n)
                 ArbreB.show(self["fg"],_n)
+    
+    def draw(self, canvas:Canvas, width:int):
+        if self == ArbreB:
+            offset = int(width/int(log2(len(self.chr_freq))))
+            ArbreB.draw(self.content, canvas, width)
+        else:
+            pass
     
     def search(self,elem:str):
         """Recherche un element ds un l'arbre et renvoi son équivalent binaire 
@@ -74,10 +86,16 @@ class ArbreB():
     
     def get_encode(self):
         """Retourne un dictionnaire de conversion"""
-        code = {}
-        for chr in self.get_characters():
-            code[chr] = self.search(chr)
-        return code
+        if self.chr_freq != None:
+            code = {}
+            for (chr,_) in self.chr_freq:
+                code[chr] = self.search(chr)
+            return code
+        else:
+            print("set_chr_freq before please")
+    
+    def set_chr_freq(self, chr_freq:list[tuple]):
+        self.chr_freq = chr_freq
 
 
 ##############################################################################################

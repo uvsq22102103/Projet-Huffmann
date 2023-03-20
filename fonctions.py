@@ -25,13 +25,6 @@ def proportions(texte:str,keep_maj = False):
     return sorted(proportion.items(), key= lambda item: item[1])
 
 
-def merger(liste_abr:list[ArbreB]):
-    """Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets"""
-    while len(liste_abr) > 1:
-        liste_abr.sort(key=lambda x: x.content["r"].etiquette)
-        liste_abr.append(liste_abr.pop(0)+liste_abr.pop(0))
-
-
 def translate(texte:str|list[str], conversion:dict, reverse:bool=False):
     """Traduit un texte selon la conversion, l'opération inverse est possible"""
     output = []

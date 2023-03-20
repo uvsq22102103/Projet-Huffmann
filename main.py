@@ -2,6 +2,7 @@
 
 from fonctions import *
 from classes import ArbreB, Sommet
+import tkinter as tk # GUI RECURCIVE TEST
 
 #################################################################
 
@@ -14,19 +15,13 @@ file_to_encode = "test_elie.txt" # fichier a encoder via l'ABR crée sur le trai
 with open(training_file) as f:
     texte = "".join(f.readlines())
 
-characters_proportions = proportions(texte)
-liste_arbres = [ArbreB(Sommet(e,v)) for v,e in characters_proportions]
-merger(liste_arbres)
-arborescence = liste_arbres[0]
-#arborescence.show()
-dico_conv = arborescence.get_encode()
-print(dico_conv)
-print(arborescence.get_characters())
-#texte = get_texte_from_file(file_to_encode)
-#print(texte)
-#test = translate(texte, dico_conv)
-#print(test)
-#test = translate(test, dico_conv, True)
-#print(test)
-
+chr_freq = proportions(texte)
+arborescence = ArbreB.build_from_freq(chr_freq)
 # END #
+# GUI RECURCIVE TEST #
+HEIGHT, WIDTH = 600, 600
+root = tk.Tk()
+canvas = tk.Canvas(root, height=HEIGHT, width= WIDTH, bg= "black")
+arborescence.draw(canvas, (HEIGHT,WIDTH))
+canvas.grid()
+root.mainloop()
