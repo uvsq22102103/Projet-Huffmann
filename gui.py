@@ -18,22 +18,20 @@ WIDTH = 1600
 #############
 # Fonctions #
 
-def mainfonc(text):
+def text_into_dic_affich(text):
     characters_proportions = proportions(text)
     liste_arbres = [ArbreB(Sommet(e,v)) for v,e in characters_proportions]
     merger(liste_arbres)
     arborescence = liste_arbres[0]
     dico_conv = arborescence.get_encode()
     print(dico_conv)
-    print(arborescence.get_characters())
     return str(dico_conv)
 
-# il faut que je t'explique des choses sur ce que font les fonctions ci-dessus #
 
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    canva1.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=mainfonc(texte), )
+    canva1.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=text_into_dic_affich(texte) )
     print(entreeT.get())
 
 
@@ -55,6 +53,8 @@ def temp_textT(e):
 # Main #
 root = ttkb.Window(themename="superhero")
 root.geometry(f"{WIDTH}x{HEIGHT}")
+root.columnconfigure(1, weight=1)
+root.rowconfigure(1, weight=1)
 
 
 #MENU##########
@@ -71,9 +71,13 @@ root.config(menu=menubar)
 
 #FRAME#########
 ###############
-labeledframe1 = ttkb.LabelFrame(root, text="Canva",height=1000, width=800, bootstyle="info"  )
-labeledframe1.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+#labeledframe1 = ttkb.LabelFrame(root, text="Canva", bootstyle="info"  )
+#labeledframe1.grid(row=1, column=0, columnspan=3)
+#labeledframe1.update()
 
+#labeledframe2 = ttkb.LabelFrame(root, text = "Prop", bootstyle='info')
+#labeledframe2.grid(row=1, column=3, columnspan=1, padx=10, pady=10)
+#labeledframe2.update()
 
 #LABEL#########
 ###############
@@ -86,7 +90,7 @@ valueT = "Ecrire/copier votre texte ici"
 entreeT = ttkb.Entry(root, justify="left", width=100, font=("Arial 13") )
 entreeT.insert(0, valueT)
 entreeT.bind("<FocusIn>", temp_textT)
-entreeT.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
+entreeT.grid(row=0, column=1, columnspan=2, padx=10, pady=10, sticky="ne")
 
 
 #BOUTONS#######
@@ -97,10 +101,25 @@ button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 #CANVAS########
 ###############
-canva1 = ttkb.Canvas(labeledframe1, height=HEIGHT//2, width=WIDTH//2, bg="grey", borderwidth=10, autostyle=FALSE)
+canva1 = ttkb.Canvas(root,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,1200,1000))
 canva1.bind("<Enter>", cursor_change())
-canva1.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
+canva2 = ttkb.Canvas(root, bg="grey", borderwidth=10, autostyle=FALSE)
+canva2.bind("<Enter>", cursor_change())
+canva2.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
+
+
+
+scrollVERT = ttkb.Scrollbar(root, orient="vertical")
+scrollVERT.grid(row=1, column=2, sticky="nse")
+
+scrollHORI = ttkb.Scrollbar(root, orient="horizontal")
+scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse")
+
+scrollVERT.configure(command=canva1.yview)
+scrollHORI.configure(command=canva1.xview)
+canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
 #PACK##########
 ###############
