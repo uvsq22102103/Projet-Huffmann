@@ -20,18 +20,18 @@ WIDTH = 1600
 
 def text_into_dic_affich(text):
     characters_proportions = proportions(text)
-    liste_arbres = [ArbreB(Sommet(e,v)) for v,e in characters_proportions]
-    merger(liste_arbres)
-    arborescence = liste_arbres[0]
+    arborescence = ArbreB.
     dico_conv = arborescence.get_encode()
-    print(dico_conv)
-    return str(dico_conv)
+    output = str() 
+    for (key, value) in dico_conv.items():
+        output += key + ":" + value+"\n"
+    return output
 
 
 def get_text():
     canva1.delete("all")
     texte = entreeT.get()
-    canva1.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=text_into_dic_affich(texte) )
+    canva2.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=text_into_dic_affich(texte) )
     print(entreeT.get())
 
 
@@ -108,7 +108,6 @@ canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 canva2 = ttkb.Canvas(root, bg="grey", borderwidth=10, autostyle=FALSE)
 canva2.bind("<Enter>", cursor_change())
 canva2.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
-
 
 
 scrollVERT = ttkb.Scrollbar(root, orient="vertical")
