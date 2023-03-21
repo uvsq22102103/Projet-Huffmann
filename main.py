@@ -22,6 +22,6 @@ arborescence = ArbreB.build_from_freq(chr_freq)
 HEIGHT, WIDTH = 600, 600
 root = tk.Tk()
 canvas = tk.Canvas(root, height=HEIGHT, width= WIDTH, bg= "black")
-arborescence.draw(canvas, (HEIGHT,WIDTH))
+arborescence.draw(canvas)
 canvas.grid()
 root.mainloop()

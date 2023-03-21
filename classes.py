@@ -1,4 +1,3 @@
-from math import log2
 from tkinter import Canvas
 ##############################################################################################
 
@@ -55,10 +54,9 @@ class ArbreB():
                 ArbreB.show(self["fd"],_n)
                 ArbreB.show(self["fg"],_n)
     
-    def draw(self, canvas:Canvas, width:int):
-        if self == ArbreB:
-            offset = int(width/int(log2(len(self.chr_freq))))
-            ArbreB.draw(self.content, canvas, width)
+    def draw(self, canvas:Canvas, offset=int):
+        if type(self) == ArbreB:
+            ArbreB.draw(self.content, canvas, offset)
         else:
             pass
     
