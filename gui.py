@@ -4,6 +4,7 @@ from tkinter import Menu, FALSE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
+from math import log2
 
 ################
 # imports locaux #
@@ -18,21 +19,32 @@ WIDTH = 1600
 #############
 # Fonctions #
 
-def text_into_dic_affich(text):
-    characters_proportions = proportions(text)
-    liste_arbres = [ArbreB(Sommet(e,v)) for v,e in characters_proportions]
-    merger(liste_arbres)
-    arborescence = liste_arbres[0]
-    dico_conv = arborescence.get_encode()
-    print(dico_conv)
-    return str(dico_conv)
 
+def crea_abr(text:str):
+    characters_proportions = proportions(text)
+    arborescence = ArbreB.build_from_freq(characters_proportions)
+    return arborescence
+
+def prop_of_abr(arbre:ArbreB):
+    dico_conv = arbre.get_encode()
+    output = str("") 
+    for (key, value) in dico_conv.items():
+        output += f"'{key}'" + ": " + value+"\n"
+    return output
 
 def get_text():
     canva1.delete("all")
+    canva2.delete("all")
     texte = entreeT.get()
-    canva1.create_text(HEIGHT//2 , 10,anchor="n", font= 'arial 10', text=text_into_dic_affich(texte) )
-    print(entreeT.get())
+    arbo = crea_abr(texte)
+    #Offset + Dessin arbre
+    hauteurABR = log2(len(arbo.chr_freq))
+    #offset = 
+    #canva1.configure(scrollregion=)
+    #arbo.draw(canva1, offset)
+    canva1.create_oval(20,20,100,100)
+    #Ecriture proportions
+    canva2.create_text(canva2.winfo_width()//2, canva2.winfo_height()*2//10 , font= 'arial 18', text=prop_of_abr(arbo), anchor="n" )
 
 
 def cursor_change():
@@ -55,7 +67,7 @@ root = ttkb.Window(themename="superhero")
 root.geometry(f"{WIDTH}x{HEIGHT}")
 root.columnconfigure(1, weight=1)
 root.rowconfigure(1, weight=1)
-
+root.update()
 
 #MENU##########
 ###############
@@ -108,7 +120,6 @@ canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 canva2 = ttkb.Canvas(root, bg="grey", borderwidth=10, autostyle=FALSE)
 canva2.bind("<Enter>", cursor_change())
 canva2.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
-
 
 
 scrollVERT = ttkb.Scrollbar(root, orient="vertical")
