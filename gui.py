@@ -14,8 +14,8 @@ from classes import ArbreB, Sommet
 
 #################
 # Config fenêtre #
-HEIGHT = 900
-WIDTH = 1600
+HEIGHT = 1080
+WIDTH = 1920
 NAME = "Projet Huffman"
 #############
 # Fonctions #
@@ -28,10 +28,12 @@ def crea_abr(text:str):
 
 def prop_of_abr(arbre:ArbreB):
     dico_conv = arbre.get_encode()
-    output = str("") 
-    dico_conv["espace"] = dico_conv[" "]
-    del dico_conv[" "]
-    for (key, value) in dico_conv.items():
+    output = str("")
+    if " " in dico_conv:
+        dico_conv["espace"] = dico_conv[" "]
+        del dico_conv[" "]
+    sorted_dict = {key: value for key, value in sorted(dico_conv.items())}
+    for (key, value) in sorted_dict.items():
         output += f"'{key}'" + ":" + value + "\n"
     return output
 
@@ -106,38 +108,45 @@ root.config(menu=menubar)
 #ENTREE#########
 ###############
 valueT = "Ecrire/copier votre texte ici"
-entreeT = ttkb.Entry(root, justify="left", width=100, font=("Arial 13") )
+entreeT = ttkb.Entry(root, justify="left", width=200, font=("Arial 13") )
 entreeT.insert(0, valueT)
 entreeT.bind("<FocusIn>", temp_textT)
-entreeT.grid(row=0, column=1, columnspan=2, padx=10, pady=10, sticky="ne")
+entreeT.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
 
 
 #BOUTONS#######
 ###############
-button = ttkb.Button(root, text="Traiter le texte", command=get_text, width=40, bootstyle="primary")
-button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+buttonTraiter = ttkb.Button(root, text="Traiter le texte", command=get_text, width=40, bootstyle="primary")
+buttonTraiter.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+
+buttonEncode = ttkb.Button(root, text="Encoder votre texte", width=40)
+buttonEncode.grid(row=3, column=0, padx=10, pady=10)
+
+buttonDecode = ttkb.Button(root, text="Décoder votre texte", width=40)
+buttonDecode.grid(row=4, column=0, padx=10, pady=10)
 
 
 #CANVAS########
 ###############
 canva1 = ttkb.Canvas(root,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000))
 canva1.bind("<Enter>", cursor_change())
-canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
 scrollVERT = ttkb.Scrollbar(root, orient="vertical", bootstyle="primary")
-scrollVERT.grid(row=1, column=2, sticky="nse")
+scrollVERT.grid(row=1, column=3, sticky="nse", pady=10)
 
 scrollHORI = ttkb.Scrollbar(root, orient="horizontal", bootstyle="primary")
-scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse")
+scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse", padx=10)
 
 scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
+
 #LISTBOX#######
 ###############
 listbox = tk.Listbox(root, bg="grey", selectmode=tk.SINGLE)
-listbox.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
+listbox.grid(row=1, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
 #PACK##########
