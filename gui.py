@@ -1,5 +1,6 @@
 ###################
 # imports externes #
+import tkinter as tk
 from tkinter import Menu, FALSE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
@@ -12,10 +13,10 @@ from fonctions import *
 from classes import ArbreB, Sommet
 
 #################
-# Taille de la fenêtre #
+# Config fenêtre #
 HEIGHT = 900
 WIDTH = 1600
-
+NAME = "Projet Huffman"
 #############
 # Fonctions #
 
@@ -28,32 +29,38 @@ def crea_abr(text:str):
 def prop_of_abr(arbre:ArbreB):
     dico_conv = arbre.get_encode()
     output = str("") 
+    dico_conv["espace"] = dico_conv[" "]
+    del dico_conv[" "]
     for (key, value) in dico_conv.items():
-        output += f"'{key}'" + ": " + value+"\n"
+        output += f"'{key}'" + ":" + value + "\n"
     return output
 
 def get_text():
     canva1.delete("all")
-    canva2.delete("all")
+    listbox.delete(0, "end")
     texte = entreeT.get()
     arbo = crea_abr(texte)
     #Offset + Dessin arbre
     hauteurABR = log2(len(arbo.chr_freq))
-    #offset = 
+    #offset = entreeT.delete(0,"end")
     #canva1.configure(scrollregion=)
     #arbo.draw(canva1, offset)
     canva1.create_oval(20,20,100,100)
     #Ecriture proportions
-    canva2.create_text(canva2.winfo_width()//2, canva2.winfo_height()*2//10 , font= 'arial 18', text=prop_of_abr(arbo), anchor="n" )
+    prop = prop_of_abr(arbo)
+    var = tk.Variable(value=prop)
+    listbox.config(font= 'arial 12', listvariable=var)
 
 
 def cursor_change():
     canva1.config(cursor="dot")
     
 def Nouveau():
+    entreeT.delete(0,"end")
     f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()         
     entreeT.insert(0,texte)
+    get_text()
 
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
@@ -63,7 +70,7 @@ def temp_textT(e):
 
 ########
 # Main #
-root = ttkb.Window(themename="superhero")
+root = ttkb.Window(themename="superhero", title=NAME)
 root.geometry(f"{WIDTH}x{HEIGHT}")
 root.columnconfigure(1, weight=1)
 root.rowconfigure(1, weight=1)
@@ -113,24 +120,25 @@ button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 #CANVAS########
 ###############
-canva1 = ttkb.Canvas(root,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,1200,1000))
+canva1 = ttkb.Canvas(root,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000))
 canva1.bind("<Enter>", cursor_change())
 canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-canva2 = ttkb.Canvas(root, bg="grey", borderwidth=10, autostyle=FALSE)
-canva2.bind("<Enter>", cursor_change())
-canva2.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
-
-
-scrollVERT = ttkb.Scrollbar(root, orient="vertical")
+scrollVERT = ttkb.Scrollbar(root, orient="vertical", bootstyle="primary")
 scrollVERT.grid(row=1, column=2, sticky="nse")
 
-scrollHORI = ttkb.Scrollbar(root, orient="horizontal")
+scrollHORI = ttkb.Scrollbar(root, orient="horizontal", bootstyle="primary")
 scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse")
 
 scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
+
+#LISTBOX#######
+###############
+listbox = tk.Listbox(root, bg="grey", selectmode=tk.SINGLE)
+listbox.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
+
 
 #PACK##########
 ###############
