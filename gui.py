@@ -5,7 +5,7 @@ from tkinter import Menu, FALSE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-from math import log2
+#from math import log2
 
 ################
 # imports locaux #
@@ -43,7 +43,7 @@ def get_text():
     texte = entreeT.get()
     arbo = crea_abr(texte)
     #Offset + Dessin arbre
-    hauteurABR = log2(len(arbo.chr_freq))
+    #hauteurABR = log2(len(arbo.chr_freq))
     #offset = entreeT.delete(0,"end")
     #canva1.configure(scrollregion=)
     #arbo.draw(canva1, offset)
