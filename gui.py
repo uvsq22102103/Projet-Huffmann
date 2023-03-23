@@ -1,7 +1,6 @@
 ###################
 # imports externes #
-import tkinter as tk
-from tkinter import Menu, FALSE
+from tkinter import Menu, FALSE, Variable, Listbox, SINGLE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
@@ -50,7 +49,7 @@ def get_text():
     canva1.create_oval(20,20,100,100)
     #Ecriture proportions
     prop = prop_of_abr(arbo)
-    var = tk.Variable(value=prop)
+    var = Variable(value=prop)
     listbox.config(font= 'arial 12', listvariable=var)
 
 
@@ -161,7 +160,7 @@ canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
 #LISTBOX#######
 ###############
-listbox = tk.Listbox(labeledframe1, bg="grey", selectmode=tk.SINGLE)
+listbox = Listbox(labeledframe1, bg="grey", selectmode=SINGLE)
 listbox.grid(row=1, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
