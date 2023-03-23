@@ -1,10 +1,11 @@
 ###################
 # imports externes #
+import tkinter as tk
 from tkinter import Menu, FALSE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-from math import log2
+#from math import log2
 
 ################
 # imports locaux #
@@ -12,10 +13,10 @@ from fonctions import *
 from classes import ArbreB, Sommet
 
 #################
-# Taille de la fenêtre #
-HEIGHT = 900
-WIDTH = 1600
-
+# Config fenêtre #
+HEIGHT = 1080
+WIDTH = 1920
+NAME = "Projet Huffman"
 #############
 # Fonctions #
 
@@ -27,43 +28,53 @@ def crea_abr(text:str):
 
 def prop_of_abr(arbre:ArbreB):
     dico_conv = arbre.get_encode()
-    output = str("") 
-    for (key, value) in dico_conv.items():
-        output += f"'{key}'" + ": " + value+"\n"
+    output = str("")
+    if " " in dico_conv:
+        dico_conv["espace"] = dico_conv[" "]
+        del dico_conv[" "]
+    sorted_dict = {key: value for key, value in sorted(dico_conv.items())}
+    for (key, value) in sorted_dict.items():
+        output += f"'{key}'" + ":" + value + "\n"
     return output
 
 def get_text():
     canva1.delete("all")
-    canva2.delete("all")
-    texte = entreeT.get()
+    listbox.delete(0, "end")
+    texte = entreeE1.get()
     arbo = crea_abr(texte)
     #Offset + Dessin arbre
-    hauteurABR = log2(len(arbo.chr_freq))
-    #offset = 
+    #hauteurABR = log2(len(arbo.chr_freq))
+    #offset = entreeE1.delete(0,"end")
     #canva1.configure(scrollregion=)
     #arbo.draw(canva1, offset)
     canva1.create_oval(20,20,100,100)
     #Ecriture proportions
-    canva2.create_text(canva2.winfo_width()//2, canva2.winfo_height()*2//10 , font= 'arial 18', text=prop_of_abr(arbo), anchor="n" )
+    prop = prop_of_abr(arbo)
+    var = tk.Variable(value=prop)
+    listbox.config(font= 'arial 12', listvariable=var)
 
 
 def cursor_change():
     canva1.config(cursor="dot")
     
 def Nouveau():
+    entreeE1.delete(0,"end")
     f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()         
-    entreeT.insert(0,texte)
+    entreeE1.insert(0,texte)
+    get_text()
 
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
 
 def temp_textT(e):
-   entreeT.delete(0,"end")
+   entreeE1.delete(0,"end")
 
+def temp_textT2(e):
+    entreeE2.delete(0, "end")
 ########
 # Main #
-root = ttkb.Window(themename="superhero")
+root = ttkb.Window(themename="superhero", title=NAME)
 root.geometry(f"{WIDTH}x{HEIGHT}")
 root.columnconfigure(1, weight=1)
 root.rowconfigure(1, weight=1)
@@ -80,57 +91,79 @@ menubar.add_cascade(label="Aide", menu=menu3)
 
 root.config(menu=menubar)
 
+#NOTEBOOK#########
+##################
+notebookP = ttkb.Notebook(root)
+notebookP.pack(pady=10, expand=True, fill="both")
 
 #FRAME#########
 ###############
-#labeledframe1 = ttkb.LabelFrame(root, text="Canva", bootstyle="info"  )
-#labeledframe1.grid(row=1, column=0, columnspan=3)
-#labeledframe1.update()
+labeledframe1 = ttkb.LabelFrame(notebookP, text="General", bootstyle="info"  )
+labeledframe1.pack(fill="both", expand=True, padx=10, pady=10)
+labeledframe1.update()
 
-#labeledframe2 = ttkb.LabelFrame(root, text = "Prop", bootstyle='info')
-#labeledframe2.grid(row=1, column=3, columnspan=1, padx=10, pady=10)
-#labeledframe2.update()
+labeledframe2 = ttkb.LabelFrame(notebookP, text = "Encode/decode", bootstyle='info')
+labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
+labeledframe2.update()
 
-#LABEL#########
-###############
+labeledframe1.columnconfigure(1, weight=1)
+labeledframe1.rowconfigure(1, weight=1)
 
+labeledframe2.columnconfigure(1, weight=1)
+labeledframe2.rowconfigure(1, weight=1)
+
+notebookP.add(labeledframe1, text="General")
+notebookP.add(labeledframe2, text="Encode/decode")
 
 
 #ENTREE#########
 ###############
 valueT = "Ecrire/copier votre texte ici"
-entreeT = ttkb.Entry(root, justify="left", width=100, font=("Arial 13") )
-entreeT.insert(0, valueT)
-entreeT.bind("<FocusIn>", temp_textT)
-entreeT.grid(row=0, column=1, columnspan=2, padx=10, pady=10, sticky="ne")
+entreeE1 = ttkb.Entry(labeledframe1, justify="left", width=120, font=("Arial 13") )
+entreeE1.insert(0, valueT)
+entreeE1.bind("<FocusIn>", temp_textT)
+entreeE1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
+
+entreeE2 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
+entreeE2.insert(0, valueT)
+entreeE2.bind("<FocusIn>", temp_textT2)
+entreeE2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
 
 #BOUTONS#######
 ###############
-button = ttkb.Button(root, text="Traiter le texte", command=get_text, width=40, bootstyle="primary")
-button.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+buttonTraiter = ttkb.Button(labeledframe1, text="Traiter le texte", command=get_text, width=40, bootstyle="primary")
+buttonTraiter.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+
+buttonEncode = ttkb.Button(labeledframe2, text="Encoder votre texte", width=40)
+buttonEncode.grid(row=0, column=0, padx=10, pady=10)
+
+buttonDecode = ttkb.Button(labeledframe2, text="Décoder votre texte", width=40)
+buttonDecode.grid(row=0, column=2, padx=10, pady=10)
 
 
 #CANVAS########
 ###############
-canva1 = ttkb.Canvas(root,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,1200,1000))
+canva1 = ttkb.Canvas(labeledframe1,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000))
 canva1.bind("<Enter>", cursor_change())
-canva1.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
-canva2 = ttkb.Canvas(root, bg="grey", borderwidth=10, autostyle=FALSE)
-canva2.bind("<Enter>", cursor_change())
-canva2.grid(row=1, column=3, columnspan=2, padx=10, pady=10, sticky="nsew")
+scrollVERT = ttkb.Scrollbar(labeledframe1, orient="vertical", bootstyle="primary")
+scrollVERT.grid(row=1, column=3, sticky="nse", pady=10)
 
-
-scrollVERT = ttkb.Scrollbar(root, orient="vertical")
-scrollVERT.grid(row=1, column=2, sticky="nse")
-
-scrollHORI = ttkb.Scrollbar(root, orient="horizontal")
-scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse")
+scrollHORI = ttkb.Scrollbar(labeledframe1, orient="horizontal", bootstyle="primary")
+scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse", padx=10)
 
 scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
+
+
+#LISTBOX#######
+###############
+listbox = tk.Listbox(labeledframe1, bg="grey", selectmode=tk.SINGLE)
+listbox.grid(row=1, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
+
 
 #PACK##########
 ###############
