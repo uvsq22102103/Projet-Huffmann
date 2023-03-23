@@ -1,4 +1,5 @@
 from tkinter import Canvas
+from math import log2
 ##############################################################################################
 
 class Sommet():
@@ -19,7 +20,7 @@ class ArbreB():
     """Arbre binaire composé de Sommets/Noeuds"""
     def __init__(self, sommet:Sommet):
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
-        self.chr_freq = None
+        self.chr_freq = [(sommet.value,sommet.etiquette)]
 
     def build_from_freq(chr_freq:list[tuple]):
         liste_arbres = [ArbreB(Sommet(e,v)) for v,e in chr_freq]
@@ -27,7 +28,7 @@ class ArbreB():
             liste_arbres.sort(key=lambda x: x.content["r"].etiquette)
             liste_arbres.append(liste_arbres.pop(0)+liste_arbres.pop(0))
         arborescence = liste_arbres[0]
-        arborescence.set_chr_freq(chr_freq)
+        #arborescence.chr_freq = chr_freq
         return arborescence
 
     def fusion(self,abr):
@@ -37,6 +38,8 @@ class ArbreB():
         fd = abr.content.copy()
         self.content = {"r" : Sommet(round(fg["r"].etiquette + fd["r"].etiquette,2)),
                         "fg" : fg, "fd" : fd}
+        for i in abr.chr_freq:
+            self.chr_freq.append(i)
         del abr
         return self
 
@@ -54,11 +57,26 @@ class ArbreB():
                 ArbreB.show(self["fd"],_n)
                 ArbreB.show(self["fg"],_n)
     
-    def draw(self, canvas:Canvas, offset=int):
+    def draw(self, canvas:Canvas, offset=None, __current=None):
         if type(self) == ArbreB:
-            ArbreB.draw(self.content, canvas, offset)
-        else:
-            pass
+            if offset == None:
+                size = self.__get_size()
+                __current = canvas.winfo_reqheight(), 0
+                offset = (__current[0]/size,canvas.winfo_reqwidth()/size) 
+            ArbreB.draw(self.content, canvas, offset, __current)
+        elif type(self) == dict:
+            print(__current)
+            if self["r"].value == None: # if Sommet non feuille alors continuer
+                canvas.create_oval(__current[0]-5,__current[1]-5,__current[0]+5,__current[1]+5,fill="white")
+                loc_fg = (__current[0]-offset[0],__current[1]+offset[1]) #pas fini
+                loc_fd = (__current[0]+offset[0],__current[1]+offset[1])
+                offset = (offset[0]/2, +offset[1]/2)
+                ArbreB.draw(self["fg"], canvas, offset,loc_fg)
+                ArbreB.draw(self["fd"], canvas, offset,loc_fd)
+            else :
+                canvas.create_oval(__current[0]-5,__current[1]-5,__current[0]+5,__current[1]+5, fill="red")
+
+                
     
     def search(self,elem:str):
         """Recherche un element ds un l'arbre et renvoi son équivalent binaire 
@@ -84,16 +102,13 @@ class ArbreB():
     
     def get_encode(self):
         """Retourne un dictionnaire de conversion"""
-        if self.chr_freq != None:
-            code = {}
-            for (chr,_) in self.chr_freq:
-                code[chr] = self.search(chr)
-            return code
-        else:
-            print("set_chr_freq before please")
+        code = {}
+        for (chr,_) in self.chr_freq:
+            code[chr] = self.search(chr)
+        return code
     
-    def set_chr_freq(self, chr_freq:list[tuple]):
-        self.chr_freq = chr_freq
+    def __get_size(self):
+        return log2(len(self.chr_freq))
 
 
 ##############################################################################################

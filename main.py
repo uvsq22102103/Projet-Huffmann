@@ -17,11 +17,13 @@ with open(training_file) as f:
 
 chr_freq = proportions(texte)
 arborescence = ArbreB.build_from_freq(chr_freq)
+arborescence.show()
+
 # END #
 # GUI RECURCIVE TEST #
-HEIGHT, WIDTH = 600, 600
+HEIGHT, WIDTH = 1000, 1000
 root = tk.Tk()
 canvas = tk.Canvas(root, height=HEIGHT, width= WIDTH, bg= "black")
-arborescence.build_from_freq()
+arborescence.draw(canvas)
 canvas.grid()
 root.mainloop()
