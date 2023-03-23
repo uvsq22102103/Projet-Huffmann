@@ -17,7 +17,6 @@ with open(training_file) as f:
 
 chr_freq = proportions(texte)
 arborescence = ArbreB.build_from_freq(chr_freq)
-arborescence.show()
 
 # END #
 # GUI RECURCIVE TEST #

@@ -57,22 +57,27 @@ class ArbreB():
                 ArbreB.show(self["fd"],_n)
                 ArbreB.show(self["fg"],_n)
     
-    def draw(self, canvas:Canvas, offset=None, __current=None):
+    def draw(self, canvas:Canvas,canvas_size:tuple[int,int]=None , offset=None, __current=None):
         if type(self) == ArbreB:
             if offset == None:
                 size = self.__get_size()
-                __current = canvas.winfo_reqheight(), 0
-                offset = (__current[0]/size,canvas.winfo_reqwidth()/size) 
-            ArbreB.draw(self.content, canvas, offset, __current)
+                if canvas_size == None:
+                    __current = canvas.winfo_reqwidth()/2, 30
+                    offset = ((__current[0])*2/size,canvas.winfo_reqheight()/size)
+                else:
+                    __current = canvas_size[0]/2, 10
+                    offset = (canvas_size[0]/size,canvas_size[1]/size)
+            ArbreB.draw(self.content, canvas, None, offset, __current)
         elif type(self) == dict:
-            print(__current)
             if self["r"].value == None: # if Sommet non feuille alors continuer
                 canvas.create_oval(__current[0]-5,__current[1]-5,__current[0]+5,__current[1]+5,fill="white")
-                loc_fg = (__current[0]-offset[0],__current[1]+offset[1]) #pas fini
+                loc_fg = (__current[0]-offset[0],__current[1]+offset[1])
                 loc_fd = (__current[0]+offset[0],__current[1]+offset[1])
-                offset = (offset[0]/2, +offset[1]/2)
-                ArbreB.draw(self["fg"], canvas, offset,loc_fg)
-                ArbreB.draw(self["fd"], canvas, offset,loc_fd)
+                canvas.create_line(__current[0],__current[1],loc_fg[0],loc_fg[1],fill="black")
+                canvas.create_line(__current[0],__current[1],loc_fd[0],loc_fd[1],fill="black")
+                offset = (offset[0]/2, +offset[1]/1.3) # cette ligne peut-être amenée a changer
+                ArbreB.draw(self["fg"], canvas, None, offset,loc_fg)
+                ArbreB.draw(self["fd"], canvas,None, offset,loc_fd)
             else :
                 canvas.create_oval(__current[0]-5,__current[1]-5,__current[0]+5,__current[1]+5, fill="red")
 

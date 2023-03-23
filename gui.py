@@ -45,8 +45,8 @@ def get_text():
     #hauteurABR = log2(len(arbo.chr_freq))
     #offset = entreeE1.delete(0,"end")
     #canva1.configure(scrollregion=)
-    #arbo.draw(canva1, offset)
-    canva1.create_oval(20,20,100,100)
+    canvas_size = 2200, 2200
+    arbo.draw(canva1, canvas_size)
     #Ecriture proportions
     prop = prop_of_abr(arbo)
     var = Variable(value=prop)
@@ -131,8 +131,8 @@ entreeE2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
 #BOUTONS#######
 ###############
-buttonTraiter = ttkb.Button(labeledframe1, text="Traiter le texte", command=get_text, width=40, bootstyle="primary")
-buttonTraiter.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre", command=get_text, width=40, bootstyle="primary")
+buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 buttonEncode = ttkb.Button(labeledframe2, text="Encoder votre texte", width=40)
 buttonEncode.grid(row=0, column=0, padx=10, pady=10)
