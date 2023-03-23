@@ -41,12 +41,25 @@ def get_text():
     listbox.delete(0, "end")
     texte = entreeE1.get()
     arbo = crea_abr(texte)
-    #Offset + Dessin arbre
-    #hauteurABR = log2(len(arbo.chr_freq))
-    #offset = entreeE1.delete(0,"end")
-    #canva1.configure(scrollregion=)
-    canvas_size = 2200, 2200
-    arbo.draw(canva1, canvas_size)
+    # Offset + Dessin arbre #
+
+    # HAUTEUR #
+    profondeur = arbo.get_profondeur()
+    offset_h = 50
+    h_canvas = offset_h * profondeur + 60
+
+    # LARGEUR #
+    largeur = arbo.get_largeur()
+    offset_l = largeur * 60
+    l_canvas = int(somme_offsets(offset_l, largeur))*2 + 40
+    
+    arbo.draw(canva1, (l_canvas, h_canvas),(offset_l, offset_h))
+    #offset = entreeE1.delete(0,"end") by Cyriac
+    canva1.configure(scrollregion=(0,0,l_canvas,h_canvas))
+
+    #canvas_size = 2200, 2200
+    #arbo.draw(canva1, canvas_size)
+    
     #Ecriture proportions
     prop = prop_of_abr(arbo)
     var = Variable(value=prop)

@@ -52,3 +52,6 @@ def get_texte_from_file(path:str):
     with open(path) as f:
         texte = "".join(f.readlines()).lower()
     return texte
+
+def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
+    return offset + somme_offsets(offset/k, hauteurABR-1) if hauteurABR > 1 else offset

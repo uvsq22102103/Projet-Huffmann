@@ -18,9 +18,11 @@ class Sommet():
 
 class ArbreB():
     """Arbre binaire composé de Sommets/Noeuds"""
+
     def __init__(self, sommet:Sommet):
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
         self.chr_freq = [(sommet.value,sommet.etiquette)]
+
 
     def build_from_freq(chr_freq:list[tuple]):
         liste_arbres = [ArbreB(Sommet(e,v)) for v,e in chr_freq]
@@ -30,6 +32,7 @@ class ArbreB():
         arborescence = liste_arbres[0]
         #arborescence.chr_freq = chr_freq
         return arborescence
+
 
     def fusion(self,abr):
         """Fusionne deux arbres en un puis crée une racine contenant un sommet
@@ -43,9 +46,11 @@ class ArbreB():
         del abr
         return self
 
+
     def __add__(self,ArbreB):
         return self.fusion(ArbreB)
     
+
     def show(self,_n=None):
         """Affiche le contenu de l'arbre dans le terminal"""
         if type(self) == ArbreB:
@@ -56,33 +61,26 @@ class ArbreB():
             if not self["r"].value != None:
                 ArbreB.show(self["fd"],_n)
                 ArbreB.show(self["fg"],_n)
-    
-    def draw(self, canvas:Canvas,canvas_size:tuple[int,int]=None , offset=None, __current=None):
+
+
+    def draw(self, canvas:Canvas, canvas_size:tuple[int,int], offset:tuple[int,int], node_size:int=5, __current=None):
         if type(self) == ArbreB:
-            if offset == None:
-                size = self.__get_size()
-                if canvas_size == None:
-                    __current = canvas.winfo_reqwidth()/2, 30
-                    offset = ((__current[0])*2/size,canvas.winfo_reqheight()/size)
-                else:
-                    __current = canvas_size[0]/2, 10
-                    offset = (canvas_size[0]/size,canvas_size[1]/size)
-            ArbreB.draw(self.content, canvas, None, offset, __current)
-        elif type(self) == dict:
-            if self["r"].value == None: # if Sommet non feuille alors continuer
-                canvas.create_oval(__current[0]-5,__current[1]-5,__current[0]+5,__current[1]+5,fill="white")
+            __current = (canvas_size[0]/2, 30)
+            ArbreB.draw(self.content, canvas, canvas_size, offset, node_size, __current)
+        else:
+            if self["r"].value == None: #noeud non feuille
+                canvas.create_oval(__current[0]-node_size,__current[1]-node_size,__current[0]+node_size,__current[1]+node_size,fill="white")
                 loc_fg = (__current[0]-offset[0],__current[1]+offset[1])
                 loc_fd = (__current[0]+offset[0],__current[1]+offset[1])
                 canvas.create_line(__current[0],__current[1],loc_fg[0],loc_fg[1],fill="black")
                 canvas.create_line(__current[0],__current[1],loc_fd[0],loc_fd[1],fill="black")
-                offset = (offset[0]/2, +offset[1]/1.3) # cette ligne peut-être amenée a changer
-                ArbreB.draw(self["fg"], canvas, None, offset,loc_fg)
-                ArbreB.draw(self["fd"], canvas,None, offset,loc_fd)
-            else :
-                canvas.create_oval(__current[0]-5,__current[1]-5,__current[0]+5,__current[1]+5, fill="red")
+                offset = (offset[0]/2, +offset[1])
+                ArbreB.draw(self["fg"], canvas, canvas_size, offset, node_size, loc_fg)
+                ArbreB.draw(self["fd"], canvas, canvas_size, offset, node_size, loc_fd)
+            else: # feuille
+                canvas.create_oval(__current[0]-node_size,__current[1]-node_size,__current[0]+node_size,__current[1]+node_size, fill="red")
 
-                
-    
+
     def search(self,elem:str):
         """Recherche un element ds un l'arbre et renvoi son équivalent binaire 
         selon le grand Oufman"""
@@ -104,7 +102,8 @@ class ArbreB():
                 return True
             else:
                 return False
-    
+
+
     def get_encode(self):
         """Retourne un dictionnaire de conversion"""
         code = {}
@@ -112,8 +111,36 @@ class ArbreB():
             code[chr] = self.search(chr)
         return code
     
-    def __get_size(self):
-        return log2(len(self.chr_freq))
+
+    def get_profondeur(self, __depth:int=0):
+        if type(self) == ArbreB:
+            return ArbreB.get_profondeur(self.content)
+        elif type(self) == dict:
+            if self["r"].value == None: # if Sommet non feuille alors continuer
+                fg = ArbreB.get_profondeur(self["fg"], __depth + 1)
+                fd = ArbreB.get_profondeur(self["fd"], __depth + 1)
+                return fd if fd > fg else fg
+            else: # feuille
+                return __depth
+    
+    
+    def get_largeur(self, __target:bool = None, __depth:int = 0):
+        if type(self) == ArbreB:
+            return ArbreB.get_largeur(self.content)
+        elif type(self) == dict:
+            if __target == None:
+                fg = ArbreB.get_largeur(self["fg"], 0, __depth + 1)
+                fd = ArbreB.get_largeur(self["fd"], 1, __depth + 1)
+                return fg + fd
+            elif self["r"].value == None: # if Sommet non feuille alors continuer
+                if __target == 0: #gauche
+                    return ArbreB.get_largeur(self["fg"], __target, __depth + 1)
+                elif __target == 1: #droite
+                    return ArbreB.get_largeur(self["fd"], __target, __depth + 1)
+            else: #feuille
+                return __depth
+
+            
 
 
 ##############################################################################################

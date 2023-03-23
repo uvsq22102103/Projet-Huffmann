@@ -17,12 +17,27 @@ with open(training_file) as f:
 
 chr_freq = proportions(texte)
 arborescence = ArbreB.build_from_freq(chr_freq)
+arborescence.show()
 
-# END #
-# GUI RECURCIVE TEST #
-HEIGHT, WIDTH = 1000, 1000
+# HAUTEUR #
+profondeur = arborescence.get_profondeur()
+offset_h = 50
+h_canvas = offset_h * profondeur + 60
+
+print(profondeur, offset_h, h_canvas)
+
+# LARGEUR #
+largeur = arborescence.get_largeur()
+offset_l = largeur * 60
+l_canvas = int(somme_offsets(offset_l, largeur))*2 + 40
+
+print(largeur, offset_l, l_canvas)
+
+# TKINTER INTERFACE #
+
+HEIGHT, WIDTH = h_canvas, l_canvas
 root = tk.Tk()
-canvas = tk.Canvas(root, height=HEIGHT, width= WIDTH, bg= "black")
-arborescence.draw(canvas)
+canvas = tk.Canvas(root, height=HEIGHT, width= WIDTH, bg= "gray")
+arborescence.draw(canvas, (WIDTH, HEIGHT),(offset_l, offset_h))
 canvas.grid()
 root.mainloop()
