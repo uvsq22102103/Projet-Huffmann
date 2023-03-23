@@ -36,27 +36,25 @@ def prop_of_abr(arbre:ArbreB):
         output += f"'{key}'" + ":" + value + "\n"
     return output
 
-def get_text():
+def mainfct():
     canva1.delete("all")
     listbox.delete(0, "end")
-    texte = entreeE1.get()
+    texte = entreeD1.get()
     arbo = crea_abr(texte)
-    # Offset + Dessin arbre #
 
+
+    # Offset + Dessin arbre #
     # HAUTEUR #
     profondeur = arbo.get_profondeur()
     offset_h = 50
     h_canvas = offset_h * profondeur + 60
-
     # LARGEUR #
     largeur = arbo.get_largeur()
     offset_l = largeur * 60
     l_canvas = int(somme_offsets(offset_l, largeur))*2 + 40
-    
-    arbo.draw(canva1, (l_canvas, h_canvas),(offset_l, offset_h))
-    #offset = entreeE1.delete(0,"end") by Cyriac
     canva1.configure(scrollregion=(0,0,l_canvas,h_canvas))
-
+    arbo.draw(canva1, (l_canvas, h_canvas),(offset_l, offset_h))
+    #offset = entreeD1.delete(0,"end") by Cyriac
     #canvas_size = 2200, 2200
     #arbo.draw(canva1, canvas_size)
     
@@ -69,20 +67,20 @@ def cursor_change():
     canva1.config(cursor="dot")
     
 def Nouveau():
-    entreeE1.delete(0,"end")
+    entreeD1.delete(0,"end")
     f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()         
-    entreeE1.insert(0,texte)
-    get_text()
+    entreeD1.insert(0,texte)
+    mainfct()
 
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
 
 def temp_textT(e):
-   entreeE1.delete(0,"end")
+   entreeD1.delete(0,"end")
 
 def temp_textT2(e):
-    entreeE2.delete(0, "end")
+    entreeD2.delete(0, "end")
 
 
 ########
@@ -135,20 +133,22 @@ notebookP.add(labeledframe2, text="Encode/decode")
 #ENTREE#########
 ###############
 valueT = "Ecrire/copier votre texte ici"
-entreeE1 = ttkb.Entry(labeledframe1, justify="left", width=120, font=("Arial 13") )
-entreeE1.insert(0, valueT)
-entreeE1.bind("<Button-1>", temp_textT)
-entreeE1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
+entreeD1 = ttkb.Entry(labeledframe1, justify="left", width=120, font=("Arial 13") )
+entreeD1.insert(0, valueT)
+entreeD1.bind("<Button-1>", temp_textT)
+entreeD1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
 
-entreeE2 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
-entreeE2.insert(0, valueT)
-entreeE2.bind("<Button-1>", temp_textT2)
-entreeE2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
+entreeD2 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
+entreeD2.insert(0, valueT)
+entreeD2.bind("<Button-1>", temp_textT2)
+entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
+entreeED1 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
+entreeED1.grid(row=1, column=0, columnspan=2)
 
 #BOUTONS#######
 ###############
-buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre", command=get_text, width=40, bootstyle="primary")
+buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre", command=mainfct, width=40, bootstyle="primary")
 buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
 buttonEncode = ttkb.Button(labeledframe2, text="Encoder votre texte", width=40)
