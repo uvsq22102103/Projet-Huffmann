@@ -16,10 +16,10 @@ from classes import ArbreB, Sommet
 HEIGHT = 1080
 WIDTH = 1920
 NAME = "Projet Huffman"
+
+
 #############
 # Fonctions #
-
-
 def crea_abr(text:str):
     characters_proportions = proportions(text)
     arborescence = ArbreB.build_from_freq(characters_proportions)
@@ -52,7 +52,6 @@ def get_text():
     var = Variable(value=prop)
     listbox.config(font= 'arial 12', listvariable=var)
 
-
 def cursor_change():
     canva1.config(cursor="dot")
     
@@ -71,6 +70,8 @@ def temp_textT(e):
 
 def temp_textT2(e):
     entreeE2.delete(0, "end")
+
+
 ########
 # Main #
 root = ttkb.Window(themename="superhero", title=NAME)
@@ -78,6 +79,7 @@ root.geometry(f"{WIDTH}x{HEIGHT}")
 root.columnconfigure(1, weight=1)
 root.rowconfigure(1, weight=1)
 root.update()
+
 
 #MENU##########
 ###############
@@ -90,10 +92,12 @@ menubar.add_cascade(label="Aide", menu=menu3)
 
 root.config(menu=menubar)
 
+
 #NOTEBOOK#########
 ##################
 notebookP = ttkb.Notebook(root)
 notebookP.pack(pady=10, expand=True, fill="both")
+
 
 #FRAME#########
 ###############
@@ -120,12 +124,12 @@ notebookP.add(labeledframe2, text="Encode/decode")
 valueT = "Ecrire/copier votre texte ici"
 entreeE1 = ttkb.Entry(labeledframe1, justify="left", width=120, font=("Arial 13") )
 entreeE1.insert(0, valueT)
-entreeE1.bind("<FocusIn>", temp_textT)
+entreeE1.bind("<Button-1>", temp_textT)
 entreeE1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
 
 entreeE2 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
 entreeE2.insert(0, valueT)
-entreeE2.bind("<FocusIn>", temp_textT2)
+entreeE2.bind("<Button-1>", temp_textT2)
 entreeE2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
 
@@ -164,12 +168,7 @@ listbox = Listbox(labeledframe1, bg="grey", selectmode=SINGLE)
 listbox.grid(row=1, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
-#PACK##########
+#MAINLOOP######
 ###############
-
-
-
-
-
 root.mainloop()
 
