@@ -83,9 +83,9 @@ def temp_textT(e):
 def temp_textT2(e):
     entreeD2.delete(0, "end")
 
-def clipboard(dtxt):
+def clipboard(txt):
     labelED.clipboard_clear()
-    labelED.clipboard_append(dtxt)
+    labelED.clipboard_append(txt)
 
 ########
 # Main #
@@ -135,7 +135,7 @@ notebookP.add(labeledframe2, text="Encode/decode")
 
 #LABEL#########
 ###############
-labelED = ttkb.Label(labeledframe2,font=("Arial 13"), justify="left", width=120, text="", )
+labelED = ttkb.Label(labeledframe2,font=("Arial 13"), justify="left", width=120, wraplength=90, text="HCFXT78YUI,lfzepfkzeopfzkeozekpezfzeoffkopepOPÏPOUHIGHUYCFVGHIOJKOPJIUVUGFYCTXDESDRFTYGUHIJOKP", )
 labelED.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
 
