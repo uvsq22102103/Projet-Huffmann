@@ -4,6 +4,7 @@ from tkinter import Menu, FALSE, Variable, Listbox, SINGLE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
+from math import log2
 #from math import log2
 
 ################
@@ -46,11 +47,11 @@ def mainfct():
     # Offset + Dessin arbre #
     # HAUTEUR #
     profondeur = arbo.get_profondeur()
-    offset_h = 50
+    offset_h = 120
     h_canvas = offset_h * profondeur + 60
     # LARGEUR #
     largeur = arbo.get_largeur()
-    offset_l = largeur * 60
+    offset_l = (largeur ** log2(profondeur)) * 10
     l_canvas = int(somme_offsets(offset_l, largeur))*2 + 40
     canva1.configure(scrollregion=(0,0,l_canvas,h_canvas))
     arbo.draw(canva1, (l_canvas, h_canvas),(offset_l, offset_h))
