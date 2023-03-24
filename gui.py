@@ -82,6 +82,9 @@ def temp_textT(e):
 def temp_textT2(e):
     entreeD2.delete(0, "end")
 
+def clipboard(dtxt):
+    labelED.clipboard_clear()
+    labelED.clipboard_append(dtxt)
 
 ########
 # Main #
@@ -129,8 +132,13 @@ labeledframe2.rowconfigure(1, weight=1)
 notebookP.add(labeledframe1, text="General")
 notebookP.add(labeledframe2, text="Encode/decode")
 
+#LABEL#########
+###############
+labelED = ttkb.Label(labeledframe2,font=("Arial 13"), justify="left", width=120, text="", )
+labelED.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
-#ENTREE#########
+
+#ENTREE########
 ###############
 valueT = "Ecrire/copier votre texte ici"
 entreeD1 = ttkb.Entry(labeledframe1, justify="left", width=120, font=("Arial 13") )
@@ -143,8 +151,6 @@ entreeD2.insert(0, valueT)
 entreeD2.bind("<Button-1>", temp_textT2)
 entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
-entreeED1 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
-entreeED1.grid(row=1, column=0, columnspan=2)
 
 #BOUTONS#######
 ###############
