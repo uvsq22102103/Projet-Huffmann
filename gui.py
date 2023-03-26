@@ -1,5 +1,6 @@
 ###################
 # imports externes #
+import tkinter as tk
 from tkinter import Menu, FALSE, Variable, Listbox, SINGLE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
@@ -83,10 +84,6 @@ def temp_textT(e):
 def temp_textT2(e):
     entreeD2.delete(0, "end")
 
-def clipboard(dtxt):
-    labelED.clipboard_clear()
-    labelED.clipboard_append(dtxt)
-
 ########
 # Main #
 root = ttkb.Window(themename="superhero", title=NAME)
@@ -133,10 +130,12 @@ labeledframe2.rowconfigure(1, weight=1)
 notebookP.add(labeledframe1, text="General")
 notebookP.add(labeledframe2, text="Encode/decode")
 
+frameED = ttkb.Frame(labeledframe2)
+frameED.grid(column=0, row=1, columnspan=3)
+
 #LABEL#########
 ###############
-labelED = ttkb.Label(labeledframe2,font=("Arial 13"), justify="left", width=120, text="", )
-labelED.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+
 
 
 #ENTREE########
@@ -151,6 +150,11 @@ entreeD2 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13"
 entreeD2.insert(0, valueT)
 entreeD2.bind("<Button-1>", temp_textT2)
 entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
+
+entreeED = tk.Entry(frameED, font=("Arial 13"), justify="left", width=120, autostyle=FALSE)
+entreeED.insert(0, "This is a test")
+entreeED.config(state="readonly")
+entreeED.pack(anchor="center", fill="both")
 
 
 #BOUTONS#######
