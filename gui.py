@@ -66,10 +66,8 @@ def mainfct():
     listbox.config(font= 'arial 12', listvariable=var)
 
 def encode(txt):
-        abr = crea_abr(txt)
-        dic = abr.get_encode()
         entreeED.config(state="normal")
-        entreeED.config(textvariable= dic)
+        entreeED.config(textvariable= txt)
         entreeED.config(state="readonly")
 
 
