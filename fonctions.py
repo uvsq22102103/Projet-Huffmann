@@ -25,17 +25,33 @@ def proportions(texte:str,keep_maj = False):
     return sorted(proportion.items(), key= lambda item: item[1])
 
 
-def translate(texte:str|list[str], conversion:dict, reverse:bool=False):
+def encoding(texte:str, conversion:dict):
     """Traduit un texte selon la conversion, l'opération inverse est possible"""
-    output = []
-    if reverse:
+    output = ""
+    try :
         for i in texte:
-            output.append(get_key_from_value(conversion,i))
-        output = "".join(output)
-    else:
-        for i in texte:
-            output.append(conversion[i])
-    return output
+            output += conversion[i]
+        return output
+    except :
+        raise ValueError
+
+def decoding(texte:str, conversion:dict):
+    conversion_reversed = {}
+    for (key, value) in conversion.items():
+        conversion_reversed[value] = key
+    output = ""
+    i, j = 0, 1
+    keys = conversion_reversed.keys()
+    try :
+        while i < len(texte):
+            while texte[i:j] not in keys:
+                j += 1
+            output += conversion_reversed[texte[i:j]]
+            i = j
+            j = i+1
+        return output
+    except : 
+        raise ValueError
 
 
 def get_key_from_value(d:dict, val:str):

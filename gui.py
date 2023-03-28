@@ -28,7 +28,7 @@ def crea_abr(text:str):
     return arborescence
 
 def prop_of_abr(arbre:ArbreB):
-    dico_conv = arbre.get_encode()
+    dico_conv = arbre.get_encode_dict()
     output = str("")
     if " " in dico_conv:
         dico_conv["espace"] = dico_conv[" "]

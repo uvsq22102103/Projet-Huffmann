@@ -18,11 +18,13 @@ class Sommet():
 
 class ArbreB():
     """Arbre binaire composé de Sommets/Noeuds"""
+    
+    liste_erreurs = ['"{}" est déjà présent dans ArbreB']
 
     def __init__(self, sommet:Sommet):
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
         self.chr_freq = [(sommet.value,sommet.etiquette)]
-
+    
 
     def build_from_freq(chr_freq:list[tuple]):
         liste_arbres = [ArbreB(Sommet(e,v)) for v,e in chr_freq]
@@ -104,7 +106,7 @@ class ArbreB():
                 return False
 
 
-    def get_encode(self):
+    def get_encode_dict(self):
         """Retourne un dictionnaire de conversion"""
         code = {}
         for (chr,_) in self.chr_freq:
@@ -141,6 +143,36 @@ class ArbreB():
                 return __depth
 
             
+    def supp_chr(self, charactere:str):
+        new_chr_freq = []
+        for (chr, freq) in self.chr_freq:
+            if chr != charactere:
+                new_chr_freq.append((chr, freq))
+        return ArbreB.build_from_freq(new_chr_freq)
+    
+    
+    def __isub__(self, charactere:str):
+        return self.supp_chr(charactere)
+    
+
+    def add_sommet(self, sommet:Sommet):
+        """chr est un tuple (chr, freq), freq correspond au poids que chr aura dans l'abr"""
+        for (chr, freq) in self.chr_freq:
+            if chr == sommet.value:
+                raise ValueError(ArbreB.liste_erreurs[0].format(chr))
+        self.chr_freq.append((sommet.value, sommet.etiquette))
+        return ArbreB.build_from_freq(self.chr_freq)
+    
+    
+    def __iadd__(self, sommet: Sommet):
+        return self.add_sommet(sommet)
+    
+
+    def __str__(self) -> str:
+        output = "\n"
+        for (chr, freq) in self.chr_freq:
+            output += f"{chr} : {freq}\n"
+        return output + "\n"
 
 
 ##############################################################################################
