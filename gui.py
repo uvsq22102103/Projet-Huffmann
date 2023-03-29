@@ -27,7 +27,7 @@ def crea_abr(text:str):
     arborescence = ArbreB.build_from_freq(characters_proportions)
     return arborescence
 
-def prop_of_abr(arbre:ArbreB):
+def abr_path(arbre:ArbreB):
     dico_conv = arbre.get_encode_dict()
     output = str("")
     if " " in dico_conv:
@@ -43,7 +43,6 @@ def mainfct():
     listbox.delete(0, "end")
     texte = entreeD1.get()
     arbo = crea_abr(texte)
-
 
     # Offset + Dessin arbre #
     # HAUTEUR #
@@ -61,8 +60,8 @@ def mainfct():
     #arbo.draw(canva1, canvas_size)
     
     #Ecriture proportions
-    prop = prop_of_abr(arbo)
-    var = Variable(value=prop)
+    letter_path = abr_path(arbo)
+    var = Variable(value=letter_path)
     listbox.config(font= 'arial 12', listvariable=var)
 
 def encode(txt):
@@ -86,6 +85,14 @@ def Nouveau():
     entreeD1.insert(0,texte)
     mainfct()
 
+def Enregistrer(text):
+    f = asksaveasfile(mode='w', defaultextension=".txt")
+    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+        return
+    text_save = str(text.get(1.0, "end")) # starts from `1.0`, not `0.0`
+    f.write(text_save)
+    f.close() # `()` was missing.
+
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
 
@@ -108,10 +115,11 @@ root.update()
 ###############
 menubar = Menu(root)
 
-menu3 = Menu(root, tearoff=0)
-menu3.add_command(label="Ouvrir", command=Nouveau)
-menu3.add_command(label="A propos", command=Apropos)
-menubar.add_cascade(label="Aide", menu=menu3)
+menu1 = Menu(root, tearoff=0)
+menu1.add_command(label="Ouvrir", command=Nouveau)
+menu1.add_command(label="Enregistrer", command= lambda: Enregistrer())
+menu1.add_command(label="A propos", command=Apropos)
+menubar.add_cascade(label="Aide", menu=menu1)
 
 root.config(menu=menubar)
 
