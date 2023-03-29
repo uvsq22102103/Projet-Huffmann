@@ -117,7 +117,7 @@ menubar = Menu(root)
 
 menu1 = Menu(root, tearoff=0)
 menu1.add_command(label="Ouvrir", command=Nouveau)
-menu1.add_command(label="Enregistrer", command= lambda: Enregistrer())
+menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(listbox.get(0, "end")))
 menu1.add_command(label="A propos", command=Apropos)
 menubar.add_cascade(label="Aide", menu=menu1)
 
@@ -208,6 +208,7 @@ canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 ###############
 listbox = Listbox(labeledframe1, bg="grey", selectmode=SINGLE)
 listbox.grid(row=1, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
+
 
 
 #MAINLOOP######
