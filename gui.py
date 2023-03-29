@@ -66,10 +66,15 @@ def mainfct():
     listbox.config(font= 'arial 12', listvariable=var)
 
 def encode(txt):
-        entreeED.config(state="normal")
-        entreeED.config(textvariable= txt)
-        entreeED.config(state="readonly")
+    abr = crea_abr(txt)
+    dic_conv = abr.get_encode_dict()
+    final_txt = encoding(txt, dic_conv)
+    entreeED.config(state="normal")
+    entreeED.config(textvariable= final_txt)
+    entreeED.config(state="readonly")
 
+def decode(txt):
+    pass
 
 def cursor_change():
     canva1.config(cursor="dot")
@@ -167,7 +172,7 @@ entreeED.pack(anchor="center", fill="both")
 buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre", command=mainfct, width=40, bootstyle="primary")
 buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
-buttonEncode = ttkb.Button(labeledframe2, text="Encoder votre texte", width=40, command=encode(entreeED.cget("text")))
+buttonEncode = ttkb.Button(labeledframe2, text="Encoder votre texte", width=40, command= lambda: encode(entreeED.cget("text")))
 buttonEncode.grid(row=0, column=0, padx=10, pady=10)
 
 buttonDecode = ttkb.Button(labeledframe2, text="Décoder votre texte", width=40)
