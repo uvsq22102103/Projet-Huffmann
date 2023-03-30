@@ -86,12 +86,12 @@ def Nouveau():
     mainfct()
 
 def Enregistrer(text):
-    f = asksaveasfile(mode='w', defaultextension=".txt")
+    f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
-    text_save = str(text.get(1.0, "end")) # starts from `1.0`, not `0.0`
+    text_save = str(text)
     f.write(text_save)
-    f.close() # `()` was missing.
+    f.close()
 
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
@@ -117,7 +117,7 @@ menubar = Menu(root)
 
 menu1 = Menu(root, tearoff=0)
 menu1.add_command(label="Ouvrir", command=Nouveau)
-menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(listbox.get(0, "end")))
+menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get(0, "end")))
 menu1.add_command(label="A propos", command=Apropos)
 menubar.add_cascade(label="Aide", menu=menu1)
 
