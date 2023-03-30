@@ -64,15 +64,13 @@ def mainfct():
     var = Variable(value=letter_path)
     listbox.config(font= 'arial 12', listvariable=var)
 
-def encode(txt):
+def cryptage(txt):
     abr = crea_abr(txt)
     dic_conv = abr.get_encode_dict()
     final_txt = encoding(txt, dic_conv)
-    entreeED.config(state="normal")
-    entreeED.config(textvariable= final_txt)
-    entreeED.config(state="readonly")
+    entreeED.insert(0, final_txt)
 
-def decode(txt):
+def decryptage(txt):
     pass
 
 def cursor_change():
@@ -117,7 +115,7 @@ menubar = Menu(root)
 
 menu1 = Menu(root, tearoff=0)
 menu1.add_command(label="Ouvrir", command=Nouveau)
-menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get(0, "end")))
+menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get()))
 menu1.add_command(label="A propos", command=Apropos)
 menubar.add_cascade(label="Aide", menu=menu1)
 
@@ -136,7 +134,7 @@ labeledframe1 = ttkb.LabelFrame(notebookP, text="General", bootstyle="info"  )
 labeledframe1.pack(fill="both", expand=True, padx=10, pady=10)
 labeledframe1.update()
 
-labeledframe2 = ttkb.LabelFrame(notebookP, text = "Encode/decode", bootstyle='info')
+labeledframe2 = ttkb.LabelFrame(notebookP, text = "cryptage/decode", bootstyle='info')
 labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
 labeledframe2.update()
 
@@ -147,10 +145,8 @@ labeledframe2.columnconfigure(1, weight=1)
 labeledframe2.rowconfigure(1, weight=1)
 
 notebookP.add(labeledframe1, text="General")
-notebookP.add(labeledframe2, text="Encode/decode")
+notebookP.add(labeledframe2, text="cryptage/decode")
 
-frameED = ttkb.Frame(labeledframe2)
-frameED.grid(column=0, row=1, columnspan=3)
 
 #LABEL#########
 ###############
@@ -169,22 +165,17 @@ entreeD2.insert(0, valueT)
 entreeD2.bind("<Button-1>", temp_textT2)
 entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
-entreeED = tk.Entry(frameED, font=("Arial 13"), justify="left", width=120, autostyle=FALSE)
-entreeED.insert(0, "This is a test")
-entreeED.config(state="readonly")
-entreeED.pack(anchor="center", fill="both")
-
 
 #BOUTONS#######
 ###############
 buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre", command=mainfct, width=40, bootstyle="primary")
 buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
-buttonEncode = ttkb.Button(labeledframe2, text="Encoder votre texte", width=40, command= lambda: encode(entreeED.cget("text")))
-buttonEncode.grid(row=0, column=0, padx=10, pady=10)
+buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= lambda: cryptage(entreeD2.cget("text")))
+buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
 
-buttonDecode = ttkb.Button(labeledframe2, text="Décoder votre texte", width=40)
-buttonDecode.grid(row=0, column=2, padx=10, pady=10)
+buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40)
+buttonDecrypte.grid(row=0, column=2, padx=10, pady=10)
 
 
 #CANVAS########
@@ -203,6 +194,9 @@ scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
+canva2 = ttkb.Canvas(labeledframe2,  bg="grey", borderwidth=10 , autostyle=FALSE)
+canva2.grid(row=1, column=0, padx=10, pady=10)
+canva2.create_text(100, 20, text="Ceci est un text test")
 
 #LISTBOX#######
 ###############
