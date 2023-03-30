@@ -1,5 +1,4 @@
-from classes import ArbreB
-
+from classes import ArbreB 
 
 def proportions(texte:str,keep_maj = False):
     """Prend un texte en argument et retourne les
@@ -33,7 +32,7 @@ def encoding(texte:str, conversion:dict):
             output += conversion[i]
         return output
     except :
-        raise ValueError
+        raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
 
 def decoding(texte:str, conversion:dict):
     conversion_reversed = {}
@@ -42,16 +41,15 @@ def decoding(texte:str, conversion:dict):
     output = ""
     i, j = 0, 1
     keys = conversion_reversed.keys()
-    try :
-        while i < len(texte):
-            while texte[i:j] not in keys:
-                j += 1
-            output += conversion_reversed[texte[i:j]]
-            i = j
-            j = i+1
-        return output
-    except : 
-        raise ValueError
+    while i < len(texte):
+        while texte[i:j] not in keys:
+            j += 1
+            if j > len(texte):
+                raise ValueError(f"Vous essayez de decoder un texte avec le mauvais dictionnaire")
+        output += conversion_reversed[texte[i:j]]
+        i = j
+        j = i+1
+    return output
 
 
 def get_key_from_value(d:dict, val:str):

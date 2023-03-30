@@ -1,26 +1,29 @@
 ######################### Importations ##########################
 
 from fonctions import *
-from classes import ArbreB, Sommet
-import tkinter as tk # GUI RECURCIVE TEST
-
-#################################################################
-
-training_file = "test_elie.txt" # fichier "de calibrage" sur lequel l'ABR se base pour sa génération.
-file_to_encode = "test_elie.txt" # fichier a encoder via l'ABR crée sur le training file.
-# possibilité que (training_file = file_to_encode)
+from classes import ArbreB
+#import tkinter as tk
 
 ####################### Programme principal #####################
 
-with open(training_file) as f:
-    texte = "".join(f.readlines())
+with open("test_elie.txt") as f:
+    texte1 = "".join(f.readlines())
 
-chr_freq = proportions(texte, True)
-arborescence = ArbreB.build_from_freq(chr_freq)
+with open("Romeo et Juliette.txt") as f:
+    texte2 = "".join(f.readlines())
 
-print(arborescence)
-arborescence -= "a"
-print(arborescence)
-arborescence += Sommet(26.5, "a")
-arborescence += Sommet(26.5, "a")
-print(arborescence)
+arbre1 = ArbreB.build_from_freq(proportions(texte1, True))
+
+arbre2 = ArbreB.build_from_freq(proportions(texte2, True))
+
+test = "Ceci est un test de qualité."
+encodage = encoding(test ,arbre2.get_encode_dict())
+print(f"Encodage de '{test}' via arbre2 : {encodage}")
+try:
+    print(decoding(encodage,arbre1.get_encode_dict()))
+except:
+    print("Erreur pour decodage via arbre1")
+try:
+    print(decoding(encodage,arbre2.get_encode_dict()))
+except:
+    print("Erreur pour decodage via arbre2")
