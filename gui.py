@@ -68,7 +68,8 @@ def cryptage(txt):
     abr = crea_abr(txt)
     dic_conv = abr.get_encode_dict()
     final_txt = encoding(txt, dic_conv)
-    entreeED.insert(0, final_txt)
+    canva2.delete("all")
+    canva2.create_text(100, 20, text=final_txt)
 
 def decryptage(txt):
     pass
@@ -195,7 +196,7 @@ scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
 canva2 = ttkb.Canvas(labeledframe2,  bg="grey", borderwidth=10 , autostyle=FALSE)
-canva2.grid(row=1, column=0, padx=10, pady=10)
+canva2.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
 canva2.create_text(100, 20, text="Ceci est un text test")
 
 #LISTBOX#######
