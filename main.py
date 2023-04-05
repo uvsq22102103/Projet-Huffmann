@@ -16,7 +16,7 @@ arbre1 = ArbreB.build_from_freq(proportions(texte1, True))
 
 arbre2 = ArbreB.build_from_freq(proportions(texte2, True))
 
-test = "Ceci est un test de qualité."
+test = "Ceci est un test de qualite."
 encodage = encoding(test ,arbre2.get_encode_dict())
 print(f"Encodage de '{test}' via arbre2 : {encodage}")
 try:

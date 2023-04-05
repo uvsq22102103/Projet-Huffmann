@@ -64,12 +64,15 @@ def mainfct():
     var = Variable(value=letter_path)
     listbox.config(font= 'arial 12', listvariable=var)
 
-def cryptage(txt):
-    abr = crea_abr(txt)
-    dic_conv = abr.get_encode_dict()
+def cryptage():
+    labeldc.config(text=" ")
+    f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
+    texte = f.read()
+    txt = entreeD2.get()
+    abr = crea_abr(texte)
+    dic_conv = texte
     final_txt = encoding(txt, dic_conv)
-    canva2.delete("all")
-    canva2.create_text(100, 20, text=final_txt)
+    labeldc.config(text=final_txt)
 
 def decryptage(txt):
     pass
@@ -92,6 +95,13 @@ def Enregistrer(text):
     f.write(text_save)
     f.close()
 
+def CreerTXTConv():
+    f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
+    texte = "".join(f.read())
+    arbre = ArbreB.build_from_freq(proportions(texte, True))
+    encodage = encoding(texte, arbre.get_encode_dict())
+    #pas fini, mieux de faire ça à partir d'unbe entrée ....
+
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
 
@@ -105,8 +115,7 @@ def temp_textT2(e):
 # Main #
 root = ttkb.Window(themename="superhero", title=NAME)
 root.geometry(f"{WIDTH}x{HEIGHT}")
-root.columnconfigure(1, weight=1)
-root.rowconfigure(1, weight=1)
+
 root.update()
 
 
@@ -118,6 +127,7 @@ menu1 = Menu(root, tearoff=0)
 menu1.add_command(label="Ouvrir", command=Nouveau)
 menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get()))
 menu1.add_command(label="A propos", command=Apropos)
+menu1.add_command(label="Créer texte de conversion", command=CreerTXTConv)
 menubar.add_cascade(label="Aide", menu=menu1)
 
 root.config(menu=menubar)
@@ -151,7 +161,8 @@ notebookP.add(labeledframe2, text="cryptage/decode")
 
 #LABEL#########
 ###############
-
+labeldc = ttkb.Label(labeledframe2, font=("Arial 13"), wraplength= 1000, text = "Test text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentgh")
+labeldc.grid(row=1, column=0, columnspan=3)
 
 #ENTREE########
 ###############
@@ -169,15 +180,14 @@ entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
 #BOUTONS#######
 ###############
-buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre", command=mainfct, width=40, bootstyle="primary")
+buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre",  width=40, command=mainfct)
 buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
-buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= lambda: cryptage(entreeD2.cget("text")))
+buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= lambda: cryptage())
 buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
 
 buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40)
 buttonDecrypte.grid(row=0, column=2, padx=10, pady=10)
-
 
 #CANVAS########
 ###############
@@ -195,9 +205,9 @@ scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
-canva2 = ttkb.Canvas(labeledframe2,  bg="grey", borderwidth=10 , autostyle=FALSE)
-canva2.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
-canva2.create_text(100, 20, text="Ceci est un text test")
+#canva2 = ttkb.Canvas(labeledframe2,  bg="grey", borderwidth=10 , autostyle=FALSE)
+#canva2.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
+#canva2.create_text(100, 20, text="Ceci est un text test")
 
 #LISTBOX#######
 ###############
