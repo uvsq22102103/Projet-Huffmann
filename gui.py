@@ -162,7 +162,7 @@ labeledframe2.columnconfigure(1, weight=1)
 labeledframe2.rowconfigure(1, weight=1)
 
 frame2 = ttkb.Frame(labeledframe2)
-frame2.grid(row=2, column=0, columnspan=3)
+frame2.grid(row=1, column=1, columnspan=2, rowspan=2)
 
 notebookP.add(labeledframe1, text="General")
 notebookP.add(labeledframe2, text="Cryptage/Decode")
@@ -170,7 +170,7 @@ notebookP.add(labeledframe2, text="Cryptage/Decode")
 
 #TEXTE#########
 ###############
-T = tk.Text(frame2, height=50, width=300,)
+T = tk.Text(frame2, height=50, width=200)
 T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
 
 S = tk.Scrollbar(frame2)
@@ -214,7 +214,7 @@ buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40
 buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
 
 buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40)
-buttonDecrypte.grid(row=0, column=2, padx=10, pady=10)
+buttonDecrypte.grid(row=2, column=0, padx=10, pady=10)
 
 buttoncreacrypt = ttkb.Button(labeledframe2, text="Créer un dict de cryptage", width=40, command= CreerTXTConv)
 buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
