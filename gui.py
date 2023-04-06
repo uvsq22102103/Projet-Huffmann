@@ -67,9 +67,11 @@ def mainfct():
 def cryptage():
     T.delete(1.0 , tk.END)
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
+    if f is None:
+        return
     texte = f.read()
-    txt = entreeD2.get()
-    abr = crea_abr(texte)
+    txt = entreeD2.get().lower()
+    #abr = crea_abr(texte)
     dic_conv = texte
     final_txt = encoding(txt, dic_conv)
     T.insert(tk.END, final_txt)
@@ -96,9 +98,9 @@ def Enregistrer(text):
     f.close()
 
 def CreerTXTConv():
-    texte = entreeD2.get()
+    texte = entreeD2.get().lower()
     arbre = ArbreB.build_from_freq(proportions(texte, True))
-    encodage = encoding(texte, arbre.get_encode_dict())
+    encodage = arbre.get_encode_dict()
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
@@ -160,7 +162,7 @@ labeledframe2.columnconfigure(1, weight=1)
 labeledframe2.rowconfigure(1, weight=1)
 
 frame2 = ttkb.Frame(labeledframe2)
-frame2.grid(row=1, column=0, columnspan=3)
+frame2.grid(row=2, column=0, columnspan=3)
 
 notebookP.add(labeledframe1, text="General")
 notebookP.add(labeledframe2, text="Cryptage/Decode")
@@ -213,6 +215,9 @@ buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
 
 buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40)
 buttonDecrypte.grid(row=0, column=2, padx=10, pady=10)
+
+buttoncreacrypt = ttkb.Button(labeledframe2, text="Créer un dict de cryptage", width=40, command= CreerTXTConv)
+buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
 
 #CANVAS########
 ###############
