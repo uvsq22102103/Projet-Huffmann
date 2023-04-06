@@ -69,15 +69,18 @@ def cryptage():
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
         return
-    texte = f.read()
-    txt = entreeD2.get().lower()
-    #abr = crea_abr(texte)
-    dic_conv = texte
-    final_txt = encoding(txt, dic_conv)
+    dic_conv = f.read()
+    final_txt = encoding(entreeD2.get().lower(), dic_conv)
     T.insert(tk.END, final_txt)
 
-def decryptage(txt):
-    pass
+def decryptage():
+    T.delete(1.0 , tk.END)
+    f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
+    if f is None:
+        return
+    dic_conv = f.read()
+    final_txt = decoding(entreeD2.get().lower(), dic_conv)
+    T.insert(tk.END, final_txt)
 
 def cursor_change():
     canva1.config(cursor="dot")
@@ -235,9 +238,6 @@ scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
 canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
-#canva2 = ttkb.Canvas(labeledframe2,  bg="grey", borderwidth=10 , autostyle=FALSE)
-#canva2.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
-#canva2.create_text(100, 20, text="Ceci est un text test")
 
 #LISTBOX#######
 ###############
