@@ -65,14 +65,14 @@ def mainfct():
     listbox.config(font= 'arial 12', listvariable=var)
 
 def cryptage():
-    labeldc.config(text=" ")
+    T.delete(1.0 , tk.END)
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()
     txt = entreeD2.get()
     abr = crea_abr(texte)
     dic_conv = texte
     final_txt = encoding(txt, dic_conv)
-    labeldc.config(text=final_txt)
+    T.insert(tk.END, final_txt)
 
 def decryptage(txt):
     pass
@@ -96,11 +96,15 @@ def Enregistrer(text):
     f.close()
 
 def CreerTXTConv():
-    f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
-    texte = "".join(f.read())
+    texte = entreeD2.get()
     arbre = ArbreB.build_from_freq(proportions(texte, True))
     encodage = encoding(texte, arbre.get_encode_dict())
-    #pas fini, mieux de faire ça à partir d'unbe entrée ....
+    f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
+    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+        return
+    text_save = str(encodage)
+    f.write(text_save)
+    f.close()
 
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
@@ -145,7 +149,7 @@ labeledframe1 = ttkb.LabelFrame(notebookP, text="General", bootstyle="info"  )
 labeledframe1.pack(fill="both", expand=True, padx=10, pady=10)
 labeledframe1.update()
 
-labeledframe2 = ttkb.LabelFrame(notebookP, text = "cryptage/decode", bootstyle='info')
+labeledframe2 = ttkb.LabelFrame(notebookP, text = "Cryptage/Decode", bootstyle='info')
 labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
 labeledframe2.update()
 
@@ -155,14 +159,35 @@ labeledframe1.rowconfigure(1, weight=1)
 labeledframe2.columnconfigure(1, weight=1)
 labeledframe2.rowconfigure(1, weight=1)
 
+frame2 = ttkb.Frame(labeledframe2)
+frame2.grid(row=1, column=0, columnspan=3)
+
 notebookP.add(labeledframe1, text="General")
-notebookP.add(labeledframe2, text="cryptage/decode")
+notebookP.add(labeledframe2, text="Cryptage/Decode")
 
 
-#LABEL#########
+#TEXTE#########
 ###############
-labeldc = ttkb.Label(labeledframe2, font=("Arial 13"), wraplength= 1000, text = "Test text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentghTest text un peu long mais pas trop pour le wraplentgh")
-labeldc.grid(row=1, column=0, columnspan=3)
+T = tk.Text(frame2, height=50, width=300,)
+T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
+
+S = tk.Scrollbar(frame2)
+S.pack(side=tk.RIGHT, fill=tk.Y)
+
+S.config(command=T.yview)
+T.config(yscrollcommand=S.set)
+
+quote = """HAMLET: To be, or not to be--that is the question:
+Whether 'tis nobler in the mind to suffer
+The slings and arrows of outrageous fortune
+Or to take arms against a sea of troubles
+And by opposing end them. To die, to sleep--
+No more--and by a sleep to say we end
+The heartache, and the thousand natural shocks
+That flesh is heir to. 'Tis a consummation
+Devoutly to be wished."""
+T.insert(tk.END, quote)
+
 
 #ENTREE########
 ###############
@@ -183,7 +208,7 @@ entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 buttonArbre = ttkb.Button(labeledframe1, text="Créer arbre",  width=40, command=mainfct)
 buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
-buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= lambda: cryptage())
+buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= cryptage)
 buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
 
 buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40)

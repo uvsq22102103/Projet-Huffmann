@@ -6,9 +6,9 @@
 - Mise en place d'un GUI par Cyriac hors projet principal qui pourrait fournir les fonctionnalités
     dont nous avons besoin.
 
-<<< 15 février : Réflexion sur les structures de données a utiliser >>>
+<<< 15 février : Réflexion sur les structures de données à utiliser >>>
 
-- J'ai réussi a developper l'algorithme qui construit un arbre en respectant la consigne,
+- J'ai réussi à developper l'algorithme qui construit un arbre en respectant la consigne,
 - Création d'une méthode .show() permettant d'afficher le contenu d'un arbre (trop fier),
 
 To do list :
