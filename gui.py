@@ -107,10 +107,8 @@ def CreerTXTConv():
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
-    tmp = (letter, path for letter, path in encodage)
-
-    text_save = str()
-    f.write(text_save)
+    for key, value in encodage.items():
+        f.write(f'{key} {value}\n')
     f.close()
 
 def Apropos():
