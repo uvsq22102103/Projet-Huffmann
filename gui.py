@@ -69,7 +69,7 @@ def cryptage():
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
         return
-    dic_conv = f.read()
+    dic_conv = f.readlines()
     final_txt = encoding(entreeD2.get().lower(), dic_conv)
     T.insert(tk.END, final_txt)
 
@@ -107,7 +107,9 @@ def CreerTXTConv():
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
-    text_save = str(encodage)
+    tmp = (letter, path for letter, path in encodage)
+
+    text_save = str()
     f.write(text_save)
     f.close()
 
