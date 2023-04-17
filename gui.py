@@ -23,11 +23,13 @@ NAME = "Projet Huffman"
 #############
 # Fonctions #
 def crea_abr(text:str):
+    '''Permet de créer un objet de la classe Arbre à partir d'un texte'''
     characters_proportions = proportions(text)
     arborescence = ArbreB.build_from_freq(characters_proportions)
     return arborescence
 
 def abr_path(arbre:ArbreB):
+    '''Renvoie les chemins des sommets d'un objet de la classe Arbre'''
     dico_conv = arbre.get_encode_dict()
     output = str("")
     if " " in dico_conv:
@@ -39,6 +41,7 @@ def abr_path(arbre:ArbreB):
     return output
 
 def mainfct():
+    '''Fonction principale de la première page : Dessine l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
     canva1.delete("all")
     listbox.delete(0, "end")
     texte = entreeD1.get()
@@ -65,6 +68,7 @@ def mainfct():
     listbox.config(font= 'arial 12', listvariable=var)
 
 def cryptage():
+    '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
     T.delete(1.0 , tk.END)
     f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
@@ -77,6 +81,7 @@ def cryptage():
     T.insert(tk.END, final_txt)
 
 def decryptage():
+    '''Fonction qui va décrypter un texte à partir d'un dictionnaire de conversion'''
     T.delete(1.0 , tk.END)
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
@@ -87,11 +92,9 @@ def decryptage():
         dico[line[0]] = line[2::]
     final_txt = decoding(entreeD2.get(), dico)
     T.insert(tk.END, final_txt)
-
-def cursor_change():
-    canva1.config(cursor="dot")
     
 def Nouveau():
+    '''Insérer le contenu d'un fichier texte dans l'entrée principale'''
     entreeD1.delete(0,"end")
     f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()         
@@ -99,6 +102,7 @@ def Nouveau():
     mainfct()
 
 def Enregistrer(text):
+    '''Enregistrer le contenu de l'entrée principale dans un fichier texte'''
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
@@ -107,6 +111,7 @@ def Enregistrer(text):
     f.close()
 
 def CreerTXTConv():
+    '''Créer un fichier .txt enregistrant le dictionnaire permettant de décrypter un de crypter un texte'''
     texte = entreeD2.get()
     arbre = ArbreB.build_from_freq(proportions(texte, True))
     encodage = arbre.get_encode_dict()
@@ -178,25 +183,10 @@ notebookP.add(labeledframe2, text="Cryptage/Decode")
 
 #TEXTE#########
 ###############
-T = tk.Text(frame2, height=50, width=200)
+T = ttkb.Text(frame2, height=50, width=200)
 T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
 
-S = tk.Scrollbar(frame2)
-S.pack(side=tk.RIGHT, fill=tk.Y)
 
-S.config(command=T.yview)
-T.config(yscrollcommand=S.set)
-
-quote = """HAMLET: To be, or not to be--that is the question:
-Whether 'tis nobler in the mind to suffer
-The slings and arrows of outrageous fortune
-Or to take arms against a sea of troubles
-And by opposing end them. To die, to sleep--
-No more--and by a sleep to say we end
-The heartache, and the thousand natural shocks
-That flesh is heir to. 'Tis a consummation
-Devoutly to be wished."""
-T.insert(tk.END, quote)
 
 
 #ENTREE########
@@ -229,8 +219,7 @@ buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
 
 #CANVAS########
 ###############
-canva1 = ttkb.Canvas(labeledframe1,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000))
-canva1.bind("<Enter>", cursor_change())
+canva1 = ttkb.Canvas(labeledframe1,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
 canva1.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
 scrollVERT = ttkb.Scrollbar(labeledframe1, orient="vertical", bootstyle="primary")
