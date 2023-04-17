@@ -66,11 +66,14 @@ def mainfct():
 
 def cryptage():
     T.delete(1.0 , tk.END)
-    f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
+    f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
         return
-    dic_conv = f.readlines()
-    final_txt = encoding(entreeD2.get().lower(), dic_conv)
+    dico = {}
+    for line in f.readlines():
+        line = line.replace("\n","")
+        dico[line[0]] = line[2::]
+    final_txt = encoding(entreeD2.get(), dico)
     T.insert(tk.END, final_txt)
 
 def decryptage():
@@ -78,8 +81,11 @@ def decryptage():
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
         return
-    dic_conv = f.read()
-    final_txt = decoding(entreeD2.get().lower(), dic_conv)
+    dico = {}
+    for line in f.readlines():
+        line = line.replace("\n","")
+        dico[line[0]] = line[2::]
+    final_txt = decoding(entreeD2.get(), dico)
     T.insert(tk.END, final_txt)
 
 def cursor_change():
@@ -101,14 +107,14 @@ def Enregistrer(text):
     f.close()
 
 def CreerTXTConv():
-    texte = entreeD2.get().lower()
+    texte = entreeD2.get()
     arbre = ArbreB.build_from_freq(proportions(texte, True))
     encodage = arbre.get_encode_dict()
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
     if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
         return
     for key, value in encodage.items():
-        f.write(f'{key} {value}\n')
+        f.write(f'{key},{value}\n')
     f.close()
 
 def Apropos():
@@ -136,7 +142,6 @@ menu1 = Menu(root, tearoff=0)
 menu1.add_command(label="Ouvrir", command=Nouveau)
 menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get()))
 menu1.add_command(label="A propos", command=Apropos)
-menu1.add_command(label="Créer texte de conversion", command=CreerTXTConv)
 menubar.add_cascade(label="Aide", menu=menu1)
 
 root.config(menu=menubar)
@@ -216,7 +221,7 @@ buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= cryptage)
 buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
 
-buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40)
+buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40, command= decryptage)
 buttonDecrypte.grid(row=2, column=0, padx=10, pady=10)
 
 buttoncreacrypt = ttkb.Button(labeledframe2, text="Créer un dict de cryptage", width=40, command= CreerTXTConv)
