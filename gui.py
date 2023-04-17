@@ -42,9 +42,9 @@ def abr_path(arbre:ArbreB):
 
 def mainfct():
     '''Fonction principale de la première page : Dessine l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
-    canva1.delete("all")
-    listbox.delete(0, "end")
-    texte = entreeD1.get()
+    canva1.delete(tk.ALL)
+    listbox.delete(0, tk.END)
+    texte = entreeD1.get("1.0", tk.END)
     arbo = crea_abr(texte)
 
     # Offset + Dessin arbre #
@@ -77,7 +77,7 @@ def cryptage():
     for line in f.readlines():
         line = line.replace("\n","")
         dico[line[0]] = line[2::]
-    final_txt = encoding(entreeD2.get(), dico)
+    final_txt = encoding(entreeD2.get("1.0", tk.END), dico)
     T.insert(tk.END, final_txt)
 
 def decryptage():
@@ -90,15 +90,15 @@ def decryptage():
     for line in f.readlines():
         line = line.replace("\n","")
         dico[line[0]] = line[2::]
-    final_txt = decoding(entreeD2.get(), dico)
+    final_txt = decoding(entreeD2.get("1.0", tk.END), dico)
     T.insert(tk.END, final_txt)
     
 def Nouveau():
     '''Insérer le contenu d'un fichier texte dans l'entrée principale'''
-    entreeD1.delete(0,"end")
+    entreeD1.delete("1.0", tk.END)
     f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()         
-    entreeD1.insert(0,texte)
+    entreeD1.insert(tk.END, texte)
     mainfct()
 
 def Enregistrer(text):
@@ -112,7 +112,7 @@ def Enregistrer(text):
 
 def CreerTXTConv():
     '''Créer un fichier .txt enregistrant le dictionnaire permettant de décrypter un de crypter un texte'''
-    texte = entreeD2.get()
+    texte = entreeD2.get("1.0", tk.END)
     arbre = ArbreB.build_from_freq(proportions(texte, True))
     encodage = arbre.get_encode_dict()
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
@@ -124,12 +124,6 @@ def CreerTXTConv():
 
 def Apropos():
     showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
-
-def temp_textT(e):
-   entreeD1.delete(0,"end")
-
-def temp_textT2(e):
-    entreeD2.delete(0, "end")
 
 ########
 # Main #
@@ -145,7 +139,7 @@ menubar = Menu(root)
 
 menu1 = Menu(root, tearoff=0)
 menu1.add_command(label="Ouvrir", command=Nouveau)
-menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get()))
+menu1.add_command(label="Enregistrer", command= lambda: Enregistrer(entreeD1.get("1.0", tk.END)))
 menu1.add_command(label="A propos", command=Apropos)
 menubar.add_cascade(label="Aide", menu=menu1)
 
@@ -183,24 +177,18 @@ notebookP.add(labeledframe2, text="Cryptage/Decode")
 
 #TEXTE#########
 ###############
+valueT = "Ecrire/copier votre texte ici"
+entreeD1 = ttkb.Text(labeledframe1, width=120, font=("Arial 13") )
+entreeD1.insert(tk.END, valueT)
+entreeD1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
+
+entreeD2 = ttkb.Text(labeledframe2,  width=120, font=("Arial 13") )
+entreeD2.insert(tk.END, valueT)
+entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
+
 T = ttkb.Text(frame2, height=50, width=200)
 T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
 
-
-
-
-#ENTREE########
-###############
-valueT = "Ecrire/copier votre texte ici"
-entreeD1 = ttkb.Entry(labeledframe1, justify="left", width=120, font=("Arial 13") )
-entreeD1.insert(0, valueT)
-entreeD1.bind("<Button-1>", temp_textT)
-entreeD1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
-
-entreeD2 = ttkb.Entry(labeledframe2, justify="left", width=120, font=("Arial 13") )
-entreeD2.insert(0, valueT)
-entreeD2.bind("<Button-1>", temp_textT2)
-entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
 
 #BOUTONS#######
@@ -236,7 +224,7 @@ canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 #LISTBOX#######
 ###############
 listbox = Listbox(labeledframe1, bg="grey", selectmode=SINGLE)
-listbox.grid(row=1, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
+listbox.grid(row=0, rowspan=2, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
 
 
 
