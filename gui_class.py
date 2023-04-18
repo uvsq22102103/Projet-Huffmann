@@ -36,18 +36,29 @@ class App():
         self.labeledframe1.pack(fill="both", expand=True, padx=10, pady=10)
         self.labeledframe1.update()
 
+        self.labeledframe1.columnconfigure(1, weight=1)
+        self.labeledframe1.rowconfigure(1, weight=1)
+
         self.labeledframe2 = ttkb.LabelFrame(self.notebookP, text = "Cryptage/Decode", bootstyle='info')
         self.labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
         self.labeledframe2.update()
 
-        self.labeledframe1.columnconfigure(1, weight=1)
-        self.labeledframe1.rowconfigure(1, weight=1)
-
         self.labeledframe2.columnconfigure(1, weight=1)
         self.labeledframe2.rowconfigure(1, weight=1)
 
-        frame2 = ttkb.Frame(self.labeledframe2)
-        frame2.grid(row=1, column=1, columnspan=2, rowspan=2)
+        self.frame_not_canva = ttkb.Frame(self.labeledframe1)
+        self.frame_not_canva.pack(fill="both", expand=True, side="top")
+        self.frame_not_canva.update()
+
+        self.frame_not_canva.columnconfigure(1, weight=1)
+        self.frame_not_canva.rowconfigure(1, weight=1)
+
+        self.frame_canva = ttkb.Frame(self.labeledframe1)
+        self.frame_canva.pack(fill="both", expand=True, side="bottom")
+        self.frame_canva.update()
+
+        self.frame_canva.columnconfigure(1, weight=1)
+        self.frame_canva.rowconfigure(1, weight=1)
 
         self.notebookP.add(self.labeledframe1, text="General")
         self.notebookP.add(self.labeledframe2, text="Cryptage/Decode")
@@ -55,41 +66,41 @@ class App():
         #TEXTE#########
         ###############
         self.valueT = "Ecrire/copier votre texte ici"
-        self.entreeD1 = ttkb.Text(self.labeledframe1, width=120, font=("Arial 13") )
+        self.entreeD1 = ttkb.Text(self.frame_not_canva, font=("Arial 13") )
         self.entreeD1.insert(tk.END, self.valueT)
-        self.entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
+        self.entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, padx=10, pady=10, sticky="new")
 
         self.entreeD2 = ttkb.Text(self.labeledframe2,  width=120, font=("Arial 13") )
         self.entreeD2.insert(tk.END, self.valueT)
-        self.entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
+        self.entreeD2.grid(row=0, rowspan = 3, column=1, padx=10, pady=10, sticky="new")
 
-        self.T = ttkb.Text(frame2, height=50, width=200)
-        self.T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
+        self.Sortie = ttkb.Text(self.labeledframe2)
+        self.Sortie.grid(row = 3, column=0, columnspan=2, sticky="sew")
 
         #BOUTONS#######
         ###############
-        self.buttonArbre = ttkb.Button(self.labeledframe1, text="Créer arbre",  width=40, command=self.mainfct)
+        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Créer arbre",  width=40, command=self.mainfct)
         self.buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
         self.buttoncryptage = ttkb.Button(self.labeledframe2, text="Crypter votre texte", width=40, command=self.cryptage)
-        self.buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
+        self.buttoncryptage.grid(row=1, column=0, padx=10, pady=10)
 
         self.buttonDecrypte = ttkb.Button(self.labeledframe2, text="Décrypter votre texte", width=40, command=self.decryptage)
         self.buttonDecrypte.grid(row=2, column=0, padx=10, pady=10)
 
         self.buttoncreacrypt = ttkb.Button(self.labeledframe2, text="Créer un dict de cryptage", width=40, command=self.CreerTXTConv)
-        self.buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
+        self.buttoncreacrypt.grid(row=0, column=0, padx=10, pady=10)
 
         #CANVAS########
         ###############
-        self.canva1 = ttkb.Canvas(self.labeledframe1,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
-        self.canva1.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+        self.canva1 = ttkb.Canvas(self.frame_canva,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
+        self.canva1.grid(row=0, rowspan = 2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
-        self.scrollVERT = ttkb.Scrollbar(self.labeledframe1, orient="vertical", bootstyle="primary")
-        self.scrollVERT.grid(row=4, column=3, sticky="nse", pady=10)
+        self.scrollVERT = ttkb.Scrollbar(self.frame_canva, orient="vertical", bootstyle="primary")
+        self.scrollVERT.grid(row=0, rowspan=2, column=3, sticky="nse")
 
-        self.scrollHORI = ttkb.Scrollbar(self.labeledframe1, orient="horizontal", bootstyle="primary")
-        self.scrollHORI.grid(row=5, column=0, columnspan=2, sticky="wse", padx=10)
+        self.scrollHORI = ttkb.Scrollbar(self.frame_canva, orient="horizontal", bootstyle="primary")
+        self.scrollHORI.grid(row=1, column=0, columnspan=2, sticky="wse")
 
         self.scrollVERT.configure(command=self.canva1.yview)
         self.scrollHORI.configure(command=self.canva1.xview)
@@ -97,8 +108,8 @@ class App():
 
         #LISTBOX#######
         ###############
-        self.listbox = Listbox(self.labeledframe1, bg="grey", selectmode=SINGLE)
-        self.listbox.grid(row=0, rowspan=2, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
+        self.listbox = Listbox(self.frame_not_canva, bg="grey", selectmode=SINGLE)
+        self.listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 
     def mainfct(self):
@@ -131,20 +142,20 @@ class App():
 
     def cryptage(self):
         '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
-        self.T.delete(1.0 , tk.END)
+        self.Sortie.delete(1.0 , tk.END)
         f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
         final_txt = encoding(self.entreeD2.get("1.0", tk.END), get_dico(f))
-        self.T.insert(tk.END, final_txt)
+        self.Sortie.insert(tk.END, final_txt)
 
 
     def decryptage(self):
         '''Fonction qui va décrypter un texte à partir d'un dictionnaire de conversion'''
-        self.T.delete(1.0 , tk.END)
+        self.Sortie.delete(1.0 , tk.END)
         f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
         if f is None:
             return
         final_txt = decoding(self.entreeD2.get("1.0", tk.END).replace("\n",""), get_dico(f))
-        self.T.insert(tk.END, final_txt)
+        self.Sortie.insert(tk.END, final_txt)
         
 
     def Nouveau(self):

@@ -270,6 +270,9 @@ def abr_path(arbre:ArbreB):
         if " " in dico_conv:
             dico_conv["espace"] = dico_conv[" "]
             del dico_conv[" "]
+        if "\n" in dico_conv:
+            dico_conv["linebreak"] = dico_conv["\n"]
+            del dico_conv["\n"]
         sorted_dict = {key: value for key, value in sorted(dico_conv.items())}
         for (key, value) in sorted_dict.items():
             output += f"'{key}'" + ":" + value + "\n"
