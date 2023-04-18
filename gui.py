@@ -182,7 +182,7 @@ notebookP.add(labeledframe2, text="Cryptage/Decode")
 valueT = "Ecrire/copier votre texte ici"
 entreeD1 = ttkb.Text(labeledframe1, width=120, font=("Arial 13") )
 entreeD1.insert(tk.END, valueT)
-entreeD1.grid(row=0, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
+entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
 
 entreeD2 = ttkb.Text(labeledframe2,  width=120, font=("Arial 13") )
 entreeD2.insert(tk.END, valueT)
@@ -210,13 +210,13 @@ buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
 #CANVAS########
 ###############
 canva1 = ttkb.Canvas(labeledframe1,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
-canva1.grid(row=1, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
 scrollVERT = ttkb.Scrollbar(labeledframe1, orient="vertical", bootstyle="primary")
-scrollVERT.grid(row=1, column=3, sticky="nse", pady=10)
+scrollVERT.grid(row=4, column=3, sticky="nse", pady=10)
 
 scrollHORI = ttkb.Scrollbar(labeledframe1, orient="horizontal", bootstyle="primary")
-scrollHORI.grid(row=2, column=0, columnspan=2, sticky="wse", padx=10)
+scrollHORI.grid(row=5, column=0, columnspan=2, sticky="wse", padx=10)
 
 scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
