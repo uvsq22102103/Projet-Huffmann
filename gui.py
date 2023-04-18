@@ -98,9 +98,11 @@ def decryptage():
 def Nouveau():
     '''Insérer le contenu d'un fichier texte dans l'entrée principale'''
     entreeD1.delete("1.0", tk.END)
+    entreeD2.delete("1.0", tk.END)
     f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
     texte = f.read()         
     entreeD1.insert(tk.END, texte)
+    entreeD2.insert(tk.END, texte)
     mainfct()
 
 def Enregistrer(text):

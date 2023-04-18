@@ -22,7 +22,6 @@ class Sommet():
 
 class ArbreB():
     """Arbre binaire composé de Sommets/Noeuds"""
-    
     liste_erreurs = ['"{}" est déjà présent dans ArbreB']
 
     def __init__(self, sommet:Sommet):
