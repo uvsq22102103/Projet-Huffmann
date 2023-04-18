@@ -81,19 +81,19 @@ def get_dico(f)-> dict:
 
 def cryptage():
     '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
-    T.delete(1.0 , tk.END)
+    Sortie.delete(1.0 , tk.END)
     f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
     final_txt = encoding(entreeD2.get("1.0", tk.END), get_dico(f))
-    T.insert(tk.END, final_txt)
+    Sortie.insert(tk.END, final_txt)
 
 def decryptage():
     '''Fonction qui va décrypter un texte à partir d'un dictionnaire de conversion'''
-    T.delete(1.0 , tk.END)
+    Sortie.delete(1.0 , tk.END)
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
         return
     final_txt = decoding(entreeD2.get("1.0", tk.END).replace("\n",""), get_dico(f))
-    T.insert(tk.END, final_txt)
+    Sortie.insert(tk.END, final_txt)
     
 def Nouveau():
     '''Insérer le contenu d'un fichier texte dans l'entrée principale'''
@@ -168,12 +168,14 @@ labeledframe1.rowconfigure(1, weight=1)
 
 frame_not_canva = ttkb.Frame(labeledframe1)
 frame_not_canva.pack(fill="both", expand=True, side="top")
+frame_not_canva.update()
 
 frame_not_canva.columnconfigure(1, weight=1)
 frame_not_canva.rowconfigure(1, weight=1)
 
 frame_canva = ttkb.Frame(labeledframe1)
 frame_canva.pack(fill="both", expand=True, side="bottom")
+frame_canva.update()
 
 frame_canva.columnconfigure(1, weight=1)
 frame_canva.rowconfigure(1, weight=1)
@@ -182,13 +184,8 @@ labeledframe2 = ttkb.LabelFrame(notebookP, text = "Cryptage/Decode", bootstyle='
 labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
 labeledframe2.update()
 
-
-
 labeledframe2.columnconfigure(1, weight=1)
 labeledframe2.rowconfigure(1, weight=1)
-
-frame2 = ttkb.Frame(labeledframe2)
-frame2.grid(row=1, column=1, columnspan=2, rowspan=2)
 
 notebookP.add(labeledframe1, text="General")
 notebookP.add(labeledframe2, text="Cryptage/Decode")
@@ -203,11 +200,10 @@ entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, sticky="new")
 
 entreeD2 = ttkb.Text(labeledframe2,  width=120, font=("Arial 13") )
 entreeD2.insert(tk.END, valueT)
-entreeD2.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
+entreeD2.grid(row = 0, rowspan = 3, column=1, padx=10, pady=10, sticky="new")
 
-T = ttkb.Text(frame2, height=50, width=200)
-T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
-
+Sortie = ttkb.Text(labeledframe2)
+Sortie.grid(row = 3, column=0, columnspan=2, sticky="sew")
 
 
 #BOUTONS#######
@@ -215,14 +211,15 @@ T.pack(side=tk.LEFT, fill=tk.Y, expand=True)
 buttonArbre = ttkb.Button(frame_not_canva, text="Créer arbre",  width=40, command=mainfct)
 buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
 
+buttoncreacrypt = ttkb.Button(labeledframe2, text="Créer un dict de cryptage", width=40, command= CreerTXTConv)
+buttoncreacrypt.grid(row=0, column=0, padx=10, pady=10)
+
 buttoncryptage = ttkb.Button(labeledframe2, text="Crypter votre texte", width=40, command= cryptage)
-buttoncryptage.grid(row=0, column=0, padx=10, pady=10)
+buttoncryptage.grid(row=1, column=0, padx=10, pady=10)
 
 buttonDecrypte = ttkb.Button(labeledframe2, text="Décrypter votre texte", width=40, command= decryptage)
 buttonDecrypte.grid(row=2, column=0, padx=10, pady=10)
 
-buttoncreacrypt = ttkb.Button(labeledframe2, text="Créer un dict de cryptage", width=40, command= CreerTXTConv)
-buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
 
 #CANVAS########
 ###############
