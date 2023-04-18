@@ -1,4 +1,9 @@
-from tkinter import Canvas
+import tkinter as tk
+from tkinter import Menu, FALSE, Variable, Listbox, SINGLE
+import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
+from tkinter.messagebox import *
+from tkinter.filedialog import *
+from math import log2
 ##############################################################################################
 
 class Sommet():
@@ -66,7 +71,7 @@ class ArbreB():
                 ArbreB.show(self["fg"],_n)
 
 
-    def draw(self, canvas:Canvas, canvas_size:tuple[int,int], offset:tuple[int,int], node_size:int=5, __current=None):
+    def draw(self, canvas:tk.Canvas, canvas_size:tuple[int,int], offset:tuple[int,int], node_size:int=5, __current=None):
         if type(self) == ArbreB:
             __current = (canvas_size[0]/2, 30)
             ArbreB.draw(self.content, canvas, canvas_size, offset, node_size, __current)
@@ -207,6 +212,7 @@ def encoding(texte:str, conversion:dict):
     except :
         raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
 
+
 def decoding(texte:str, conversion:dict):
     conversion_reversed = {}
     for (key, value) in conversion.items():
@@ -240,5 +246,32 @@ def get_texte_from_file(path:str):
         texte = "".join(f.readlines()).lower()
     return texte
 
+
 def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
     return offset + somme_offsets(offset/k, hauteurABR-1) if hauteurABR > 1 else offset
+
+
+def get_dico(f)-> dict:
+        if f is None:
+            return
+        dico = {}
+        for line in f.readlines():
+            line = line.replace("\n","")
+            if "linebreak" in line:
+                line = line.replace("linebreak","\n")
+            dico[line[0]] = line[2::]
+        f.close()
+        return dico
+
+
+def abr_path(arbre:ArbreB):
+        '''Renvoie les chemins des sommets d'un objet de la classe Arbre'''
+        dico_conv = arbre.get_encode_dict()
+        output = str("")
+        if " " in dico_conv:
+            dico_conv["espace"] = dico_conv[" "]
+            del dico_conv[" "]
+        sorted_dict = {key: value for key, value in sorted(dico_conv.items())}
+        for (key, value) in sorted_dict.items():
+            output += f"'{key}'" + ":" + value + "\n"
+        return output
