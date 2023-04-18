@@ -32,6 +32,9 @@ def abr_path(arbre:ArbreB):
     if " " in dico_conv:
         dico_conv["espace"] = dico_conv[" "]
         del dico_conv[" "]
+    if "\n" in dico_conv:
+        dico_conv["linebreak"] = dico_conv["\n"]
+        del dico_conv["\n"]
     sorted_dict = {key: value for key, value in sorted(dico_conv.items())}
     for (key, value) in sorted_dict.items():
         output += f"'{key}'" + ":" + value + "\n"
@@ -180,9 +183,9 @@ notebookP.add(labeledframe2, text="Cryptage/Decode")
 #TEXTE#########
 ###############
 valueT = "Ecrire/copier votre texte ici"
-entreeD1 = ttkb.Text(labeledframe1, width=120, font=("Arial 13") )
+entreeD1 = ttkb.Text(labeledframe1, font=("Arial 13") )
 entreeD1.insert(tk.END, valueT)
-entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, padx=10, pady=10, sticky="ne")
+entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, sticky="ne")
 
 entreeD2 = ttkb.Text(labeledframe2,  width=120, font=("Arial 13") )
 entreeD2.insert(tk.END, valueT)
@@ -210,13 +213,13 @@ buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
 #CANVAS########
 ###############
 canva1 = ttkb.Canvas(labeledframe1,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
-canva1.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
 scrollVERT = ttkb.Scrollbar(labeledframe1, orient="vertical", bootstyle="primary")
-scrollVERT.grid(row=4, column=3, sticky="nse", pady=10)
+scrollVERT.grid(row=2, column=3, sticky="nse")
 
 scrollHORI = ttkb.Scrollbar(labeledframe1, orient="horizontal", bootstyle="primary")
-scrollHORI.grid(row=5, column=0, columnspan=2, sticky="wse", padx=10)
+scrollHORI.grid(row=3, column=0, columnspan=2, sticky="wse")
 
 scrollVERT.configure(command=canva1.yview)
 scrollHORI.configure(command=canva1.xview)
@@ -226,7 +229,7 @@ canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 #LISTBOX#######
 ###############
 listbox = Listbox(labeledframe1, bg="grey", selectmode=SINGLE)
-listbox.grid(row=0, rowspan=2, column=4, columnspan=2, padx=10, pady=10, sticky="nsew")
+listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 
 
