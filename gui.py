@@ -163,18 +163,26 @@ labeledframe1 = ttkb.LabelFrame(notebookP, text="General", bootstyle="info"  )
 labeledframe1.pack(fill="both", expand=True, padx=10, pady=10)
 labeledframe1.update()
 
+labeledframe1.columnconfigure(1, weight=1)
+labeledframe1.rowconfigure(1, weight=1)
+
 frame_not_canva = ttkb.Frame(labeledframe1)
 frame_not_canva.pack(fill="both", expand=True, side="top")
 
+frame_not_canva.columnconfigure(1, weight=1)
+frame_not_canva.rowconfigure(1, weight=1)
+
 frame_canva = ttkb.Frame(labeledframe1)
 frame_canva.pack(fill="both", expand=True, side="bottom")
+
+frame_canva.columnconfigure(1, weight=1)
+frame_canva.rowconfigure(1, weight=1)
 
 labeledframe2 = ttkb.LabelFrame(notebookP, text = "Cryptage/Decode", bootstyle='info')
 labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
 labeledframe2.update()
 
-labeledframe1.columnconfigure(1, weight=1)
-labeledframe1.rowconfigure(1, weight=1)
+
 
 labeledframe2.columnconfigure(1, weight=1)
 labeledframe2.rowconfigure(1, weight=1)
@@ -219,10 +227,10 @@ buttoncreacrypt.grid(row=1, column=0, padx=10, pady=10)
 #CANVAS########
 ###############
 canva1 = ttkb.Canvas(frame_canva,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
-canva1.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
+canva1.grid(row=0, rowspan = 2, column=0, columnspan=3, padx=10, sticky="nsew")
 
 scrollVERT = ttkb.Scrollbar(frame_canva, orient="vertical", bootstyle="primary")
-scrollVERT.grid(row=0, column=3, sticky="nse")
+scrollVERT.grid(row=0, rowspan = 2, column=3, sticky="nse")
 
 scrollHORI = ttkb.Scrollbar(frame_canva, orient="horizontal", bootstyle="primary")
 scrollHORI.grid(row=1, column=0, columnspan=2, sticky="wse")
@@ -234,7 +242,7 @@ canva1.configure(yscrollcommand=scrollVERT.set, xscrollcommand=scrollHORI.set)
 
 #LISTBOX#######
 ###############
-listbox = tk.Listbox(labeledframe1, bg="grey", selectmode=SINGLE)
+listbox = tk.Listbox(frame_not_canva, bg="grey", selectmode=SINGLE)
 listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
 
