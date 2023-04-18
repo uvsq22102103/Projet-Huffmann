@@ -1,8 +1,6 @@
 ######################### Importations ##########################
 
-from fonctions import *
-from classes import ArbreB
-#import tkinter as tk
+from toolbox import *
 
 ####################### Programme principal #####################
 

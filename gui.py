@@ -9,7 +9,7 @@ from math import log2
 
 ################
 # imports locaux #
-from classes import *
+from toolbox import *
 
 #################
 # Config fenêtre #
@@ -20,6 +20,7 @@ NAME = "Projet Huffman"
 
 #############
 # Fonctions #
+
 def crea_abr(text:str):
     '''Permet de créer un objet de la classe Arbre à partir d'un texte'''
     return ArbreB.build_from_text(text)
