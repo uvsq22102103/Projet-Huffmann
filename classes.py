@@ -1,5 +1,5 @@
 from tkinter import Canvas
-from math import log2
+from fonctions import *
 ##############################################################################################
 
 class Sommet():
@@ -25,6 +25,8 @@ class ArbreB():
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
         self.chr_freq = [(sommet.value,sommet.etiquette)]
     
+    def build_from_text(text:str, keep_maj:bool):
+        return ArbreB.build_from_freq(proportions(text, keep_maj))
 
     def build_from_freq(chr_freq:list[tuple]):
         liste_arbres = [ArbreB(Sommet(e,v)) for v,e in chr_freq]

@@ -6,12 +6,10 @@ import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
 from math import log2
-#from math import log2
 
 ################
 # imports locaux #
-from fonctions import *
-from classes import ArbreB, Sommet
+from classes import *
 
 #################
 # Config fenêtre #
@@ -24,9 +22,7 @@ NAME = "Projet Huffman"
 # Fonctions #
 def crea_abr(text:str):
     '''Permet de créer un objet de la classe Arbre à partir d'un texte'''
-    characters_proportions = proportions(text)
-    arborescence = ArbreB.build_from_freq(characters_proportions)
-    return arborescence
+    return ArbreB.build_from_text(text)
 
 def abr_path(arbre:ArbreB):
     '''Renvoie les chemins des sommets d'un objet de la classe Arbre'''
@@ -45,7 +41,7 @@ def mainfct():
     canva1.delete(tk.ALL)
     listbox.delete(0, tk.END)
     texte = entreeD1.get("1.0", tk.END)
-    arbo = crea_abr(texte)
+    arbo = ArbreB.build_from_text(texte, True) # mettre un case cochable pour le booléen
 
     # Offset + Dessin arbre #
     # HAUTEUR #
@@ -67,17 +63,23 @@ def mainfct():
     var = Variable(value=letter_path)
     listbox.config(font= 'arial 12', listvariable=var)
 
-def cryptage():
-    '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
-    T.delete(1.0 , tk.END)
-    f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
+def get_dico(f)-> dict:
     if f is None:
         return
     dico = {}
     for line in f.readlines():
         line = line.replace("\n","")
+        if "linebreak" in line:
+            line = line.replace("linebreak","\n")
         dico[line[0]] = line[2::]
-    final_txt = encoding(entreeD2.get("1.0", tk.END), dico)
+    f.close()
+    return dico
+
+def cryptage():
+    '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
+    T.delete(1.0 , tk.END)
+    f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
+    final_txt = encoding(entreeD2.get("1.0", tk.END), get_dico(f))
     T.insert(tk.END, final_txt)
 
 def decryptage():
@@ -86,11 +88,7 @@ def decryptage():
     f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
     if f is None:
         return
-    dico = {}
-    for line in f.readlines():
-        line = line.replace("\n","")
-        dico[line[0]] = line[2::]
-    final_txt = decoding(entreeD2.get("1.0", tk.END), dico)
+    final_txt = decoding(entreeD2.get("1.0", tk.END).replace("\n",""), get_dico(f))
     T.insert(tk.END, final_txt)
     
 def Nouveau():
@@ -104,7 +102,7 @@ def Nouveau():
 def Enregistrer(text):
     '''Enregistrer le contenu de l'entrée principale dans un fichier texte'''
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
-    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+    if f is None:
         return
     text_save = str(text)
     f.write(text_save)
@@ -116,10 +114,13 @@ def CreerTXTConv():
     arbre = ArbreB.build_from_freq(proportions(texte, True))
     encodage = arbre.get_encode_dict()
     f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
-    if f is None: # asksaveasfile return `None` if dialog closed with "cancel".
+    if f is None:
         return
     for key, value in encodage.items():
-        f.write(f'{key},{value}\n')
+        if key == "\n":
+            f.write(f'linebreak,{value}\n')
+        else:
+            f.write(f'{key},{value}\n')
     f.close()
 
 def Apropos():

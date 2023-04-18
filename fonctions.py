@@ -1,4 +1,4 @@
-from classes import ArbreB 
+
 
 def proportions(texte:str,keep_maj = False):
     """Prend un texte en argument et retourne les
