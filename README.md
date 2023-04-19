@@ -20,14 +20,16 @@ Ce projet à été débuté le 12/02/2023 et est dû pour le 21/04/2023 et sera 
 
 Une liste de librairies utilisées lors de ce projet :
 
-* Tkinter
-* Math
-* [Ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap) : Version 1.10.1
+* tkinter
+* math
+* codecs
+* [ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap) : Version 1.10.1
 
 
 ## Installation
 
-A mettre en place !
+Il vous sera nécessaire d'installer la librairie ttkbootstrap :
+* ```python -m pip install ttkbootstrap```
 
 ## Guide
 
