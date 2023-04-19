@@ -7,6 +7,6 @@ WIDTH = 1920
 NAME = "Projet Huffman"
 
 # LANCEMENT GUI #
-root = gc.ttkb.Window(themename="superhero", title=NAME)
+root = gc.ttkb.Window(themename="morph", title=NAME)
 app = gc.App(root, HEIGHT, WIDTH, NAME)
 root.mainloop()

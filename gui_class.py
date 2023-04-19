@@ -17,11 +17,15 @@ class App():
         ###############
         self.menubar = Menu(root)
 
-        self.menu1 = Menu(root, tearoff=0)
-        self.menu1.add_command(label="Ouvrir", command=self.Nouveau)
-        self.menu1.add_command(label="Enregistrer", command= self.Enregistrer)
-        self.menu1.add_command(label="A propos", command=self.Apropos)
-        self.menubar.add_cascade(label="Aide", menu=self.menu1)
+        self.menuFICHIER = Menu(root, tearoff=0)
+        self.menuFICHIER.add_command(label="Ouvrir", command=self.Nouveau)
+        self.menuFICHIER.add_command(label="Enregistrer", command= self.Enregistrer)
+        self.menubar.add_cascade(label="Fichier", menu=self.menuFICHIER)
+
+        self.menuAIDE = Menu(root, tearoff=0)
+        self.menuAIDE.add_command(label="A propos", command=self.Apropos)
+        self.menubar.add_cascade(label="Aide", menu=self.menuAIDE)
+
 
         self.root.config(menu=self.menubar)
 
@@ -32,33 +36,47 @@ class App():
 
         #FRAME#########
         ###############
-        self.labeledframe1 = ttkb.LabelFrame(self.notebookP, text="General", bootstyle="info"  )
+        self.labeledframe1 = ttkb.LabelFrame(self.notebookP, text="", bootstyle="info"  )
         self.labeledframe1.pack(fill="both", expand=True, padx=10, pady=10)
         self.labeledframe1.update()
 
         self.labeledframe1.columnconfigure(1, weight=1)
         self.labeledframe1.rowconfigure(1, weight=1)
 
-        self.labeledframe2 = ttkb.LabelFrame(self.notebookP, text = "Cryptage/Decode", bootstyle='info')
-        self.labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
-        self.labeledframe2.update()
-
-        self.labeledframe2.columnconfigure(1, weight=1)
-        self.labeledframe2.rowconfigure(1, weight=1)
-
         self.frame_not_canva = ttkb.Frame(self.labeledframe1)
-        self.frame_not_canva.pack(fill="both", expand=True, side="top")
+        self.frame_not_canva.place(relx=0, rely=0, relwidth=1, relheight=0.33)
         self.frame_not_canva.update()
 
         self.frame_not_canva.columnconfigure(1, weight=1)
         self.frame_not_canva.rowconfigure(1, weight=1)
 
         self.frame_canva = ttkb.Frame(self.labeledframe1)
-        self.frame_canva.pack(fill="both", expand=True, side="bottom")
+        self.frame_canva.place(relx=0, rely=0.34, relwidth=1, relheight=0.66)
         self.frame_canva.update()
 
         self.frame_canva.columnconfigure(1, weight=1)
         self.frame_canva.rowconfigure(1, weight=1)
+
+        self.labeledframe2 = ttkb.LabelFrame(self.notebookP, text = "", bootstyle='info')
+        self.labeledframe2.pack(fill='both', expand=True, padx=10, pady=10)
+        self.labeledframe2.update()
+
+        self.labeledframe2.columnconfigure(1, weight=1)
+        self.labeledframe2.rowconfigure(1, weight=1)
+
+        self.framecryptENT = ttkb.Frame(self.labeledframe2)
+        self.framecryptENT.place(relx=0, rely=0, relwidth=1, relheight=0.33)
+        self.framecryptENT.update()
+
+        self.framecryptENT.columnconfigure(1, weight=1)
+        self.framecryptENT.rowconfigure(1, weight=1)
+
+        self.framecryptSOR = ttkb.Frame(self.labeledframe2)
+        self.framecryptSOR.place(relx=0, rely=0.34, relwidth=1, relheight=0.66)
+        self.framecryptSOR.update()
+
+        self.framecryptSOR.columnconfigure(1, weight=1)
+        self.framecryptSOR.rowconfigure(1, weight=1)
 
         self.notebookP.add(self.labeledframe1, text="General")
         self.notebookP.add(self.labeledframe2, text="Cryptage/Decode")
@@ -70,30 +88,33 @@ class App():
         self.entreeD1.insert(tk.END, self.valueT)
         self.entreeD1.grid(row=0, rowspan = 2, column=1, columnspan=3, padx=10, pady=10, sticky="new")
 
-        self.entreeD2 = ttkb.Text(self.labeledframe2,  width=120, font=("Arial 13") )
+        self.entreeD2 = ttkb.Text(self.framecryptENT, font=("Arial 13") )
         self.entreeD2.insert(tk.END, self.valueT)
         self.entreeD2.grid(row=0, rowspan = 3, column=1, padx=10, pady=10, sticky="new")
 
-        self.Sortie = ttkb.Text(self.labeledframe2)
-        self.Sortie.grid(row = 3, column=0, columnspan=2, sticky="sew")
+        self.Sortie = ttkb.Text(self.framecryptSOR, font=("Arial 13"))
+        self.Sortie.grid(row = 0, column=0, columnspan = 2, padx=10, pady=10, sticky="sew")
 
         #BOUTONS#######
         ###############
         self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Créer arbre",  width=40, command=self.mainfct)
-        self.buttonArbre.grid(row=0, column=0, padx=10, pady=10, sticky="nw")
+        self.buttonArbre.grid(row=0, column=0, padx=10, sticky="nw")
 
-        self.buttoncryptage = ttkb.Button(self.labeledframe2, text="Crypter votre texte", width=40, command=self.cryptage)
-        self.buttoncryptage.grid(row=1, column=0, padx=10, pady=10)
+        self.buttoncryptage = ttkb.Button(self.framecryptENT, text="Crypter votre texte", width=40, command=self.cryptage)
+        self.buttoncryptage.grid(row=1, column=0, padx=10)
 
-        self.buttonDecrypte = ttkb.Button(self.labeledframe2, text="Décrypter votre texte", width=40, command=self.decryptage)
-        self.buttonDecrypte.grid(row=2, column=0, padx=10, pady=10)
+        self.buttonDecrypte = ttkb.Button(self.framecryptENT, text="Décrypter votre texte", width=40, command=self.decryptage)
+        self.buttonDecrypte.grid(row=2, column=0, padx=10)
 
-        self.buttoncreacrypt = ttkb.Button(self.labeledframe2, text="Créer un dict de cryptage", width=40, command=self.CreerTXTConv)
-        self.buttoncreacrypt.grid(row=0, column=0, padx=10, pady=10)
+        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Créer un dict de cryptage", width=40, command=self.CreerTXTConv)
+        self.buttoncreacrypt.grid(row=0, column=0, padx=10)
+
+        self.buttonlistbox = ttkb.Button(self.frame_not_canva, text = "Ajouter un sommet", width=40,)
+        self.buttonlistbox.grid(row=2, column=0)
 
         #CANVAS########
         ###############
-        self.canva1 = ttkb.Canvas(self.frame_canva,  bg="grey", borderwidth=10, autostyle=FALSE, scrollregion=(0,0,2200,2000), cursor="dot")
+        self.canva1 = ttkb.Canvas(self.frame_canva, borderwidth=10, scrollregion=(0,0,2200,2000), cursor="dot")
         self.canva1.grid(row=0, rowspan = 2, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
         self.scrollVERT = ttkb.Scrollbar(self.frame_canva, orient="vertical", bootstyle="primary")

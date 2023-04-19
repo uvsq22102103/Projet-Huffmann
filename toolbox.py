@@ -89,7 +89,7 @@ class ArbreB():
 
 
     def search(self,elem:str):
-        """Recherche un element ds un l'arbre et renvoi son équivalent binaire 
+        """Recherche un element dans un l'arbre et renvoi son équivalent binaire 
         selon le grand Oufman"""
         if type(self) == ArbreB: # 
             return ArbreB.search(self.content,elem)
