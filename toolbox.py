@@ -5,6 +5,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import *
 from math import log2
 import codecs
+import webbrowser
 ##############################################################################################
 
 class Sommet():

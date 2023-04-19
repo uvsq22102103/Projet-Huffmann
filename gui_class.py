@@ -23,7 +23,7 @@ class App():
         self.menubar.add_cascade(label="Fichier", menu=self.menuFICHIER)
 
         self.menuAIDE = Menu(root, tearoff=0)
-        self.menuAIDE.add_command(label="A propos", command=self.Apropos)
+        self.menuAIDE.add_command(label="Page GitHub", command=self.webgithub)
         self.menubar.add_cascade(label="Aide", menu=self.menuAIDE)
 
 
@@ -219,5 +219,6 @@ class App():
         f.close()
 
 
-    def Apropos(self):
-        showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
+    def webgithub(self):
+        webbrowser.open('https://github.com/uvsq22102103/Projet-Huffmann#guide')
+
