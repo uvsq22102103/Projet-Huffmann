@@ -4,6 +4,7 @@ import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
 from math import log2
+import codecs
 ##############################################################################################
 
 class Sommet():

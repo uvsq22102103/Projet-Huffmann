@@ -44,14 +44,14 @@ class App():
         self.labeledframe1.rowconfigure(1, weight=1)
 
         self.frame_not_canva = ttkb.Frame(self.labeledframe1)
-        self.frame_not_canva.place(relx=0, rely=0, relwidth=1, relheight=0.33)
+        self.frame_not_canva.place(relx=0, rely=0, relwidth=1, relheight=0.40)
         self.frame_not_canva.update()
 
         self.frame_not_canva.columnconfigure(1, weight=1)
         self.frame_not_canva.rowconfigure(1, weight=1)
 
         self.frame_canva = ttkb.Frame(self.labeledframe1)
-        self.frame_canva.place(relx=0, rely=0.34, relwidth=1, relheight=0.66)
+        self.frame_canva.place(relx=0, rely=0.41, relwidth=1, relheight=0.59)
         self.frame_canva.update()
 
         self.frame_canva.columnconfigure(1, weight=1)
@@ -132,6 +132,12 @@ class App():
         self.listbox = Listbox(self.frame_not_canva, bg="grey", selectmode=SINGLE)
         self.listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
+        self.scrollLISTB = ttkb.Scrollbar(self.frame_not_canva, orient="vertical", bootstyle="primary")
+        self.scrollLISTB.grid(row=1, column=0, pady=10, sticky="nse")
+
+        self.scrollLISTB.configure(command=self.listbox.yview)
+        self.listbox.configure(yscrollcommand=self.scrollLISTB.set)
+
 
     def mainfct(self):
         '''Fonction principale de la première page : Dessine l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
@@ -182,10 +188,10 @@ class App():
     def Nouveau(self):
         '''Insérer le contenu d'un fichier texte dans l'entrée principale'''
         self.entreeD1.delete("1.0", tk.END)
-        f = askopenfile(title="Ouvrir", filetypes=[('txt files','.txt'),('all files','.*')])
-        texte = f.read()         
-        self.entreeD1.insert(tk.END, texte)
-        self.mainfct()
+        with codecs.open(askopenfilename(title="Ouvrir"), encoding='utf-8') as f:
+            texte = f.read()         
+            self.entreeD1.insert(tk.END, texte)
+            self.mainfct()
 
 
     def Enregistrer(self):
