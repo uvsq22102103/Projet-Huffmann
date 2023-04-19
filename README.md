@@ -19,9 +19,11 @@ Ce projet à été débuté le 12/02/2023 et est dû pour le 21/04/2023 et sera 
 ## Librairies
 
 Une liste de librairies utilisées lors de ce projet :
-* [Tkinter](https://example.com): Version 12.3 
-* [Ttkbootstrap](https://example.com): Version 2.34
-* [Math](https://example.com): Version 1234
+
+* Tkinter
+* Math
+* [Ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap): Version 1.10.1
+
 
 ## Installation
 
