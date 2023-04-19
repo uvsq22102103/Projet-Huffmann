@@ -26,6 +26,7 @@ Une liste de librairies utilisées lors de ce projet :
 * tkinter
 * math
 * codecs
+* webbrowser
 * [ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap) : Version 1.10.1
 
 
