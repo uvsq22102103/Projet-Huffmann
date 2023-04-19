@@ -22,7 +22,7 @@ Une liste de librairies utilisées lors de ce projet :
 
 * Tkinter
 * Math
-* [Ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap): Version 1.10.1
+* [Ttkbootstrap](https://github.com/israel-dryer/ttkbootstrap) : Version 1.10.1
 
 
 ## Installation
@@ -31,7 +31,7 @@ A mettre en place !
 
 ## Guide
 
-A mettre en place
+A mettre en place !
 
 
 
