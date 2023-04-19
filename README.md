@@ -15,7 +15,7 @@ Ce projet à été débuté le 12/02/2023 et est dû pour le 21/04/2023 et sera 
 
 ### Screenshot
 ![Image canva](https://github.com/uvsq22102103/Projet-Huffmann/blob/main/documentation/Huffman_Homepage.png)
-![Image crypt](
+![Image crypt](https://github.com/uvsq22102103/Projet-Huffmann/blob/main/documentation/screenhuffman2emepage.png)
 
 ## Librairies
 
