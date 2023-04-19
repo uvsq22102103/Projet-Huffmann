@@ -12,14 +12,14 @@ class App():
         self.root = root
         self.root.geometry(f"{WIDTH}x{HEIGHT}")
         self.root.update()
+        self.arbre = None
 
         #MENU##########
         ###############
         self.menubar = Menu(root)
 
         self.menuFICHIER = Menu(root, tearoff=0)
-        self.menuFICHIER.add_command(label="Ouvrir", command=self.Nouveau)
-        self.menuFICHIER.add_command(label="Enregistrer", command= self.Enregistrer)
+        self.menuFICHIER.add_command(label="Ouvrir", command=self.import_text)
         self.menubar.add_cascade(label="Fichier", menu=self.menuFICHIER)
 
         self.menuAIDE = Menu(root, tearoff=0)
@@ -106,7 +106,7 @@ class App():
         self.buttonDecrypte = ttkb.Button(self.framecryptENT, text="Décrypter votre texte", width=40, command=self.decryptage)
         self.buttonDecrypte.grid(row=2, column=0, padx=10)
 
-        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Créer un dict de cryptage", width=40, command=self.CreerTXTConv)
+        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Créer un dict de cryptage", width=40, command=self.ExportCodes)
         self.buttoncreacrypt.grid(row=0, column=0, padx=10)
 
         self.buttonlistbox = ttkb.Button(self.frame_not_canva, text = "Ajouter un sommet", width=40,)
@@ -132,91 +132,87 @@ class App():
         self.listbox = Listbox(self.frame_not_canva, bg="grey", selectmode=SINGLE)
         self.listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
+<<<<<<< Updated upstream
         self.scrollLISTB = ttkb.Scrollbar(self.frame_not_canva, orient="vertical", bootstyle="primary")
         self.scrollLISTB.grid(row=1, column=0, pady=10, sticky="nse")
 
         self.scrollLISTB.configure(command=self.listbox.yview)
         self.listbox.configure(yscrollcommand=self.scrollLISTB.set)
 
+=======
+        self.canva1.bind("<Motion>",self.motion)
+
+    def motion(self, event):
+        """Affiche les propriété d'un noeud quand celui-ci est survolé"""
+        if self.arbre != None:
+            pass
+>>>>>>> Stashed changes
 
     def mainfct(self):
-        '''Fonction principale de la première page : Dessine l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
+        '''Fonction principale de la première page : Dessine 
+        l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
         self.canva1.delete(tk.ALL)
         self.listbox.delete(0, tk.END)
         texte = self.entreeD1.get("1.0", tk.END)
-        arbo = ArbreB.build_from_text(texte, True) # mettre un case cochable pour le booléen
+        self.arbre = ArbreB.build_from_text(texte, True)
 
-        # Offset + Dessin arbre #
+        ## Offset + Dessin arbre ##
+
         # HAUTEUR #
-        profondeur = arbo.get_profondeur()
+        profondeur = self.arbre.get_profondeur()
         offset_h = 120
         h_canvas = offset_h * profondeur + 60
+        
         # LARGEUR #
-        largeur = arbo.get_largeur()
+        largeur = self.arbre.get_largeur()
         offset_l = (largeur ** log2(profondeur)) * 10
         l_canvas = int(somme_offsets(offset_l, largeur))*2 + 40
         self.canva1.configure(scrollregion=(0,0,l_canvas,h_canvas))
-        arbo.draw(self.canva1, (l_canvas, h_canvas),(offset_l, offset_h))
-        #offset = self.entreeD1.delete(0,"end") by Cyriac
-        #canvas_size = 2200, 2200
-        #arbo.draw(canva1, canvas_size)
+        self.arbre.draw(self.canva1, (l_canvas, h_canvas),(offset_l, offset_h))
         
-        #Ecriture proportions
-        letter_path = abr_path(arbo)
-        var = Variable(value=letter_path)
-        self.listbox.config(font= 'arial 12', listvariable=var)
+        ## Création d'une listebox qui affiche le chemin associé aux lettres ##
+        self.listbox.config(font= 'arial 12', listvariable=Variable(value=abr_path(self.arbre)))
 
 
     def cryptage(self):
         '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
-        f = askopenfile(title="Ouvrir votre texte pour crypter", filetypes=[('txt files','.txt'),('all files','.*')])
-        final_txt = encoding(self.entreeD2.get("1.0", tk.END), get_dico(f))
+        texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')])
+        final_txt = encoding(self.entreeD2.get("1.0", tk.END), get_dico(texte))
         self.Sortie.insert(tk.END, final_txt)
 
 
     def decryptage(self):
         '''Fonction qui va décrypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
-        f = askopenfile(title="Ouvrir votre texte train", filetypes=[('txt files','.txt'),('all files','.*')])
-        if f is None:
-            return
-        final_txt = decoding(self.entreeD2.get("1.0", tk.END).replace("\n",""), get_dico(f))
+        texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')])
+        final_txt = decoding(self.entreeD2.get("1.0", tk.END).replace("\n",""), get_dico(texte))
         self.Sortie.insert(tk.END, final_txt)
         
 
-    def Nouveau(self):
-        '''Insérer le contenu d'un fichier texte dans l'entrée principale'''
+    def import_text(self):
+        '''Insérer le contenu d'un fichier texte dans self.entreeD1'''
         self.entreeD1.delete("1.0", tk.END)
+<<<<<<< Updated upstream
         with codecs.open(askopenfilename(title="Ouvrir"), encoding='utf-8') as f:
             texte = f.read()         
             self.entreeD1.insert(tk.END, texte)
             self.mainfct()
+=======
+        texte = file_dialog(action="r", filetypes= [('txt files','.txt'),('all files','.*')])
+        self.entreeD1.insert(tk.END, texte)
+        self.mainfct()
+>>>>>>> Stashed changes
 
 
-    def Enregistrer(self):
-        '''Enregistrer le contenu de l'entrée principale dans un fichier texte'''
-        f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
-        if f is None:
-            return
-        f.write(self.entreeD1.get("1.0", tk.END))
-        f.close()
-
-
-    def CreerTXTConv(self):
-        '''Créer un fichier .txt enregistrant le dictionnaire permettant de décrypter un de crypter un texte'''
+    def ExportCodes(self):
+        '''Exporte un fichier de conversion de la forme
+        n*"ord(charactere) code"'''
         texte = self.entreeD2.get("1.0", tk.END)
         arbre = ArbreB.build_from_freq(proportions(texte, True))
         encodage = arbre.get_encode_dict()
-        f = asksaveasfile(title = "Enregistrer", mode='w', defaultextension=".txt")
-        if f is None:
-            return
-        for key, value in encodage.items():
-            if key == "\n":
-                f.write(f'linebreak,{value}\n')
-            else:
-                f.write(f'{key},{value}\n')
-        f.close()
+        output = " ".join([f'{ord(charactere)} {code}' for charactere, code in encodage.items()])
+        file_dialog(action="w", text=output, extension=".huffmann")
 
 
     def webgithub(self):

@@ -252,17 +252,12 @@ def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
     return offset + somme_offsets(offset/k, hauteurABR-1) if hauteurABR > 1 else offset
 
 
-def get_dico(f)-> dict:
-        if f is None:
-            return
-        dico = {}
-        for line in f.readlines():
-            line = line.replace("\n","")
-            if "linebreak" in line:
-                line = line.replace("linebreak","\n")
-            dico[line[0]] = line[2::]
-        f.close()
-        return dico
+def get_dico(texte:str)-> dict:
+    dico = {}
+    liste = texte.split()
+    for i in range(0,len(liste), 2):
+        dico[chr(int(liste[i]))] = liste[i+1]
+    return dico
 
 
 def abr_path(arbre:ArbreB):
@@ -279,3 +274,16 @@ def abr_path(arbre:ArbreB):
         for (key, value) in sorted_dict.items():
             output += f"'{key}'" + ":" + value + "\n"
         return output
+
+def file_dialog(action:str, filetypes:list=[], text:str="", extension:str=""):
+    """Permet de lire ou d'écrire sur sur fichier"""
+    if action == "r":
+        file = askopenfile(title="Ouvrir", filetypes=filetypes)
+        output = "".join(file.readlines())
+        file.close()
+        return output
+    elif action == "w":
+        file = asksaveasfile(title ="Enregistrer", mode='w', defaultextension=extension)
+        file.write(text)
+        file.close()
+    
