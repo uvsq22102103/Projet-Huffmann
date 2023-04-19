@@ -7,7 +7,7 @@
 
 ## Description
 
-  Ce projet a pour but d'implémenter la logique du code d'Huffman dans une application en python, à l'aide de différentes librairies telles que, la plus importante visuellement, ttkbootstrap. A travers une interface graphique, ce proket contient deux parties principales :
+  Ce projet a pour but d'implémenter la logique du code d'Huffman dans une application en python, à l'aide de différentes librairies telles que, la plus importante visuellement, ttkbootstrap. A travers une interface graphique, ce projet contient deux parties principales :
 - Il est possible d'afficher un arbre respectant les règles du code d'Huffman instancié à partir d'un texte,
 - De crypter et décrypter un texte à l'aide d'un dictionnaire de cryptage créé par l'application.
 
