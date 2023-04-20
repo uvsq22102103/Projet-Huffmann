@@ -93,7 +93,7 @@ class AppMain():
         self.entreeD2.grid(row=0, rowspan = 3, column=1, padx=10, pady=10, sticky="new")
 
         self.Sortie = ttkb.Text(self.framecryptSOR, font=("Arial 13"))
-        self.Sortie.grid(row = 0, column=0, columnspan = 2, padx=10, pady=10, sticky="sew")
+        self.Sortie.grid(row = 0, rowspan=2, column=0, columnspan = 2, padx=10, pady=10, sticky="nsew")
 
         #BOUTONS#######
         ###############
