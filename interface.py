@@ -166,7 +166,7 @@ class AppMain():
         self.arbre.draw(self.canva1, (l_canvas, h_canvas),(offset_l, offset_h))
         
         ## Création d'une listebox qui affiche le chemin associé aux lettres ##
-        self.listbox.config(font= 'arial 12', listvariable=Variable(value=abr_path(self.arbre)))
+        self.listbox.config(font= 'arial 12', listvariable=Variable(value=self.arbre.__str__()))
 
 
     def cryptage(self):
@@ -227,6 +227,9 @@ class AppUnittest():
 
         self.menuARBRE = Menu(root, tearoff=0)
         self.menuARBRE.add_command(label="Créer à partir d'un texte", command=self.create_from_text)
+        self.menuARBRE.add_command(label="Rajout de texte", command=self.add_from_text)
+        self.menuARBRE.add_command(label="Décomposition", command=self.decomposer)
+
         
         self.menu.add_cascade(label="Arbre", menu= self.menuARBRE)
         
@@ -251,8 +254,8 @@ class AppUnittest():
         self.labelAffichage.grid(row = 0, column = 0, sticky="nsew", pady=10)
 
         # Canva #
-        self.canvaaffichage = tk.Canvas(self.frameprincipale, borderwidth=10, scrollregion=(0,0,2200,2000), cursor="dot", bg="grey")
-        self.canvaaffichage.grid(row=0, rowspan=2, column=1, padx=10, pady=10, sticky="nsew")
+        self.canvas1 = tk.Canvas(self.frameprincipale, borderwidth=10, scrollregion=(0,0,2200,2000), cursor="dot", bg="grey")
+        self.canvas1.grid(row=0, rowspan=2, column=1, padx=10, pady=10, sticky="nsew")
 
         self.scrollVERT = tk.Scrollbar(self.frameprincipale, orient="vertical")
         self.scrollVERT.grid(row=0, rowspan=2, column=2, sticky="nse")
@@ -260,14 +263,28 @@ class AppUnittest():
         self.scrollHORI = tk.Scrollbar(self.frameprincipale, orient="horizontal")
         self.scrollHORI.grid(row=2, column=1, columnspan=2, sticky="nwe")
 
-        self.scrollVERT.configure(command=self.canvaaffichage.yview)
-        self.scrollHORI.configure(command=self.canvaaffichage.xview)
-        self.canvaaffichage.configure(yscrollcommand=self.scrollVERT.set, xscrollcommand=self.scrollHORI.set)
+        self.scrollVERT.configure(command=self.canvas1.yview)
+        self.scrollHORI.configure(command=self.canvas1.xview)
+        self.canvas1.configure(yscrollcommand=self.scrollVERT.set, xscrollcommand=self.scrollHORI.set)
 
     def affichage(self):
+        self.canvas1.delete("all")
         if self.arbre != None:
             texte = self.arbre.__str__()
             self.labelAffichage.config(text=texte)
+            ## Offset + Dessin arbre ##
+
+            # HAUTEUR #
+            profondeur = self.arbre.get_profondeur()
+            offset_h = 120
+            h_canvas = offset_h * (profondeur+1)
+            
+            # LARGEUR #
+            largeur = self.arbre.get_largeur()
+            offset_l = (largeur ** log2(profondeur)) * 10
+            l_canvas = int(somme_offsets(offset_l, largeur))*2 + 40
+            self.canvas1.configure(scrollregion=(0,0,l_canvas,h_canvas))
+            self.arbre.draw(self.canvas1, (l_canvas, h_canvas),(offset_l, offset_h))
         else:
             self.labelAffichage.config(text=">Pas d'arbre<")
 
@@ -306,4 +323,23 @@ class AppUnittest():
                           prompt="Veuillez entrer un texte quelconque")
         self.arbre = ArbreB_Huffmann.build_from_text(text=texte, keep_maj=True)
         self.affichage()
+    
+    
+    def add_from_text(self):
+        if self.arbre != None:
+            texte = askstring(title="Ajouter à cet arbre du texte",
+                            prompt="Veuillez entrer un texte quelconque")
+            self.arbre = self.arbre + ArbreB_Huffmann.build_from_text(texte, keep_maj=True)
+            self.affichage()
+    
 
+    def decomposer(self):
+        if self.arbre != None:
+            g, d = self.arbre.decomposition()
+            q = askinteger(title="Choisir la partie de l'arbre à conserver",
+                        prompt="Garder le côté gauche (1) ou droit (2) ?")
+            if q == 1:
+                self.arbre = g
+            elif q == 2:
+                self.arbre = d
+            self.affichage()

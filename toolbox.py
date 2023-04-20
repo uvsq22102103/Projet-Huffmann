@@ -241,11 +241,17 @@ class ArbreB_Huffmann():
     
     
     def __str__(self) -> str:
-        output = "\n"
+        output = ""
         code = self.get_encode_dict()
         for charactere, poids in self.proportions.items():
-            output += f"<Charactère : {charactere} > <Poids : {poids} > <Code : {code[charactere]} >\n"
-        return output + "\n"
+            if charactere == " ":
+                charactere_ = "space"
+            elif charactere == "\n":
+                charactere_ = "linebreak"
+            else:
+                charactere_ = charactere
+            output += f"chr:<{charactere_}>poids:<{poids}>code:<{code[charactere]}>\n"
+        return output
 
 
 ############################################
