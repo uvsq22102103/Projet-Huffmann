@@ -6,7 +6,7 @@ from toolbox import *
 ### CLASS ###
 
 class AppMain():
-
+    """Application pour un utilisateur lambda"""
     def __init__(self, root: tk.Tk, HEIGHT, WIDTH, NAME) -> None:
         self.NAME = NAME
         self.root = root
@@ -213,7 +213,7 @@ class AppMain():
 
 
 class AppUnittest():
-
+    """Application dédiée à l'unittest"""
     def __init__(self, root:tk.Tk, height, width, name) -> None:
         self.arbre = None
         ## Partie GUI ##
@@ -276,6 +276,7 @@ class AppUnittest():
         else:
             self.arbre += sommet
         self.affichage()
+    
     
     def create_from_text(self):
         texte = askstring(title="Créer un nouvel arbre depuis un texte",
