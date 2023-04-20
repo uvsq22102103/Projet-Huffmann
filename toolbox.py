@@ -203,9 +203,6 @@ class ArbreB_Huffmann():
         return output + "\n"
 
 
-##############################################################################################
-
-
 def proportions(texte:str,keep_maj = False):
     """Prend un texte en argument et retourne les
     occurences par Charactères (= chr) de son content.\n

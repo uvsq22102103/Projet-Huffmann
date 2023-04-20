@@ -1,5 +1,5 @@
 # IMPORT #
-import gui_class as gc
+import interface as gui
 
 # CONSTANTES #
 HEIGHT = 1080
@@ -7,6 +7,6 @@ WIDTH = 1920
 NAME = "Projet Huffman"
 
 # LANCEMENT GUI #
-root = gc.ttkb.Window(themename="morph", title=NAME)
-app = gc.App(root, HEIGHT, WIDTH, NAME)
+root = gui.ttkb.Window(themename="morph", title=NAME)
+app = gui.App(root, HEIGHT, WIDTH, NAME)
 root.mainloop()
