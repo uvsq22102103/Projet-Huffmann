@@ -275,7 +275,9 @@ def encoding(texte:str, conversion:dict):
             output += conversion[i]
         return output
     except :
+        showerror(message=f"le charactère <{i}> n'existe pas dans le text d'entraînement")
         raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
+        
 
 
 def decoding(texte:str, conversion:dict):
@@ -290,27 +292,12 @@ def decoding(texte:str, conversion:dict):
         while texte[i:j] not in keys:
             j += 1
             if j > len(texte):
-                raise ValueError(f"Vous essayez de decoder un texte avec le mauvais dictionnaire")
+                showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+                raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
         output += conversion_reversed[texte[i:j]]
         i = j
         j = i+1
     return output
-
-
-def get_key_from_value(d:dict, val:str):
-    """Reviens à inverser key et value"""
-    keys = [k for k, v in d.items() if v == val]
-    if keys:
-        return keys[0]
-    else:
-        raise ValueError
-
-
-def get_texte_from_file(path:str):
-    """Prend le chemin d'un fichier et renvoi son contenu en str"""
-    with open(path) as f:
-        texte = "".join(f.readlines()).lower()
-    return texte
 
 
 def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
