@@ -3,6 +3,7 @@ from tkinter import Menu, FALSE, Variable, Listbox, SINGLE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
+from tkinter.simpledialog import askinteger
 from math import log2
 import codecs
 import webbrowser

@@ -3,9 +3,9 @@
 from toolbox import *
 
 #############
-# Fonctions #
+### CLASS ###
 
-class App():
+class AppMain():
 
     def __init__(self, root: tk.Tk, HEIGHT, WIDTH, NAME) -> None:
         self.NAME = NAME
@@ -205,3 +205,40 @@ class App():
 
     def Apropos(self):
         showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
+
+
+
+class AppUnitest():
+
+    def __init__(self, root:tk.Tk) -> None:
+        
+        self.root = root
+        
+        # Ajouter un titre à la fenêtre
+        self.root.title("Mon Interface Graphique")
+        
+        # Définir la taille de la fenêtre
+        self.root.geometry("400x300")
+        
+        # Créer le canvas au milieu
+        self.canvas = tk.Canvas(root, width=200, height=200, bg="white")
+        self.canvas.pack(side=tk.LEFT, padx=20, pady=20)
+        
+        # Ajouter une scrollbar verticale pour le canvas
+        self.scrollbar_y = tk.Scrollbar(root, orient=tk.VERTICAL, command=self.canvas.yview)
+        self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Ajouter une scrollbar horizontale pour le canvas
+        self.scrollbar_x = tk.Scrollbar(root, orient=tk.HORIZONTAL, command=self.canvas.xview)
+        self.scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        # Configurer le canvas pour utiliser les scrollbars
+        self.canvas.configure(xscrollcommand=self.scrollbar_x.set, yscrollcommand=self.scrollbar_y.set)
+        self.canvas.configure(scrollregion=(0, 0, 500, 500))  # Définir la région de scroll
+        
+        # Créer les deux boutons
+        self.button_left = tk.Button(root, text="Bouton Gauche")
+        self.button_left.pack(side=tk.LEFT, padx=10)
+
+        self.button_right = tk.Button(root, text="Bouton Droit")
+        self.button_right.pack(side=tk.RIGHT, padx=10)
