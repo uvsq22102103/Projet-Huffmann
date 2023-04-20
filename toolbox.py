@@ -180,7 +180,50 @@ class ArbreB_Huffmann():
         output = {}
         for charactere, _ in self.proportions.items():
             output[charactere] = self.search(charactere)
+        output["checksum"] = fletcher16(self.proportions)
         return output
+    
+
+    def encoding(self, texte:str):
+        """Encode un texte selon un dictionnaire de conversion"""
+        conversion = self.get_encode_dict()
+        output = ""
+        try :
+            for i in texte:
+                output += conversion[i]
+            return output + "-" + conversion["checksum"]
+        except :
+            showerror(message=f"le charactère <{i}> n'existe pas dans le text d'entraînement")
+            raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
+            
+
+
+    def decoding(self, texte:str):
+        """Decode un texte selon un dictionnaire de conversion"""
+        conversion = self.get_encode_dict()
+        conversion_reversed = {}
+        for (key, value) in conversion.items():
+            conversion_reversed[value] = key
+        output = ""
+        i, j = 0, 1
+        keys = conversion_reversed.keys()
+        liste = texte.split("-")
+        texte = liste[0]
+        checksum = liste[1]
+        if checksum == conversion["checksum"]:
+            while i < len(texte):
+                while texte[i:j] not in keys:
+                    j += 1
+                    if j > len(texte):
+                        showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+                        raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+                output += conversion_reversed[texte[i:j]]
+                i = j
+                j = i+1
+            return output
+        else:
+            showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+            raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
     
 
     def get_profondeur(self, __depth:int=0):
@@ -273,39 +316,6 @@ def proportions(texte:str,keep_maj = False):
     return output
 
 
-def encoding(texte:str, conversion:dict):
-    """Encode un texte selon un dictionnaire de conversion"""
-    output = ""
-    try :
-        for i in texte:
-            output += conversion[i]
-        return output
-    except :
-        showerror(message=f"le charactère <{i}> n'existe pas dans le text d'entraînement")
-        raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
-        
-
-
-def decoding(texte:str, conversion:dict):
-    """Decode un texte selon un dictionnaire de conversion"""
-    conversion_reversed = {}
-    for (key, value) in conversion.items():
-        conversion_reversed[value] = key
-    output = ""
-    i, j = 0, 1
-    keys = conversion_reversed.keys()
-    while i < len(texte):
-        while texte[i:j] not in keys:
-            j += 1
-            if j > len(texte):
-                showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-                raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-        output += conversion_reversed[texte[i:j]]
-        i = j
-        j = i+1
-    return output
-
-
 def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
     return offset + somme_offsets(offset/k, hauteurABR-1) if hauteurABR > 1 else offset
 
@@ -333,6 +343,7 @@ def abr_path(arbre:ArbreB_Huffmann):
         output += f"'{key}'" + ":" + value + "\n"
     return output
 
+
 def file_dialog(action:str, filetypes:list=[], text:str="", extension:str=""):
     """Permet de lire ou d'écrire sur fichier"""
     if action == "r":
@@ -344,4 +355,16 @@ def file_dialog(action:str, filetypes:list=[], text:str="", extension:str=""):
         file = asksaveasfile(title ="Enregistrer", mode='w', defaultextension=extension)
         file.write(text)
         file.close()
-    
+
+
+def fletcher16(dico:dict):
+    string = ""
+    for charactere, occurence in dico.items():
+        string += charactere * occurence
+    sum1 = 0
+    sum2 = 0
+    for char in string:
+        sum1 = (sum1 + ord(char)) % 255
+        sum2 = (sum2 + sum1) % 255
+    checksum = (sum2 << 8) | sum1
+    return str(checksum)

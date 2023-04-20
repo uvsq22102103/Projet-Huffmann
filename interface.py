@@ -173,15 +173,15 @@ class AppMain():
         '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
         texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')])
-        final_txt = encoding(self.entreeD2.get("1.0", tk.END), get_dico(texte))
+        final_txt = self.arbre.encoding(self.entreeD2.get("1.0", tk.END))
         self.Sortie.insert(tk.END, final_txt)
 
 
     def decryptage(self):
         '''Fonction qui va décrypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
-        texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')])
-        final_txt = decoding(self.entreeD2.get("1.0", tk.END).replace("\n",""), get_dico(texte))
+        texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')]) # voir demain ! 
+        final_txt = self.arbre.decoding(self.entreeD2.get("1.0", tk.END).replace("\n",""))
         self.Sortie.insert(tk.END, final_txt)
         
 
@@ -195,11 +195,14 @@ class AppMain():
 
     def ExportCodes(self):
         '''Exporte un fichier de conversion de la forme
-        n*"ord(charactere) code"'''
+        n*(ord(charactere) code)'''
         texte = self.entreeD2.get("1.0", tk.END)
         arbre = ArbreB_Huffmann.build_from_dico(proportions(texte, True))
         encodage = arbre.get_encode_dict()
+        checksum = encodage["checksum"]
+        del encodage["checksum"]
         output = " ".join([f'{ord(charactere)} {code}' for charactere, code in encodage.items()])
+        output += "\n#" + checksum
         file_dialog(action="w", text=output, extension=".huffmann")
 
 
