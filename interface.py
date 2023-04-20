@@ -97,19 +97,19 @@ class AppMain():
 
         #BOUTONS#######
         ###############
-        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Afficher l'arbre de Huffmann résultant de ce texte",
+        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Afficher l'arbre d'Huffman de votre texte",
                                        width=40, command=self.affiche_arbre)
         self.buttonArbre.grid(row=0, column=0, padx=10, sticky="nw")
 
-        self.buttoncryptage = ttkb.Button(self.framecryptENT, text="Encoder le texte de droite",
+        self.buttoncryptage = ttkb.Button(self.framecryptENT, text="Encoder votre texte",
                                           width=40, command=self.cryptage)
         self.buttoncryptage.grid(row=1, column=0, padx=10)
 
-        self.buttonDecrypte = ttkb.Button(self.framecryptENT, text="Decoder le texte binaire de droite",
+        self.buttonDecrypte = ttkb.Button(self.framecryptENT, text="Decoder votre texte binaire",
                                           width=40, command=self.decryptage)
         self.buttonDecrypte.grid(row=2, column=0, padx=10)
 
-        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Enregistrer un Huffmann\nà partir du texte de droite",
+        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Enregistrer un dictionnaire\n de cryptage d'Huffman",
                                            width=40, command=self.ExportCodes)
         self.buttoncreacrypt.grid(row=0, column=0, padx=10)
 
