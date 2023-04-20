@@ -32,12 +32,31 @@ Une liste de librairies utilisées lors de ce projet :
 
 ## Installation
 
-Il vous sera nécessaire d'installer la librairie ttkbootstrap :
+Il vous sera nécessaire d'installer la librairie ttkbootstrap pour que l'application fonctionne:
 * ```python -m pip install ttkbootstrap```
 
 ## Guide
 
-A mettre en place !
+### Pour créer et afficher un arbre respectant le code d'Huffman :
+* Entrer votre texte à l'emplacement indiqué puis appuyer sur le bouton "Créer arbre"
+* Votre arbre s'affiche et vous pouvez l'explorer à l'aide de scrollbars. De plus, le chemin de chaque charactère est affiché dans la listbox
+
+### Pour crypter ou décrypter un texte respectant le code d'Huffman : 
+
+#### Cryptage
+* Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Créer un dictionnaire de cryptage" 
+* Cela enregistrera le dictionnaire nécessaire pour crypter votre texte
+* Appuyer sur le bouton "Crypter votre texte" et choisir le dictionnaire que vous avez précedemment créé 
+> Si le dictionnaire ne contient pas tout les charactères de votre texte entré, une erreur sera retournée !
+* Votre texte crypté s'affiche et vous pouvez le copier  
+
+#### Décryptage
+* Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Décrypter votre texte"
+* Choisissez un dictionnaire de cryptage adapté 
+> Attention, une erreur vous sera retourné si votre dictionnaire de cryptage n'est pas adapté !
+* Votre texte décrypté s'affiche et vous pouvez le copier
+
+
 
 
 
