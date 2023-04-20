@@ -15,7 +15,7 @@ Ce projet à été débuté le 12/02/2023 et est dû pour le 21/04/2023 et sera 
 
 ### Screenshots
 Affichage d'un arbre :
-![Image canva](https://github.com/uvsq22102103/Projet-Huffmann/blob/main/documentation/Huffman_Homepage.png)
+![Image canva](https://github.com/uvsq22102103/Projet-Huffmann/blob/main/documentation/screenhuffman1emepage.png)
 Cryptage d'un texte :
 ![Image crypt](https://github.com/uvsq22102103/Projet-Huffmann/blob/main/documentation/screenhuffman2emepage.png)
 
@@ -38,22 +38,22 @@ Il vous sera nécessaire d'installer la librairie ttkbootstrap pour que l'applic
 ## Guide
 
 ### Pour créer et afficher un arbre respectant le code d'Huffman :
-* Entrer votre texte à l'emplacement indiqué puis appuyer sur le bouton "Créer arbre"
+* Entrer votre texte à l'emplacement indiqué puis appuyer sur le bouton "Afficher l'arbre d'Huffman de votre texte"
 * Votre arbre s'affiche et vous pouvez l'explorer à l'aide de scrollbars. De plus, le chemin de chaque charactère est affiché dans la listbox
 
 ### Pour crypter ou décrypter un texte respectant le code d'Huffman : 
 
 #### Cryptage
-* Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Créer un dictionnaire de cryptage" 
+* Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Enregistrer un dictionnaire de cryptage d'Huffman" 
 * Cela enregistrera le dictionnaire nécessaire pour crypter votre texte
-* Appuyer sur le bouton "Crypter votre texte" et choisir le dictionnaire que vous avez précedemment créé 
+* Appuyer sur le bouton "Encoder votre texte" et choisir le dictionnaire que vous avez précedemment créé 
 > Si le dictionnaire ne contient pas tout les charactères de votre texte entré, une erreur sera retournée !
 * Votre texte crypté s'affiche et vous pouvez le copier  
 
 #### Décryptage
-* Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Décrypter votre texte"
+* Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Décoder votre texte binaire"
 * Choisissez un dictionnaire de cryptage adapté 
-> Attention, une erreur vous sera retourné si votre dictionnaire de cryptage n'est pas adapté !
+> Attention, une erreur vous sera retourné si vous ne choisissez pas le dictionnaire avec lequel le texte a été encodé !
 * Votre texte décrypté s'affiche et vous pouvez le copier
 
 
