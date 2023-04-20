@@ -97,7 +97,7 @@ class App():
 
         #BOUTONS#######
         ###############
-        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Créer arbre",  width=40, command=self.mainfct)
+        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Créer arbre",  width=40, command=self.affiche_arbre)
         self.buttonArbre.grid(row=0, column=0, padx=10, sticky="nw")
 
         self.buttoncryptage = ttkb.Button(self.framecryptENT, text="Crypter votre texte", width=40, command=self.cryptage)
@@ -132,42 +132,27 @@ class App():
         self.listbox = Listbox(self.frame_not_canva, bg="grey", selectmode=SINGLE)
         self.listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         self.scrollLISTB = ttkb.Scrollbar(self.frame_not_canva, orient="vertical", bootstyle="primary")
         self.scrollLISTB.grid(row=1, column=0, pady=10, sticky="nse")
 
         self.scrollLISTB.configure(command=self.listbox.yview)
         self.listbox.configure(yscrollcommand=self.scrollLISTB.set)
 
-=======
-=======
->>>>>>> Stashed changes
-        self.canva1.bind("<Motion>",self.motion)
 
-    def motion(self, event):
-        """Affiche les propriété d'un noeud quand celui-ci est survolé"""
-        if self.arbre != None:
-            pass
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-
-    def mainfct(self):
-        '''Fonction principale de la première page : Dessine 
+    def affiche_arbre(self):
+        '''Fonction principale de la première page : Dessine
         l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
         self.canva1.delete(tk.ALL)
         self.listbox.delete(0, tk.END)
         texte = self.entreeD1.get("1.0", tk.END)
-        self.arbre = ArbreB.build_from_text(texte, True)
+        self.arbre = ArbreB_Huffmann.build_from_text(texte, True)
 
         ## Offset + Dessin arbre ##
 
         # HAUTEUR #
         profondeur = self.arbre.get_profondeur()
         offset_h = 120
-        h_canvas = offset_h * profondeur + 60
+        h_canvas = offset_h * (profondeur+1)
         
         # LARGEUR #
         largeur = self.arbre.get_largeur()
@@ -199,36 +184,24 @@ class App():
     def import_text(self):
         '''Insérer le contenu d'un fichier texte dans self.entreeD1'''
         self.entreeD1.delete("1.0", tk.END)
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        with codecs.open(askopenfilename(title="Ouvrir"), encoding='utf-8') as f:
-            texte = f.read()         
-            self.entreeD1.insert(tk.END, texte)
-            self.mainfct()
-=======
-=======
->>>>>>> Stashed changes
-        texte = file_dialog(action="r", filetypes= [('txt files','.txt'),('all files','.*')])
+        texte = file_dialog(action="r",filetypes= [('txt files','.txt'),('all files','.*')])      
         self.entreeD1.insert(tk.END, texte)
-        self.mainfct()
->>>>>>> Stashed changes
+        self.affiche_arbre()
 
 
     def ExportCodes(self):
         '''Exporte un fichier de conversion de la forme
         n*"ord(charactere) code"'''
         texte = self.entreeD2.get("1.0", tk.END)
-        arbre = ArbreB.build_from_freq(proportions(texte, True))
+        arbre = ArbreB_Huffmann.build_from_freq(proportions(texte, True))
         encodage = arbre.get_encode_dict()
         output = " ".join([f'{ord(charactere)} {code}' for charactere, code in encodage.items()])
         file_dialog(action="w", text=output, extension=".huffmann")
 
 
-<<<<<<< Updated upstream
     def webgithub(self):
         webbrowser.open('https://github.com/uvsq22102103/Projet-Huffmann#guide')
 
-=======
+
     def Apropos(self):
         showinfo("A propos", "Un projet réalisé par Aymeric GOUDOUT et Cyriac THIBAUDEAU \nIN407 S4 2023")
->>>>>>> Stashed changes
