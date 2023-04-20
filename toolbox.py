@@ -3,7 +3,7 @@ from tkinter import Menu, FALSE, Variable, Listbox, SINGLE
 import ttkbootstrap as ttkb # install : "pip install ttkbootstrap" in Terminal
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-from tkinter.simpledialog import askinteger
+from tkinter.simpledialog import askinteger, askstring
 from math import log2
 import codecs
 import webbrowser
@@ -13,7 +13,7 @@ class Sommet():
     """Sommet/Noeud d'un ABR possédant comme attribut étiquette et value,
     si (value == None) alors on peut en conclure que ce noeud est
     père sinon il est feuille"""
-    def __init__(self, poids: float, charactere: str=None):
+    def __init__(self, poids: float | int, charactere: str=None):
         self.poids = poids
         self.charactere = charactere
 
@@ -34,7 +34,8 @@ class Sommet():
 ##############################################################################################
 
 class ArbreB_Huffmann():
-    """Arbre binaire composé de Sommets/Noeuds"""
+    """Un arbre binaire basé sur la propriété de l'algorithme
+    de Huffmann"""
     liste_erreurs = ['"{}" est déjà présent dans cet arbre de Huffmann']
 
     def __init__(self, sommet:Sommet):

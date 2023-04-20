@@ -214,35 +214,42 @@ class AppMain():
 
 class AppUnitest():
 
-    def __init__(self, root:tk.Tk) -> None:
-        
+    def __init__(self, root:tk.Tk, height, width, name) -> None:
+        self.arbre = None
+        # Partie GUI #
         self.root = root
-        
-        # Ajouter un titre à la fenêtre
-        self.root.title("Mon Interface Graphique")
-        
-        # Définir la taille de la fenêtre
-        self.root.geometry("400x300")
-        
-        # Créer le canvas au milieu
-        self.canvas = tk.Canvas(root, width=200, height=200, bg="white")
-        self.canvas.pack(side=tk.LEFT, padx=20, pady=20)
-        
-        # Ajouter une scrollbar verticale pour le canvas
-        self.scrollbar_y = tk.Scrollbar(root, orient=tk.VERTICAL, command=self.canvas.yview)
-        self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+        self.root.title(name + " - Unitest")
+        self.root.geometry(f"{width}x{height}")
+        self.buttonAddSommet = tk.Button(self.root, text="Ajouter un Sommet",
+                                         command=self.add_sommet)
+        self.buttonAddSommet.grid(row=0, column=0)
+        self.labelAffichage = tk.Label(self.root, text=">Pas d'arbre<")
+        self.labelAffichage.grid(row=1, column=0)
+    
 
-        # Ajouter une scrollbar horizontale pour le canvas
-        self.scrollbar_x = tk.Scrollbar(root, orient=tk.HORIZONTAL, command=self.canvas.xview)
-        self.scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
-        
-        # Configurer le canvas pour utiliser les scrollbars
-        self.canvas.configure(xscrollcommand=self.scrollbar_x.set, yscrollcommand=self.scrollbar_y.set)
-        self.canvas.configure(scrollregion=(0, 0, 500, 500))  # Définir la région de scroll
-        
-        # Créer les deux boutons
-        self.button_left = tk.Button(root, text="Bouton Gauche")
-        self.button_left.pack(side=tk.LEFT, padx=10)
+    def affichage(self):
+        if self.arbre != None:
+            texte = "\n".join([f"'{charactere}' : {code}" for charactere, code in self.arbre.get_encode_dict().items()])
+            self.labelAffichage.config(text=texte)
+        else:
+            self.labelAffichage.config(text=">Pas d'arbre<")
 
-        self.button_right = tk.Button(root, text="Bouton Droit")
-        self.button_right.pack(side=tk.RIGHT, padx=10)
+    
+    def add_sommet(self):
+        charactère = ""
+        while len(charactère) != 1:
+            charactère = askstring(title="Ajouter un sommet",
+                                prompt="Saisir un Charactère",
+                                initialvalue="x")
+        poids = 0
+        while poids < 1:
+            poids = askinteger(title="Ajouter un sommet",
+                                prompt="Saisir un poids",
+                                initialvalue=5)
+        sommet = Sommet(poids, charactère)
+        if self.arbre == None:
+            self.arbre = ArbreB_Huffmann(sommet)
+        else:
+            self.arbre += sommet
+        self.affichage()
+

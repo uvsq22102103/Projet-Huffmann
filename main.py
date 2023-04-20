@@ -17,5 +17,5 @@ if q == 1:
     app = gui.AppMain(root, HEIGHT, WIDTH, NAME)
 elif q == 2:
     root = gui.tk.Tk()
-    app = gui.AppUnitest(root)
+    app = gui.AppUnitest(root, HEIGHT, WIDTH, NAME)
 root.mainloop()
