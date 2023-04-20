@@ -8,10 +8,7 @@ NAME = "Projet Huffman"
 
 # LANCEMENT GUI #
 
-q = None
-while q not in [1, 2] or q == None:
-    q = gui.askinteger(NAME, prompt="Interface principale (1) ou Interface Unitest (2) ?",
-                       initialvalue=1)
+q = gui.askinteger(NAME, prompt="Interface principale (1) ou Interface Unitest (2) ?", initialvalue=1)
 
 if q == 1:
     root = gui.ttkb.Window(themename="morph", title=NAME)
