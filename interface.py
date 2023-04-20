@@ -97,16 +97,20 @@ class AppMain():
 
         #BOUTONS#######
         ###############
-        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Créer arbre",  width=40, command=self.affiche_arbre)
+        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Afficher l'arbre de Huffmann résultant de ce texte",
+                                       width=40, command=self.affiche_arbre)
         self.buttonArbre.grid(row=0, column=0, padx=10, sticky="nw")
 
-        self.buttoncryptage = ttkb.Button(self.framecryptENT, text="Crypter votre texte", width=40, command=self.cryptage)
+        self.buttoncryptage = ttkb.Button(self.framecryptENT, text="Encoder le texte de droite",
+                                          width=40, command=self.cryptage)
         self.buttoncryptage.grid(row=1, column=0, padx=10)
 
-        self.buttonDecrypte = ttkb.Button(self.framecryptENT, text="Décrypter votre texte", width=40, command=self.decryptage)
+        self.buttonDecrypte = ttkb.Button(self.framecryptENT, text="Decoder le texte binaire de droite",
+                                          width=40, command=self.decryptage)
         self.buttonDecrypte.grid(row=2, column=0, padx=10)
 
-        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Créer un dict de cryptage", width=40, command=self.ExportCodes)
+        self.buttoncreacrypt = ttkb.Button(self.framecryptENT, text="Enregistrer un Huffmann\nà partir du texte de droite",
+                                           width=40, command=self.ExportCodes)
         self.buttoncreacrypt.grid(row=0, column=0, padx=10)
 
         self.buttonlistbox = ttkb.Button(self.frame_not_canva, text = "Ajouter un sommet", width=40,)
