@@ -197,7 +197,7 @@ class AppMain():
         '''Exporte un fichier de conversion de la forme
         n*"ord(charactere) code"'''
         texte = self.entreeD2.get("1.0", tk.END)
-        arbre = ArbreB_Huffmann.build_from_freq(proportions(texte, True))
+        arbre = ArbreB_Huffmann.build_from_dico(proportions(texte, True))
         encodage = arbre.get_encode_dict()
         output = " ".join([f'{ord(charactere)} {code}' for charactere, code in encodage.items()])
         file_dialog(action="w", text=output, extension=".huffmann")
@@ -212,29 +212,53 @@ class AppMain():
 
 
 
-class AppUnitest():
+class AppUnittest():
 
     def __init__(self, root:tk.Tk, height, width, name) -> None:
         self.arbre = None
-        # Partie GUI #
+        ## Partie GUI ##
+        # Racine #
         self.root = root
         self.root.title(name + " - Unitest")
         self.root.geometry(f"{width}x{height}")
-        self.buttonAddSommet = tk.Button(self.root, text="Ajouter un Sommet",
-                                         command=self.add_sommet)
-        self.buttonAddSommet.grid(row=0, column=0)
+        # Boutons #
+        self.menu = Menu(root)
+
+        self.menuARBRE = Menu(root, tearoff=0)
+        self.menuARBRE.add_command(label="Créer à partir d'un texte", command=self.create_from_text)
+        
+        self.menu.add_cascade(label="Arbre", menu= self.menuARBRE)
+        
+        self.menuSOMMET = Menu(root, tearoff=0)
+        self.menuSOMMET.add_command(label="Ajouter", command=self.add_sommet)
+        self.menuSOMMET.add_command(label="Retirer", command=self.rm_sommet)
+
+        self.menu.add_cascade(label="Sommet", menu= self.menuSOMMET)
+
+        self.root.config(menu=self.menu)
+        # Label #
         self.labelAffichage = tk.Label(self.root, text=">Pas d'arbre<")
-        self.labelAffichage.grid(row=1, column=0)
+        self.labelAffichage.pack(side="top", anchor="center", pady=10)
     
 
     def affichage(self):
         if self.arbre != None:
-            texte = "\n".join([f"'{charactere}' : {code}" for charactere, code in self.arbre.get_encode_dict().items()])
+            texte = self.arbre.__str__()
             self.labelAffichage.config(text=texte)
         else:
             self.labelAffichage.config(text=">Pas d'arbre<")
 
     
+    def rm_sommet(self):
+        charactère = ""
+        while len(charactère) != 1:
+            charactère = askstring(title="Enlever un sommet",
+                                prompt="Saisir un Charactère",
+                                initialvalue="x")
+        self.arbre -= charactère
+        self.affichage()
+
+
     def add_sommet(self):
         charactère = ""
         while len(charactère) != 1:
@@ -251,5 +275,11 @@ class AppUnitest():
             self.arbre = ArbreB_Huffmann(sommet)
         else:
             self.arbre += sommet
+        self.affichage()
+    
+    def create_from_text(self):
+        texte = askstring(title="Créer un nouvel arbre depuis un texte",
+                          prompt="Veuillez entrer un texte quelconque")
+        self.arbre = ArbreB_Huffmann.build_from_text(text=texte, keep_maj=True)
         self.affichage()
 

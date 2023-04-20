@@ -10,22 +10,27 @@ import webbrowser
 ##############################################################################################
 
 class Sommet():
-    """Sommet/Noeud d'un ABR possédant comme attribut étiquette et value,
-    si (value == None) alors on peut en conclure que ce noeud est
-    père sinon il est feuille"""
+    """Sommet/Noeud d'Arbre binaire ayant comme attributs un poids et un
+    charactère, un sommet quelconque peut-être considéré comme une feuille
+    si et seulement si son attribut charactère est égal à None"""
+
     def __init__(self, poids: float | int, charactere: str=None):
         self.poids = poids
         self.charactere = charactere
 
+
     def set_poids(self, new_poids:float):
         self.poids = new_poids
     
+
     def get_poids(self):
         return self.poids
     
+
     def set_charactere(self, charactere:str):
         self.charactere = charactere
     
+
     def get_charactere(self):
         return self.charactere
     
@@ -35,27 +40,56 @@ class Sommet():
 
 class ArbreB_Huffmann():
     """Un arbre binaire basé sur la propriété de l'algorithme
-    de Huffmann"""
-    liste_erreurs = ['"{}" est déjà présent dans cet arbre de Huffmann']
+    de compression de Huffmann"""
 
     def __init__(self, sommet:Sommet):
         self.content = {"r" : sommet, "fg" : None, "fd" : None}
-        self.chr_freq = [(sommet.get_charactere(),sommet.get_poids())]
+        self.proportions = {}
+        self.proportions[sommet.get_charactere()] = sommet.get_poids()
     
+
     def build_from_text(text:str, keep_maj:bool):
-        return ArbreB_Huffmann.build_from_freq(proportions(text, keep_maj))
+        return ArbreB_Huffmann.build_from_dico(proportions(text, keep_maj))
     
+
     def get_poids(self):
         return self.content["r"].get_poids()
+    
 
-    def build_from_freq(chr_freq:list[tuple]):
-        liste_arbres = [ArbreB_Huffmann(Sommet(e,v)) for v,e in chr_freq]
+    def build_from_sommets(liste:list[Sommet]):
+        """Construit un Arbre binaire de Huffmann en prenant
+        une liste de Sommets distincts en argument"""
+        liste_arbres = [ArbreB_Huffmann(sommet) for sommet in liste]
         while len(liste_arbres) > 1: #Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets
             liste_arbres.sort(key=lambda x: x.get_poids())
-            liste_arbres.append(liste_arbres.pop(0)+liste_arbres.pop(0))
+            liste_arbres.append(liste_arbres.pop(0).fusion(liste_arbres.pop(0)))
         arborescence = liste_arbres[0]
-        #arborescence.chr_freq = chr_freq
         return arborescence
+
+
+    def build_from_dico(dico:dict):
+        """Construit un Arbre binaire de Huffmann en prenant
+        en argument un dictionnaire de proportion de la """
+        liste_arbres = [ArbreB_Huffmann(Sommet(poids, charactere)) for charactere, poids in dico.items()]
+        while len(liste_arbres) > 1: #Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets
+            liste_arbres.sort(key=lambda x: x.get_poids())
+            liste_arbres.append(liste_arbres.pop(0).fusion(liste_arbres.pop(0)))
+        arborescence = liste_arbres[0]
+        return arborescence
+    
+
+    def decomposition(self):
+        if type(self) == ArbreB_Huffmann:
+            sommets_fg = ArbreB_Huffmann.decomposition(self.content["fg"])
+            sommets_fd = ArbreB_Huffmann.decomposition(self.content["fd"])
+            abr_g = ArbreB_Huffmann.build_from_sommets(sommets_fg)
+            abr_d = ArbreB_Huffmann.build_from_sommets(sommets_fd)
+            return abr_g, abr_d
+        elif type(self) == dict:
+            if self["r"].get_charactere() != None:
+                return [self["r"]]
+            else:
+                return ArbreB_Huffmann.decomposition(self["fg"]) + ArbreB_Huffmann.decomposition(self["fd"])
 
 
     def fusion(self,abr:"ArbreB_Huffmann"):
@@ -63,16 +97,25 @@ class ArbreB_Huffmann():
         ayant la somme des etiquettes des deux fils pour attribut"""
         fg = self.content.copy()
         fd = abr.content.copy()
-        self.content = {"r" : Sommet(round(fg["r"].get_poids() + fd["r"].get_poids(),2)),
+        self.content = {"r" : Sommet(fg["r"].get_poids() + fd["r"].get_poids()),
                         "fg" : fg, "fd" : fd}
-        for i in abr.chr_freq:
-            self.chr_freq.append(i)
-        del abr
+        temp = self.proportions.keys()
+        for charactere, poids in abr.proportions.items():
+            if charactere in temp:
+                self.proportions[charactere] += poids
+            else:
+                self.proportions[charactere] = poids
         return self
 
 
-    def __add__(self,ArbreB):
-        return self.fusion(ArbreB)
+    def __add__(self,abr:"ArbreB_Huffmann"):
+        temp = self.proportions.keys()
+        for charactere, poids in abr.proportions.items():
+            if charactere in temp:
+                self.proportions[charactere] += poids
+            else:
+                self.proportions[charactere] = poids
+        return ArbreB_Huffmann.build_from_dico(self.proportions)
     
 
     def show(self,_n=None):
@@ -134,13 +177,14 @@ class ArbreB_Huffmann():
 
     def get_encode_dict(self):
         """Retourne un dictionnaire de conversion"""
-        code = {}
-        for (chr,_) in self.chr_freq:
-            code[chr] = self.search(chr)
-        return code
+        output = {}
+        for charactere, _ in self.proportions.items():
+            output[charactere] = self.search(charactere)
+        return output
     
 
     def get_profondeur(self, __depth:int=0):
+        """Algo récurcif pour connaître la profondeur d'un Arbre"""
         if type(self) == ArbreB_Huffmann:
             return ArbreB_Huffmann.get_profondeur(self.content)
         elif type(self) == dict:
@@ -153,6 +197,7 @@ class ArbreB_Huffmann():
     
     
     def get_largeur(self, __target:bool = None, __depth:int = 0):
+        """Algo récurcif pour connaître la largeur d'un Arbre"""
         if type(self) == ArbreB_Huffmann:
             return ArbreB_Huffmann.get_largeur(self.content)
         elif type(self) == dict:
@@ -173,11 +218,8 @@ class ArbreB_Huffmann():
         """Permet de supprimer un Sommet comprenant
         le charactère spécifié de l'arbre actuel en
         gardant la propriété du codage de Hoffmann"""
-        new_chr_freq = []
-        for (chr, freq) in self.chr_freq:
-            if chr != charactere:
-                new_chr_freq.append((chr, freq))
-        return ArbreB_Huffmann.build_from_freq(new_chr_freq)
+        del self.proportions[charactere]
+        return ArbreB_Huffmann.build_from_dico(self.proportions)
     
     
     def __isub__(self, charactere:str):
@@ -187,40 +229,42 @@ class ArbreB_Huffmann():
     def add_sommet(self, sommet:Sommet):
         """Permet d'ajouter un sommet dans l'arbre
         en conservant les propriétés du codage de Huffmann"""
-        for (chr, _) in self.chr_freq:
-            if chr == sommet.charactere:
-                raise ValueError(ArbreB_Huffmann.liste_erreurs[0].format(chr))
-        self.chr_freq.append((sommet.charactere, sommet.poids))
-        return ArbreB_Huffmann.build_from_freq(self.chr_freq)
+        if (charactere:=sommet.get_charactere()) in self.proportions.keys():
+            self.proportions[charactere] += sommet.get_poids()
+        else:
+            self.proportions[charactere] = sommet.get_poids()
+        return ArbreB_Huffmann.build_from_dico(self.proportions)
     
     
     def __iadd__(self, sommet: Sommet):
         return self.add_sommet(sommet)
     
-
+    
     def __str__(self) -> str:
         output = "\n"
-        for (chr, freq) in self.chr_freq:
-            output += f"{chr} : {freq}\n"
+        code = self.get_encode_dict()
+        for charactere, poids in self.proportions.items():
+            output += f"<Charactère : {charactere} > <Poids : {poids} > <Code : {code[charactere]} >\n"
         return output + "\n"
 
 
+############################################
+################ FONCTIONS #################
+
+
 def proportions(texte:str,keep_maj = False):
-    """Prend un texte en argument et retourne les
-    occurences par Charactères (= chr) de son content.\n
-    str => list(n*tuple(chr,occurences))"""
+    """Prend un texte en argument et retourne un
+    dictionnaire avec un charactère en clé et son
+    occurence en valeur"""
     if not keep_maj:
         texte = texte.lower()
-    proportion = {}
+    output = {}
     for i in texte:
-        if i in proportion.keys():
-            proportion[i] += 1
+        if i in output.keys():
+            output[i] += 1
         else:
-            proportion[i] = 1
-    len_texte = len(texte)
-    for i in proportion.keys():
-        proportion[i] = round((proportion[i]/len_texte)*100,2)
-    return sorted(proportion.items(), key= lambda item: item[1])
+            output[i] = 1
+    return output
 
 
 def encoding(texte:str, conversion:dict):
