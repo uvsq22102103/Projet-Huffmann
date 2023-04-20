@@ -221,7 +221,8 @@ class AppUnittest():
         self.root = root
         self.root.title(name + " - Unitest")
         self.root.geometry(f"{width}x{height}")
-        # Boutons #
+
+        # Menu #
         self.menu = Menu(root)
 
         self.menuARBRE = Menu(root, tearoff=0)
@@ -236,10 +237,32 @@ class AppUnittest():
         self.menu.add_cascade(label="Sommet", menu= self.menuSOMMET)
 
         self.root.config(menu=self.menu)
+
+        # Frame #
+        self.frameprincipale = tk.Frame(self.root)
+        self.frameprincipale.pack(fill="both", expand=True, padx=10, pady=10)
+
+        self.frameprincipale.columnconfigure(1, weight=1)
+        self.frameprincipale.rowconfigure(1, weight=1)
+        self.frameprincipale.update()
+
         # Label #
-        self.labelAffichage = tk.Label(self.root, text=">Pas d'arbre<")
-        self.labelAffichage.pack(side="top", anchor="center", pady=10)
-    
+        self.labelAffichage = tk.Label(self.frameprincipale, text=">Pas d'arbre<")
+        self.labelAffichage.grid(row = 0, column = 0, sticky="nsew", pady=10)
+
+        # Canva #
+        self.canvaaffichage = tk.Canvas(self.frameprincipale, borderwidth=10, scrollregion=(0,0,2200,2000), cursor="dot", bg="grey")
+        self.canvaaffichage.grid(row=0, rowspan=2, column=1, padx=10, pady=10, sticky="nsew")
+
+        self.scrollVERT = tk.Scrollbar(self.frameprincipale, orient="vertical")
+        self.scrollVERT.grid(row=0, rowspan=2, column=2, sticky="nse")
+
+        self.scrollHORI = tk.Scrollbar(self.frameprincipale, orient="horizontal")
+        self.scrollHORI.grid(row=2, column=1, columnspan=2, sticky="nwe")
+
+        self.scrollVERT.configure(command=self.canvaaffichage.yview)
+        self.scrollHORI.configure(command=self.canvaaffichage.xview)
+        self.canvaaffichage.configure(yscrollcommand=self.scrollVERT.set, xscrollcommand=self.scrollHORI.set)
 
     def affichage(self):
         if self.arbre != None:
