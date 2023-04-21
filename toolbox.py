@@ -58,8 +58,8 @@ class ArbreB_Huffmann():
         self.proportions[sommet.get_charactere()] = sommet.get_poids()
     
 
-    def build_from_text(text:str, keep_maj:bool):
-        return ArbreB_Huffmann.build_from_dico(proportions(text, keep_maj))
+    def build_from_text(text:str):
+        return ArbreB_Huffmann.build_from_dico(proportions(text))
     
 
     def get_poids(self):
@@ -146,9 +146,10 @@ class ArbreB_Huffmann():
             ArbreB_Huffmann.draw(self.content, canvas, canvas_size,
                                  offset, node_size, __current)
         else:
-            if self["r"].get_charactere() == None: #noeud non feuille
+            if (charactere:=self["r"].get_charactere()) == None: #noeud non feuille
                 canvas.create_oval(__current[0]-node_size,__current[1]-node_size,
                                    __current[0]+node_size,__current[1]+node_size,fill="white")
+                canvas.create_text(__current[0],__current[1]-(4*node_size), text=str(self["r"].get_poids()), fill="black")
                 loc_fg = (__current[0]-offset[0],__current[1]+offset[1])
                 loc_fd = (__current[0]+offset[0],__current[1]+offset[1])
                 canvas.create_line(__current[0],__current[1],loc_fg[0],loc_fg[1],fill="black")
@@ -156,10 +157,14 @@ class ArbreB_Huffmann():
                 offset = (offset[0]/2, +offset[1])
                 ArbreB_Huffmann.draw(self["fg"], canvas, canvas_size, offset, node_size, loc_fg)
                 ArbreB_Huffmann.draw(self["fd"], canvas, canvas_size, offset, node_size, loc_fd)
-            else: # feuille
+            else: #feuille
+                if charactere == " ":
+                    charactere = "space"
+                elif charactere == "\n":
+                    charactere = "linebreak"
                 canvas.create_oval(__current[0]-node_size,__current[1]-node_size,
                                    __current[0]+node_size,__current[1]+node_size, fill="red")
-                canvas.create_text(__current[0],__current[1]+(4*node_size), text=self["r"].get_charactere(), fill="black")
+                canvas.create_text(__current[0],__current[1]+(4*node_size), text=charactere, fill="black")
 
 
     def search(self, charactere:str):
@@ -269,12 +274,10 @@ class ArbreB_Huffmann():
 ################ FONCTIONS #################
 
 
-def proportions(texte:str,keep_maj = False):
+def proportions(texte:str):
     """Prend un texte en argument et retourne un
     dictionnaire avec un charactère en clé et son
     occurence en valeur"""
-    if not keep_maj:
-        texte = texte.lower()
     output = {}
     for i in texte:
         if i in output.keys():
@@ -338,6 +341,7 @@ def get_dico_from_huffman_save()-> dict:
 def abr_path(arbre:ArbreB_Huffmann):
     '''Renvoie les chemins des sommets d'un objet de la classe Arbre'''
     dico_conv = arbre.get_encode_dict()
+    del dico_conv["checksum"]
     output = str("")
     if " " in dico_conv:
         dico_conv["espace"] = dico_conv[" "]

@@ -152,8 +152,8 @@ class AppMain():
         l'arbre dans le canva et ajoute les données de cette arbre dans une listbox'''
         self.canva1.delete(tk.ALL)
         self.listbox.delete(0, tk.END)
-        texte = self.entreeD1.get("1.0", tk.END)
-        self.arbre = ArbreB_Huffmann.build_from_text(texte, True)
+        texte = self.entreeD1.get("1.0", tk.END)[:-1] # <=== pour retirer le \n de fin de texte
+        self.arbre = ArbreB_Huffmann.build_from_text(texte)
 
         ## Offset + Dessin arbre ##
 
@@ -177,7 +177,7 @@ class AppMain():
         '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
         dico = get_dico_from_huffman_save()
-        texte = self.entreeD2.get("1.0", tk.END)
+        texte = self.entreeD2.get("1.0", tk.END)[:-1] # <=== pour retirer le \n de fin de texte
         texte_encodé = encoding(dico, texte)
         showinfo(title="Encodage",
                  message=f"texte compressé à {pourcentage_compression(texte, texte_encodé)}%")
@@ -203,8 +203,8 @@ class AppMain():
     def ExportCodes(self):
         '''Exporte un fichier de conversion de la forme
         n*(ord(charactere) code)'''
-        texte = self.entreeD2.get("1.0", tk.END)
-        arbre = ArbreB_Huffmann.build_from_dico(proportions(texte, True))
+        texte = self.entreeD2.get("1.0", tk.END)[:-1] # <=== pour retirer le \n de fin de texte
+        arbre = ArbreB_Huffmann.build_from_dico(proportions(texte))
         encodage = arbre.get_encode_dict()
         checksum = encodage["checksum"]
         del encodage["checksum"]
@@ -333,7 +333,7 @@ class AppUnittest():
     def create_from_text(self):
         texte = askstring(title="Créer un nouvel arbre depuis un texte",
                           prompt="Veuillez entrer un texte quelconque")
-        self.arbre = ArbreB_Huffmann.build_from_text(text=texte, keep_maj=True)
+        self.arbre = ArbreB_Huffmann.build_from_text(text=texte)
         self.affichage()
     
     
@@ -341,7 +341,7 @@ class AppUnittest():
         if self.arbre != None:
             texte = askstring(title="Ajouter à cet arbre du texte",
                             prompt="Veuillez entrer un texte quelconque")
-            self.arbre = self.arbre + ArbreB_Huffmann.build_from_text(texte, keep_maj=True)
+            self.arbre = self.arbre + ArbreB_Huffmann.build_from_text(texte)
             self.affichage()
     
 
