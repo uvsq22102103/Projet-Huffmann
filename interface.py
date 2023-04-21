@@ -1,12 +1,15 @@
 ##########
 # import #
+
 from toolbox import *
 
 #############
 ### CLASS ###
 
 class AppMain():
+
     """Application pour un utilisateur lambda"""
+
     def __init__(self, root: tk.Tk, HEIGHT, WIDTH, NAME) -> None:
         self.NAME = NAME
         self.root = root
@@ -174,8 +177,11 @@ class AppMain():
         '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
         dico = get_dico_from_huffman_save()
-        final_txt = encoding(dico, self.entreeD2.get("1.0", tk.END))
-        self.Sortie.insert(tk.END, final_txt)
+        texte = self.entreeD2.get("1.0", tk.END)
+        texte_encodé = encoding(dico, texte)
+        showinfo(title="Encodage",
+                 message=f"texte compressé à {pourcentage_compression(texte, texte_encodé)}%")
+        self.Sortie.insert(tk.END, texte_encodé)
 
 
     def decryptage(self):
@@ -203,7 +209,7 @@ class AppMain():
         checksum = encodage["checksum"]
         del encodage["checksum"]
         output = " ".join([f'{ord(charactere)} {code}' for charactere, code in encodage.items()])
-        output += "\n#" + checksum
+        output += "\n" + checksum
         file_dialog(action="w", text=output, extension=".huffmann")
 
 
@@ -217,7 +223,9 @@ class AppMain():
 
 
 class AppUnittest():
+
     """Application dédiée à l'unittest"""
+
     def __init__(self, root:tk.Tk, height, width, name) -> None:
         self.arbre = None
         ## Partie GUI ##
@@ -234,7 +242,6 @@ class AppUnittest():
         self.menuARBRE.add_command(label="Rajout de texte", command=self.add_from_text)
         self.menuARBRE.add_command(label="Décomposition", command=self.decomposer)
 
-        
         self.menu.add_cascade(label="Arbre", menu= self.menuARBRE)
         
         self.menuSOMMET = Menu(root, tearoff=0)
@@ -261,15 +268,16 @@ class AppUnittest():
         self.canvas1 = tk.Canvas(self.frameprincipale, borderwidth=10, scrollregion=(0,0,2200,2000), cursor="dot", bg="grey")
         self.canvas1.grid(row=0, rowspan=2, column=1, padx=10, pady=10, sticky="nsew")
 
-        self.scrollVERT = tk.Scrollbar(self.frameprincipale, orient="vertical")
+        self.scrollVERT = tk.Scrollbar(self.frameprincipale, orient="vertical",width=20)
         self.scrollVERT.grid(row=0, rowspan=2, column=2, sticky="nse")
 
-        self.scrollHORI = tk.Scrollbar(self.frameprincipale, orient="horizontal")
+        self.scrollHORI = tk.Scrollbar(self.frameprincipale, orient="horizontal",width=20)
         self.scrollHORI.grid(row=2, column=1, columnspan=2, sticky="nwe")
 
         self.scrollVERT.configure(command=self.canvas1.yview)
         self.scrollHORI.configure(command=self.canvas1.xview)
         self.canvas1.configure(yscrollcommand=self.scrollVERT.set, xscrollcommand=self.scrollHORI.set)
+
 
     def affichage(self):
         self.canvas1.delete("all")

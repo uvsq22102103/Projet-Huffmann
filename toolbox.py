@@ -7,7 +7,16 @@ from tkinter.simpledialog import askinteger, askstring
 from math import log2
 import codecs
 import webbrowser
+
 ##############################################################################################
+# liste des erreurs #
+
+erreurs = [
+    "le charactère <{}> n'existe pas dans le text d'entraînement",
+    "Vous essayez de décoder un texte avec le mauvais dictionnaire"]
+
+##############################################################################################
+# classe sommet #
 
 class Sommet():
     """Sommet/Noeud d'Arbre binaire ayant comme attributs un poids et un
@@ -37,6 +46,7 @@ class Sommet():
 
 
 ##############################################################################################
+# classe arbre binaire de huffmann #
 
 class ArbreB_Huffmann():
     """Un arbre binaire basé sur la propriété de l'algorithme
@@ -282,37 +292,33 @@ def encoding(conversion:dict, texte:str):
             output += conversion[i]
         return output + conversion["checksum"]
     except :
-        showerror(message=f"le charactère <{i}> n'existe pas dans le text d'entraînement")
-        raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
-        
+        showerror(message=erreurs[0].format(i))
+        raise ValueError(erreurs[0].format(i))       
 
 
 def decoding(conversion:dict, texte:str):
     """Decode un texte selon un dictionnaire de conversion"""
-    conversion_reversed = {}
-    for (key, value) in conversion.items():
-        conversion_reversed[value] = key
-    output = ""
-    i, j = 0, 1
-    keys = conversion_reversed.keys()
-    liste = texte.split("#")
-    texte = liste[0]
-    checksum = liste[1]
-    if "#"+checksum == conversion["checksum"]:
+    texte, checksum = texte[0:-len(conversion["checksum"])], texte[-len(conversion["checksum"]):]
+    if checksum == conversion["checksum"]:
+        conversion_reversed = {}
+        for (key, value) in conversion.items():
+            conversion_reversed[value] = key
+        output = ""
+        i, j = 0, 1
+        keys = conversion_reversed.keys()
         while i < len(texte):
             while texte[i:j] not in keys:
                 j += 1
                 if j > len(texte):
-                    showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-                    raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+                    showerror(message=erreurs[1])
+                    raise ValueError(erreurs[1])
             output += conversion_reversed[texte[i:j]]
             i = j
             j = i+1
         return output
     else:
-        showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-        raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-    
+        showerror(message=erreurs[1])
+        raise ValueError(erreurs[1])
 
 
 def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
@@ -346,7 +352,7 @@ def abr_path(arbre:ArbreB_Huffmann):
 
 
 def file_dialog(action:str, filetypes:list=[], text:str="", extension:str=""):
-    """Permet de lire ou d'écrire sur fichier"""
+    """Permet de lire ou d'écrire sur un fichier"""
     if action == "r":
         file = codecs.open(askopenfilename(title="Ouvrir", filetypes=filetypes), encoding='utf-8')
         output = "".join(file.readlines())
@@ -359,6 +365,8 @@ def file_dialog(action:str, filetypes:list=[], text:str="", extension:str=""):
 
 
 def fletcher16(dico:dict):
+    """Prend un dictionnaire de proportions de charactères
+    en entrée et renvoi un checksum en binaire"""
     string = ""
     for charactere, occurence in dico.items():
         string += charactere * occurence
@@ -368,4 +376,10 @@ def fletcher16(dico:dict):
         sum1 = (sum1 + ord(char)) % 255
         sum2 = (sum2 + sum1) % 255
     checksum = (sum2 << 8) | sum1
-    return str(checksum)
+    return bin(checksum)[2:]
+
+
+def pourcentage_compression(text_original, text_compress):
+    """prend en argument le texte original ainsi son équivalent binaire 
+    compressé pour renvoyer le pourcentage de compression atteint"""
+    return round((len(text_original) * 8 / len(text_compress))*100, 2)
