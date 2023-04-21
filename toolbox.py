@@ -184,48 +184,6 @@ class ArbreB_Huffmann():
         return output
     
 
-    def encoding(self, texte:str):
-        """Encode un texte selon un dictionnaire de conversion"""
-        conversion = self.get_encode_dict()
-        output = ""
-        try :
-            for i in texte:
-                output += conversion[i]
-            return output + "-" + conversion["checksum"]
-        except :
-            showerror(message=f"le charactère <{i}> n'existe pas dans le text d'entraînement")
-            raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
-            
-
-
-    def decoding(self, texte:str):
-        """Decode un texte selon un dictionnaire de conversion"""
-        conversion = self.get_encode_dict()
-        conversion_reversed = {}
-        for (key, value) in conversion.items():
-            conversion_reversed[value] = key
-        output = ""
-        i, j = 0, 1
-        keys = conversion_reversed.keys()
-        liste = texte.split("-")
-        texte = liste[0]
-        checksum = liste[1]
-        if checksum == conversion["checksum"]:
-            while i < len(texte):
-                while texte[i:j] not in keys:
-                    j += 1
-                    if j > len(texte):
-                        showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-                        raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-                output += conversion_reversed[texte[i:j]]
-                i = j
-                j = i+1
-            return output
-        else:
-            showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-            raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
-    
-
     def get_profondeur(self, __depth:int=0):
         """Algo récurcif pour connaître la profondeur d'un Arbre"""
         if type(self) == ArbreB_Huffmann:
@@ -316,13 +274,56 @@ def proportions(texte:str,keep_maj = False):
     return output
 
 
+def encoding(conversion:dict, texte:str):
+    """Encode un texte selon un dictionnaire de conversion"""
+    output = ""
+    try :
+        for i in texte:
+            output += conversion[i]
+        return output + conversion["checksum"]
+    except :
+        showerror(message=f"le charactère <{i}> n'existe pas dans le text d'entraînement")
+        raise ValueError(f"le charactère <{i}> n'existe pas dans le text d'entraînement")
+        
+
+
+def decoding(conversion:dict, texte:str):
+    """Decode un texte selon un dictionnaire de conversion"""
+    conversion_reversed = {}
+    for (key, value) in conversion.items():
+        conversion_reversed[value] = key
+    output = ""
+    i, j = 0, 1
+    keys = conversion_reversed.keys()
+    liste = texte.split("#")
+    texte = liste[0]
+    checksum = liste[1]
+    if "#"+checksum == conversion["checksum"]:
+        while i < len(texte):
+            while texte[i:j] not in keys:
+                j += 1
+                if j > len(texte):
+                    showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+                    raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+            output += conversion_reversed[texte[i:j]]
+            i = j
+            j = i+1
+        return output
+    else:
+        showerror(message=f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+        raise ValueError(f"Vous essayez de décoder un texte avec le mauvais dictionnaire")
+    
+
+
 def somme_offsets(offset:int, hauteurABR:int, k:float=2.0):
     return offset + somme_offsets(offset/k, hauteurABR-1) if hauteurABR > 1 else offset
 
 
-def get_dico(texte:str)-> dict:
+def get_dico_from_huffman_save()-> dict:
+    texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')])
     dico = {}
     liste = texte.split()
+    dico["checksum"] = liste.pop(-1)
     for i in range(0,len(liste), 2):
         dico[chr(int(liste[i]))] = liste[i+1]
     return dico

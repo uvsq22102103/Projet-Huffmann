@@ -172,16 +172,16 @@ class AppMain():
     def cryptage(self):
         '''Fonction qui va crypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
-        texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')])
-        final_txt = self.arbre.encoding(self.entreeD2.get("1.0", tk.END))
+        dico = get_dico_from_huffman_save()
+        final_txt = encoding(dico, self.entreeD2.get("1.0", tk.END))
         self.Sortie.insert(tk.END, final_txt)
 
 
     def decryptage(self):
         '''Fonction qui va décrypter un texte à partir d'un dictionnaire de conversion'''
         self.Sortie.delete(1.0 , tk.END)
-        texte = file_dialog(action="r", filetypes=[('conv files','.huffmann'),('all files','.*')]) # voir demain ! 
-        final_txt = self.arbre.decoding(self.entreeD2.get("1.0", tk.END).replace("\n",""))
+        dico = get_dico_from_huffman_save()
+        final_txt = decoding(dico, self.entreeD2.get("1.0", tk.END).replace("\n",""))
         self.Sortie.insert(tk.END, final_txt)
         
 
