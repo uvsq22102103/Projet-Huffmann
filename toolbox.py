@@ -84,11 +84,12 @@ class ArbreB_Huffmann():
         while len(liste_arbres) > 1: #Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets
             liste_arbres.sort(key=lambda x: x.get_poids())
             liste_arbres.append(liste_arbres.pop(0).fusion(liste_arbres.pop(0)))
-        arborescence = liste_arbres[0]
-        return arborescence
+        return liste_arbres[0]
     
 
     def decomposition(self):
+        """Décompose l'arbre en deux, on récupère son fils gauche et droit
+        dans un tuple de la forme (abr_g, abr_d)"""
         if type(self) == ArbreB_Huffmann:
             sommets_fg = ArbreB_Huffmann.decomposition(self.content["fg"])
             sommets_fd = ArbreB_Huffmann.decomposition(self.content["fd"])
