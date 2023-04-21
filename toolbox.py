@@ -12,7 +12,7 @@ import webbrowser
 # liste des erreurs #
 
 erreurs = [
-    "le charactère <{}> n'existe pas dans le text d'entraînement",
+    "Lse caractère <{}> n'existe pas dans le text d'entraînement",
     "Vous essayez de décoder un texte avec le mauvais dictionnaire"]
 
 ##############################################################################################
@@ -79,7 +79,7 @@ class ArbreB_Huffmann():
 
     def build_from_dico(dico:dict):
         """Construit un Arbre binaire de Huffmann en prenant
-        en argument un dictionnaire de proportion de la """
+        en argument un dictionnaire de proportion"""
         liste_arbres = [ArbreB_Huffmann(Sommet(poids, charactere)) for charactere, poids in dico.items()]
         while len(liste_arbres) > 1: #Fusion de la liste d'arbres en un seul et même arbre selon l'étiquette des sommets
             liste_arbres.sort(key=lambda x: x.get_poids())
@@ -104,7 +104,7 @@ class ArbreB_Huffmann():
 
     def fusion(self,abr:"ArbreB_Huffmann"):
         """Fusionne deux arbres en un puis crée une racine contenant un sommet
-        ayant la somme des etiquettes des deux fils pour attribut"""
+        ayant la somme des étiquettes des deux fils pour attribut"""
         fg = self.content.copy()
         fd = abr.content.copy()
         self.content = {"r" : Sommet(fg["r"].get_poids() + fd["r"].get_poids()),
@@ -141,6 +141,7 @@ class ArbreB_Huffmann():
 
 
     def draw(self, canvas:tk.Canvas, canvas_size:tuple[int,int], offset:tuple[int,int], node_size:int=5, __current=None):
+        """Dessine un objet de type ArbreB_Huffman sur un canva"""
         if type(self) == ArbreB_Huffmann:
             __current = (canvas_size[0]/2, 30)
             ArbreB_Huffmann.draw(self.content, canvas, canvas_size,
@@ -168,8 +169,8 @@ class ArbreB_Huffmann():
 
 
     def search(self, charactere:str):
-        """Recherche un element dans un l'arbre et renvoi son équivalent binaire 
-        selon le grand Oufman"""
+        """Recherche un élément dans l'arbre et renvoi son équivalent binaire 
+        selon Huffman"""
         if type(self) == ArbreB_Huffmann: # 
             return ArbreB_Huffmann.search(self.content, charactere)
         elif type(self) == dict:
@@ -200,7 +201,7 @@ class ArbreB_Huffmann():
     
 
     def get_profondeur(self, __depth:int=0):
-        """Algo récurcif pour connaître la profondeur d'un Arbre"""
+        """Algorithme récursif pour connaître la profondeur d'un Arbre"""
         if type(self) == ArbreB_Huffmann:
             return ArbreB_Huffmann.get_profondeur(self.content)
         elif type(self) == dict:
@@ -213,7 +214,7 @@ class ArbreB_Huffmann():
     
     
     def get_largeur(self, __target:bool = None, __depth:int = 0):
-        """Algo récurcif pour connaître la largeur d'un Arbre"""
+        """Algorithme récursif pour connaître la largeur d'un Arbre"""
         if type(self) == ArbreB_Huffmann:
             return ArbreB_Huffmann.get_largeur(self.content)
         elif type(self) == dict:
@@ -232,7 +233,7 @@ class ArbreB_Huffmann():
 
     def supp_chr(self, charactere:str):
         """Permet de supprimer un Sommet comprenant
-        le charactère spécifié de l'arbre actuel en
+        le caractère spécifié de l'arbre actuel en
         gardant la propriété du codage de Hoffmann"""
         del self.proportions[charactere]
         return ArbreB_Huffmann.build_from_dico(self.proportions)
@@ -276,7 +277,7 @@ class ArbreB_Huffmann():
 
 def proportions(texte:str):
     """Prend un texte en argument et retourne un
-    dictionnaire avec un charactère en clé et son
+    dictionnaire avec un caractère en clé et son
     occurence en valeur"""
     output = {}
     for i in texte:
@@ -300,7 +301,7 @@ def encoding(conversion:dict, texte:str):
 
 
 def decoding(conversion:dict, texte:str):
-    """Decode un texte selon un dictionnaire de conversion"""
+    """Décode un texte selon un dictionnaire de conversion"""
     texte, checksum = texte[0:-len(conversion["checksum"])], texte[-len(conversion["checksum"]):]
     if checksum == conversion["checksum"]:
         conversion_reversed = {}
@@ -369,7 +370,7 @@ def file_dialog(action:str, filetypes:list=[], text:str="", extension:str=""):
 
 
 def fletcher16(dico:dict):
-    """Prend un dictionnaire de proportions de charactères
+    """Prend un dictionnaire de proportions de caractères
     en entrée et renvoi un checksum en binaire"""
     string = ""
     for charactere, occurence in dico.items():
@@ -384,6 +385,6 @@ def fletcher16(dico:dict):
 
 
 def pourcentage_compression(text_original, text_compress):
-    """prend en argument le texte original ainsi son équivalent binaire 
+    """Prend en argument le texte original ainsi son équivalent binaire 
     compressé pour renvoyer le pourcentage de compression atteint"""
     return round((len(text_original) * 8 / len(text_compress))*100, 2)

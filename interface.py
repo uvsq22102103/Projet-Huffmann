@@ -100,7 +100,7 @@ class AppMain():
 
         #BOUTONS#######
         ###############
-        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Afficher l'arbre d'Huffman de votre texte",
+        self.buttonArbre = ttkb.Button(self.frame_not_canva, text="Afficher l'arbre de Huffman de votre texte",
                                        width=40, command=self.affiche_arbre)
         self.buttonArbre.grid(row=0, column=0, padx=10, sticky="nw")
 
