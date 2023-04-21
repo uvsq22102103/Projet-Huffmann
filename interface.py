@@ -113,9 +113,6 @@ class AppMain():
                                            width=40, command=self.ExportCodes)
         self.buttoncreacrypt.grid(row=0, column=0, padx=10)
 
-        self.buttonlistbox = ttkb.Button(self.frame_not_canva, text = "Ajouter un sommet", width=40,)
-        self.buttonlistbox.grid(row=2, column=0)
-
         #CANVAS########
         ###############
         self.canva1 = ttkb.Canvas(self.frame_canva, borderwidth=10, scrollregion=(0,0,2200,2000), cursor="dot")
@@ -136,11 +133,15 @@ class AppMain():
         self.listbox = Listbox(self.frame_not_canva, bg="grey", selectmode=SINGLE)
         self.listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
+        self.scrollLISTA = ttkb.Scrollbar(self.frame_not_canva, orient="horizontal", bootstyle="primary")
+        self.scrollLISTA.grid(row=2, column=0, sticky="wse")
+
         self.scrollLISTB = ttkb.Scrollbar(self.frame_not_canva, orient="vertical", bootstyle="primary")
         self.scrollLISTB.grid(row=1, column=0, pady=10, sticky="nse")
 
+        self.scrollLISTA.configure(command=self.listbox.xview)
         self.scrollLISTB.configure(command=self.listbox.yview)
-        self.listbox.configure(yscrollcommand=self.scrollLISTB.set)
+        self.listbox.configure(yscrollcommand=self.scrollLISTB.set, xscrollcommand=self.scrollLISTA.set)
 
 
     def affiche_arbre(self):
