@@ -52,7 +52,7 @@ Il vous sera nécessaire d'installer la librairie ttkbootstrap pour que l'applic
 
 #### Décryptage
 * Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Décoder votre texte binaire"
-* Choisissez un dictionnaire de cryptage adapté 
+* Choisissez le dictionnaire de cryptage adapté 
 > Attention, une erreur vous sera retourné si vous ne choisissez pas le dictionnaire avec lequel le texte a été encodé !
 * Votre texte décrypté s'affiche et vous pouvez le copier
 
