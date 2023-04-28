@@ -39,7 +39,7 @@ Il vous sera nécessaire d'installer la librairie ttkbootstrap pour que l'applic
 
 ### Pour créer et afficher un arbre respectant le code d'Huffman :
 * Entrer votre texte à l'emplacement indiqué puis appuyer sur le bouton "Afficher l'arbre d'Huffman de votre texte"
-* Votre arbre s'affiche et vous pouvez l'explorer à l'aide de scrollbars. De plus, le chemin de chaque charactère est affiché dans la listbox
+* Votre arbre s'affiche et vous pouvez l'explorer à l'aide de scrollbars. De plus, le chemin de chaque caractère est affiché dans la listbox
 
 ### Pour crypter ou décrypter un texte respectant le code d'Huffman : 
 
@@ -47,7 +47,7 @@ Il vous sera nécessaire d'installer la librairie ttkbootstrap pour que l'applic
 * Entrer votre texte à l'emplacement indiqué puis appuyez sur le bouton "Enregistrer un dictionnaire de cryptage d'Huffman" 
 * Cela enregistrera le dictionnaire nécessaire pour crypter votre texte
 * Appuyer sur le bouton "Encoder votre texte" et choisir le dictionnaire que vous avez précedemment créé 
-> Si le dictionnaire ne contient pas tout les charactères de votre texte entré, une erreur sera retournée !
+> Si le dictionnaire ne contient pas tout les caractères de votre texte entré, une erreur sera retournée !
 * Votre texte crypté s'affiche et vous pouvez le copier  
 
 #### Décryptage
